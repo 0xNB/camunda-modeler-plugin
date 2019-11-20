@@ -107,13 +107,13 @@ __webpack_require__.r(__webpack_exports__);
 function ExampleExtensionService(eventBus) {
 
   eventBus.on('shape.added', function(context) {
-    var element = context.element;
+    let element = context.element;
 
-    console.log('🎉 A shape was added!', element);
+    console.log('🎉 A shape was added! Yay!', element);
   });
 
   eventBus.on('connection.added', function(context) {
-    var element = context.element;
+    let element = context.element;
 
     console.log('🎊 A connection was added!', element);
   });
@@ -122,6 +122,7 @@ function ExampleExtensionService(eventBus) {
 ExampleExtensionService.$inject = [
   'eventBus'
 ];
+
 
 /***/ }),
 
@@ -142,17 +143,12 @@ __webpack_require__.r(__webpack_exports__);
  *
  * --------
  *
- * WARNING: This is an example only.
- *
- * Make sure you choose a unique name under which your extension service
- * is exposed (i.e. change PLEASE_CHANGE_ME to something unique).
- *
  * --------
  *
  */
 /* harmony default export */ __webpack_exports__["default"] = ({
-  __init__: [ 'PLEASE_CHANGE_ME' ],
-  PLEASE_CHANGE_ME: [ 'type', _ExampleExtensionService__WEBPACK_IMPORTED_MODULE_0__["default"] ]
+  __init__: [ 'FRAUNHOFER_MODELER_PLUGIN' ],
+  FRAUNHOFER_MODELER_PLUGIN: [ 'type', _ExampleExtensionService__WEBPACK_IMPORTED_MODULE_0__["default"] ]
 });
 
 

@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = {
-  name: 'Example Plug-in',
-  script: './dist/client.js'
+  name: 'Fraunhofer Plugin',
+  script: './dist/client.js',
+  style: './client/styles/styles.css',
+  menu: './menu/menu.js'
 };

@@ -5,15 +5,10 @@ import ExampleExtensionService from './ExampleExtensionService';
  *
  * --------
  *
- * WARNING: This is an example only.
- *
- * Make sure you choose a unique name under which your extension service
- * is exposed (i.e. change PLEASE_CHANGE_ME to something unique).
- *
  * --------
  *
  */
 export default {
-  __init__: [ 'PLEASE_CHANGE_ME' ],
-  PLEASE_CHANGE_ME: [ 'type', ExampleExtensionService ]
+  __init__: [ 'FRAUNHOFER_MODELER_PLUGIN' ],
+  FRAUNHOFER_MODELER_PLUGIN: [ 'type', ExampleExtensionService ]
 };
