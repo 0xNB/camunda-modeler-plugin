@@ -2,3 +2,7 @@ body {
     background: orchid;
 /*    test*/
 }
+
+.fraunhofer-red {
+    color: darkred !important;
+}

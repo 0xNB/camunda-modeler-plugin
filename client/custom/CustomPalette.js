@@ -1,16 +1,23 @@
 export default class CustomPalette {
-    constructor(create, elementFactory, palette, translate, lassoTool, spaceTool) {
+    constructor(create, elementFactory, palette, translate, lassoTool, spaceTool, bpmnFactory, elementRegistry) {
         this.create = create;
         this.lassoTool = lassoTool;
         this.elementFactory = elementFactory;
         this.spaceTool = spaceTool;
         this.translate = translate;
+        this.bpmnFactory = bpmnFactory;
+        this.elementRegistry = elementRegistry;
+
+      //  let exampleObject = this.elementRegistry.get('Task_13vlpcn').businessObject
 
         console.log(`registering custom platte plugin!`);
 
+       // debugger;
+
+
         console.log(palette._providers);
 
-        for(let entry in palette._providers) {
+        for (let entry in palette._providers) {
             console.log(`palette entry: ` + entry);
         }
         palette._providers = [];
@@ -28,7 +35,7 @@ export default class CustomPalette {
         } = this;
 
         function createListener(event) {
-            let shape = elementFactory.createShape(_.assign({ type: type }, options));
+            let shape = elementFactory.createShape(_.assign({type: type}, options));
 
             if (options) {
                 shape.businessObject.di.isExpanded = options.isExpanded;
@@ -54,11 +61,30 @@ export default class CustomPalette {
         const {
             create,
             elementFactory,
+            bpmnFactory,
             translate
         } = this;
 
         function createServiceTask(event) {
-            const shape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });
+            const shape = elementFactory.createShape({type: 'bpmn:ServiceTask'});
+
+            create.start(event, shape);
+        }
+
+        function createJenaTask(event) {
+            const jenaExpression = bpmnFactory.create('bpmn:Expression', {
+                body: "${meineKlasse1.test()}"
+            });
+
+            const businessObject = bpmnFactory.create('bpmn:ServiceTask', {
+                implementation: "Expression"
+            });
+
+
+            const shape = elementFactory.createShape({
+                type: 'bpmn:ServiceTask',
+                businessObject: businessObject
+            })
 
             create.start(event, shape);
         }
@@ -69,7 +95,7 @@ export default class CustomPalette {
                 className: 'bpmn-icon-lasso-tool',
                 title: 'Activate the lasso tool',
                 action: {
-                    click: (function(event) {
+                    click: (function (event) {
                         this.lassoTool.activateSelection(event);
                     }).bind(this)
                 }
@@ -79,7 +105,7 @@ export default class CustomPalette {
                 className: 'bpmn-icon-space-tool',
                 title: 'Activate the create/remove space tool',
                 action: {
-                    click: (function(event) {
+                    click: (function (event) {
                         this.spaceTool.activateSelection(event);
                     }).bind(this)
                 }
@@ -95,6 +121,15 @@ export default class CustomPalette {
                 action: {
                     dragstart: createServiceTask,
                     click: createServiceTask
+                }
+            },
+            'create.jena-task': {
+                group: 'activity',
+                className: 'bpmn-icon-service-task fraunhofer-red',
+                title: translate('Create Apache Jena Task'),
+                action: {
+                    dragstart: createJenaTask,
+                    click: createJenaTask
                 }
             },
             'create.start-event': this.createAction(
@@ -118,5 +153,7 @@ CustomPalette.$inject = [
     'palette',
     'translate',
     'lassoTool',
-    'spaceTool'
+    'spaceTool',
+    'bpmnFactory',
+    'elementRegistry',
 ];
