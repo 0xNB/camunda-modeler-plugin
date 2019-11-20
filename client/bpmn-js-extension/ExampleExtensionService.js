@@ -9,6 +9,11 @@
 
 export default function ExampleExtensionService(eventBus) {
 
+    const {remote} = require('electron');
+
+    const currentWindow = remote.getCurrentWindow();
+    currentWindow.setTitle("Fraunhofer IOSB Modeler");
+
     console.log(`loading example extension service`);
 
     eventBus.on('shape.added', function (context) {
