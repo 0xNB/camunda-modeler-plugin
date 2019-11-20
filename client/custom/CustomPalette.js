@@ -10,7 +10,7 @@ export default class CustomPalette {
 
       //  let exampleObject = this.elementRegistry.get('Task_13vlpcn').businessObject
 
-        console.log(`registering custom platte plugin!`);
+        console.log(`registering custom palette plugin!`);
 
        // debugger;
 
@@ -72,14 +72,12 @@ export default class CustomPalette {
         }
 
         function createJenaTask(event) {
-            const jenaExpression = bpmnFactory.create('bpmn:Expression', {
-                body: "${meineKlasse1.test()}"
-            });
-
             const businessObject = bpmnFactory.create('bpmn:ServiceTask', {
-                implementation: "Expression"
+                implementation: "Expression",
+                expression: "${myExampleClass1.test()}",
+                name: "Apache Jena Task",
+                resultVariable: "jena1",
             });
-
 
             const shape = elementFactory.createShape({
                 type: 'bpmn:ServiceTask',

@@ -96,7 +96,6 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ExampleExtensionService; });
-/* harmony import */ var _custom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../custom */ "./client/custom/index.js");
 /**
  * A bpmn-js service that provides the actual plug-in feature.
  *
@@ -106,27 +105,33 @@ __webpack_require__.r(__webpack_exports__);
  * https://github.com/bpmn-io/bpmn-js-examples
  */
 
-
-
 function ExampleExtensionService(eventBus) {
 
-  console.log(`loading example extension service`);
+    console.log(`loading example extension service`);
 
-  eventBus.on('shape.added', function(context) {
-    let element = context.element;
+    eventBus.on('shape.added', function (context) {
+        let element = context.element;
 
-   // console.log('🎉 A shape was added! Yay!', element);
-  });
+        // console.log('🎉 A shape was added! Yay!', element);
+    });
 
-  eventBus.on('connection.added', function(context) {
-    let element = context.element;
+    eventBus.on('connection.added', function (context) {
+        let element = context.element;
 
-  //  console.log('🎊 A connection was added!', element);
-  });
+        //  console.log('🎊 A connection was added!', element);
+    });
+
+    eventBus.on('element.click', log);
+
+    function log(e) {
+        console.log('element.hover', 'on', e.element.id);
+        console.log(`${e.element.id}`);
+      //  debugger;
+    }
 }
 
 ExampleExtensionService.$inject = [
-  'eventBus'
+    'eventBus'
 ];
 
 
@@ -255,7 +260,7 @@ class CustomPalette {
 
       //  let exampleObject = this.elementRegistry.get('Task_13vlpcn').businessObject
 
-        console.log(`registering custom platte plugin!`);
+        console.log(`registering custom palette plugin!`);
 
        // debugger;
 
@@ -317,14 +322,12 @@ class CustomPalette {
         }
 
         function createJenaTask(event) {
-            const jenaExpression = bpmnFactory.create('bpmn:Expression', {
-                body: "${meineKlasse1.test()}"
-            });
-
             const businessObject = bpmnFactory.create('bpmn:ServiceTask', {
-                implementation: "Expression"
+                implementation: "Expression",
+                expression: "${myExampleClass1.test()}",
+                name: "Apache Jena Task",
+                resultVariable: "jena1",
             });
-
 
             const shape = elementFactory.createShape({
                 type: 'bpmn:ServiceTask',

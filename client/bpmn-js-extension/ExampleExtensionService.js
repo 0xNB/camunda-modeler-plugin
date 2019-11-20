@@ -7,25 +7,31 @@
  * https://github.com/bpmn-io/bpmn-js-examples
  */
 
-import customModule from '../custom';
-
 export default function ExampleExtensionService(eventBus) {
 
-  console.log(`loading example extension service`);
+    console.log(`loading example extension service`);
 
-  eventBus.on('shape.added', function(context) {
-    let element = context.element;
+    eventBus.on('shape.added', function (context) {
+        let element = context.element;
 
-   // console.log('🎉 A shape was added! Yay!', element);
-  });
+        // console.log('🎉 A shape was added! Yay!', element);
+    });
 
-  eventBus.on('connection.added', function(context) {
-    let element = context.element;
+    eventBus.on('connection.added', function (context) {
+        let element = context.element;
 
-  //  console.log('🎊 A connection was added!', element);
-  });
+        //  console.log('🎊 A connection was added!', element);
+    });
+
+    eventBus.on('element.click', log);
+
+    function log(e) {
+        console.log('element.hover', 'on', e.element.id);
+        console.log(`${e.element.id}`);
+      //  debugger;
+    }
 }
 
 ExampleExtensionService.$inject = [
-  'eventBus'
+    'eventBus'
 ];
