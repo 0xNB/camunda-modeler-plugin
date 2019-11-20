@@ -96,6 +96,7 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ExampleExtensionService; });
+/* harmony import */ var _custom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../custom */ "./client/custom/index.js");
 /**
  * A bpmn-js service that provides the actual plug-in feature.
  *
@@ -104,18 +105,23 @@ __webpack_require__.r(__webpack_exports__);
  *
  * https://github.com/bpmn-io/bpmn-js-examples
  */
+
+
+
 function ExampleExtensionService(eventBus) {
+
+  console.log(`loading example extension service`);
 
   eventBus.on('shape.added', function(context) {
     let element = context.element;
 
-    console.log('🎉 A shape was added! Yay!', element);
+   // console.log('🎉 A shape was added! Yay!', element);
   });
 
   eventBus.on('connection.added', function(context) {
     let element = context.element;
 
-    console.log('🎊 A connection was added!', element);
+  //  console.log('🎊 A connection was added!', element);
   });
 }
 
@@ -148,7 +154,169 @@ __webpack_require__.r(__webpack_exports__);
  */
 /* harmony default export */ __webpack_exports__["default"] = ({
   __init__: [ 'FRAUNHOFER_MODELER_PLUGIN' ],
-  FRAUNHOFER_MODELER_PLUGIN: [ 'type', _ExampleExtensionService__WEBPACK_IMPORTED_MODULE_0__["default"] ]
+  FRAUNHOFER_MODELER_PLUGIN: [ 'type', _ExampleExtensionService__WEBPACK_IMPORTED_MODULE_0__["default"] ],
+});
+
+
+/***/ }),
+
+/***/ "./client/custom/CustomContextPad.js":
+/*!*******************************************!*\
+  !*** ./client/custom/CustomContextPad.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomContextPad; });
+class CustomContextPad {
+    constructor(config, contextPad, create, elementFactory, injector, translate) {
+        this.create = create;
+        this.elementFactory = elementFactory;
+        this.translate = translate;
+
+        if (config.autoPlace !== false) {
+            this.autoPlace = injector.get('autoPlace', false);
+        }
+
+        contextPad.registerProvider(this);
+    }
+
+    getContextPadEntries(element) {
+        const {
+            autoPlace,
+            create,
+            elementFactory,
+            translate
+        } = this;
+
+        function appendServiceTask(event, element) {
+            if (autoPlace) {
+                const shape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });
+
+                autoPlace.append(element, shape);
+            } else {
+                appendServiceTaskStart(event, element);
+            }
+        }
+
+        function appendServiceTaskStart(event) {
+            const shape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });
+
+            create.start(event, shape, element);
+        }
+
+        return {
+            'append.service-task': {
+                group: 'model',
+                className: 'bpmn-icon-service-task',
+                title: translate('Append ServiceTask'),
+                action: {
+                    click: appendServiceTask,
+                    dragstart: appendServiceTaskStart
+                }
+            }
+        };
+    }
+}
+
+CustomContextPad.$inject = [
+    'config',
+    'contextPad',
+    'create',
+    'elementFactory',
+    'injector',
+    'translate'
+];
+
+
+/***/ }),
+
+/***/ "./client/custom/CustomPalette.js":
+/*!****************************************!*\
+  !*** ./client/custom/CustomPalette.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomPalette; });
+class CustomPalette {
+    constructor(create, elementFactory, palette, translate) {
+        this.create = create;
+        this.elementFactory = elementFactory;
+        this.translate = translate;
+
+        console.log(`registering custom platte plugin!`);
+
+        palette.registerProvider(this);
+    }
+
+    getPaletteEntries(element) {
+        const {
+            create,
+            elementFactory,
+            translate
+        } = this;
+
+        function createServiceTask(event) {
+            const shape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });
+
+            create.start(event, shape);
+        }
+
+        return {
+            'create.service-task': {
+                group: 'activity',
+                className: 'bpmn-icon-service-task',
+                title: translate('Create ServiceTask'),
+                action: {
+                    dragstart: createServiceTask,
+                    click: createServiceTask
+                }
+            },
+        }
+    }
+}
+
+CustomPalette.$inject = [
+    'create',
+    'elementFactory',
+    'palette',
+    'translate'
+];
+
+
+/***/ }),
+
+/***/ "./client/custom/index.js":
+/*!********************************!*\
+  !*** ./client/custom/index.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CustomContextPad__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CustomContextPad */ "./client/custom/CustomContextPad.js");
+/* harmony import */ var _CustomPalette__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CustomPalette */ "./client/custom/CustomPalette.js");
+
+
+
+/**
+ * A bpmn-js module, defining all extension services and their dependencies.
+ *
+ * --------
+ *
+ * --------
+ *
+ */
+/* harmony default export */ __webpack_exports__["default"] = ({
+    __init__: [ 'CUSTOM_CONTEXT_PAD_MODULE', 'CUSTOM_PALETTE_MODULE' ],
+    CUSTOM_CONTEXT_PAD_MODULE: [ 'type', _CustomContextPad__WEBPACK_IMPORTED_MODULE_0__["default"] ],
+    CUSTOM_PALETTE_MODULE: ['type', _CustomPalette__WEBPACK_IMPORTED_MODULE_1__["default"]]
 });
 
 
@@ -165,11 +333,14 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers */ "./node_modules/camunda-modeler-plugin-helpers/index.js");
 /* harmony import */ var _bpmn_js_extension__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bpmn-js-extension */ "./client/bpmn-js-extension/index.js");
+/* harmony import */ var _custom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./custom */ "./client/custom/index.js");
+
 
 
 
 
 Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerBpmnJSPlugin"])(_bpmn_js_extension__WEBPACK_IMPORTED_MODULE_1__["default"]);
+Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerBpmnJSPlugin"])(_custom__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 
 /***/ }),
