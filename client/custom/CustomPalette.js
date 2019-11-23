@@ -82,7 +82,7 @@ export default class CustomPalette {
             const shape = elementFactory.createShape({
                 type: 'bpmn:ServiceTask',
                 businessObject: businessObject
-            })
+            });
 
             create.start(event, shape);
         }
@@ -124,6 +124,15 @@ export default class CustomPalette {
             'create.jena-task': {
                 group: 'activity',
                 className: 'bpmn-icon-service-task fraunhofer-red',
+                title: translate('Create SWRL Task'),
+                action: {
+                    dragstart: createSwrlTask,
+                    click: createSwrlTask
+                }
+            },
+            'create.swrl-task': {
+                group: 'activity',
+                className: 'bpmn-icon-service-task fraunhofer-blue',
                 title: translate('Create Apache Jena Task'),
                 action: {
                     dragstart: createJenaTask,
