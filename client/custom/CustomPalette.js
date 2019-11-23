@@ -1,20 +1,17 @@
+import SpecializedServiceTaskFactory from "./SpecializedServiceTaskFactory";
+
 export default class CustomPalette {
     constructor(create, elementFactory, palette, translate, lassoTool, spaceTool, bpmnFactory, elementRegistry) {
         this.create = create;
         this.lassoTool = lassoTool;
         this.elementFactory = elementFactory;
         this.spaceTool = spaceTool;
+        this.specializedServiceTaskFactory = new SpecializedServiceTaskFactory(this.create, bpmnFactory, elementFactory);
         this.translate = translate;
         this.bpmnFactory = bpmnFactory;
         this.elementRegistry = elementRegistry;
 
-      //  let exampleObject = this.elementRegistry.get('Task_13vlpcn').businessObject
-
         console.log(`registering custom palette plugin!`);
-
-       // debugger;
-
-
         console.log(palette._providers);
 
         for (let entry in palette._providers) {
@@ -65,28 +62,6 @@ export default class CustomPalette {
             translate
         } = this;
 
-        function createServiceTask(event) {
-            const shape = elementFactory.createShape({type: 'bpmn:ServiceTask'});
-
-            create.start(event, shape);
-        }
-
-        function createJenaTask(event) {
-            const businessObject = bpmnFactory.create('bpmn:ServiceTask', {
-                implementation: "Expression",
-                expression: "${myExampleClass1.test()}",
-                name: "Apache Jena Task",
-                resultVariable: "jena1",
-            });
-
-            const shape = elementFactory.createShape({
-                type: 'bpmn:ServiceTask',
-                businessObject: businessObject
-            });
-
-            create.start(event, shape);
-        }
-
         return {
             'lasso-tool': {
                 group: 'tools',
@@ -112,45 +87,47 @@ export default class CustomPalette {
                 group: 'tasks',
                 separator: true
             },
-            'create.service-task': {
-                group: 'activity',
-                className: 'bpmn-icon-service-task',
-                title: translate('Create ServiceTask'),
-                action: {
-                    dragstart: createServiceTask,
-                    click: createServiceTask
-                }
-            },
-            'create.jena-task': {
+            'create.swrl-task': {
                 group: 'activity',
                 className: 'bpmn-icon-service-task fraunhofer-red',
                 title: translate('Create SWRL Task'),
                 action: {
-                    dragstart: createSwrlTask,
-                    click: createSwrlTask
+                    dragstart: this.specializedServiceTaskFactory.createSpecializedServiceTask(this.specializedServiceTaskFactory.swrlOptions),
+                    click: this.specializedServiceTaskFactory.createSpecializedServiceTask(this.specializedServiceTaskFactory.swrlOptions)
                 }
             },
-            'create.swrl-task': {
+            'create.jena-task': {
                 group: 'activity',
                 className: 'bpmn-icon-service-task fraunhofer-blue',
                 title: translate('Create Apache Jena Task'),
                 action: {
-                    dragstart: createJenaTask,
-                    click: createJenaTask
+                    dragstart: this.specializedServiceTaskFactory.createSpecializedServiceTask(this.specializedServiceTaskFactory.jenaOptions),
+                    click: this.specializedServiceTaskFactory.createSpecializedServiceTask(this.specializedServiceTaskFactory.jenaOptions)
                 }
             },
             'create.start-event': this.createAction(
                 'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none'
             ),
+            'create.end-event': this.createAction(
+                'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none',
+                translate('Create EndEvent')
+            ),
             'custom-separator': {
-                group: 'custom',
+                group: 'gateway',
                 separator: true
             },
             'create.exclusive-gateway': this.createAction(
                 'bpmn:ExclusiveGateway', 'gateway', 'bpmn-icon-gateway-xor'
             ),
-
-        }
+            'custom-separator2': {
+                group: 'artifact',
+                separator: true
+            },
+            'create.group': this.createAction(
+                'bpmn:Group', 'artifact', 'bpmn-icon-group',
+                translate('Create Group')
+            ),
+        };
     }
 }
 
@@ -162,5 +139,5 @@ CustomPalette.$inject = [
     'lassoTool',
     'spaceTool',
     'bpmnFactory',
-    'elementRegistry',
+    'elementRegistry'
 ];

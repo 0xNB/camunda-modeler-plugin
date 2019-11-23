@@ -175,17 +175,45 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomContextPad; });
+/* harmony import */ var _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SpecializedServiceTaskFactory */ "./client/custom/SpecializedServiceTaskFactory.js");
+var actions = {};
+
+
+
 class CustomContextPad {
-    constructor(config, contextPad, create, elementFactory, injector, translate) {
+    constructor(config, contextPad, create, elementFactory, injector, translate, bpmnFactory) {
         this.create = create;
         this.elementFactory = elementFactory;
+        this.bpmnFactory = bpmnFactory;
         this.translate = translate;
+        this.serviceFactory = new _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__["default"](this.create, bpmnFactory, elementFactory);
+        this.filterList = [
+            "append.append-task",
+            "append.text-annotation",
+        ];
 
         if (config.autoPlace !== false) {
             this.autoPlace = injector.get('autoPlace', false);
         }
 
+        contextPad._providers[0].__proto__.getContextPadEntries = this.wrapActionsProxy(contextPad._providers[0].__proto__.getContextPadEntries);
         contextPad.registerProvider(this);
+    }
+
+    wrapActionsProxy(f) {
+        return new Proxy(f, {
+            apply(target, thisArg, args) {
+                actions = target.apply(thisArg, args);
+                return {};
+            }
+        });
+    }
+
+    filterActions(actionsToFilter, filterList, eventType) {
+        for(let filter of filterList) {
+            delete actionsToFilter[filter];
+        }
+        return actionsToFilter;
     }
 
     getContextPadEntries(element) {
@@ -196,30 +224,25 @@ class CustomContextPad {
             translate
         } = this;
 
-        function appendServiceTask(event, element) {
-            if (autoPlace) {
-                const shape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });
+        console.log(`our actions ` + JSON.stringify(actions));
 
-                autoPlace.append(element, shape);
-            } else {
-                appendServiceTaskStart(event, element);
-            }
-        }
-
-        function appendServiceTaskStart(event) {
-            const shape = elementFactory.createShape({ type: 'bpmn:ServiceTask' });
-
-            create.start(event, shape, element);
-        }
-
-        return {
-            'append.service-task': {
+        return { ...this.filterActions(actions, this.filterList),
+            'append.jena-task': {
                 group: 'model',
-                className: 'bpmn-icon-service-task',
-                title: translate('Append ServiceTask'),
+                className: 'bpmn-icon-service-task fraunhofer-blue',
+                title: 'Append Apache Jena Task',
                 action: {
-                    click: appendServiceTask,
-                    dragstart: appendServiceTaskStart
+                    click: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.jenaOptions, autoPlace, element),
+                    dragstart: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.jenaOptions, autoPlace, element)
+                }
+            },
+            'append.swrl-task': {
+                group: 'model',
+                className: 'bpmn-icon-service-task fraunhofer-red',
+                title: 'Append SWRL Task',
+                action: {
+                    click: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.swrlOptions, autoPlace, element),
+                    dragstart: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.swrlOptions, autoPlace, element)
                 }
             }
         };
@@ -232,7 +255,8 @@ CustomContextPad.$inject = [
     'create',
     'elementFactory',
     'injector',
-    'translate'
+    'translate',
+    'bpmnFactory'
 ];
 
 
@@ -248,23 +272,21 @@ CustomContextPad.$inject = [
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomPalette; });
+/* harmony import */ var _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SpecializedServiceTaskFactory */ "./client/custom/SpecializedServiceTaskFactory.js");
+
+
 class CustomPalette {
     constructor(create, elementFactory, palette, translate, lassoTool, spaceTool, bpmnFactory, elementRegistry) {
         this.create = create;
         this.lassoTool = lassoTool;
         this.elementFactory = elementFactory;
         this.spaceTool = spaceTool;
+        this.specializedServiceTaskFactory = new _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__["default"](this.create, bpmnFactory, elementFactory);
         this.translate = translate;
         this.bpmnFactory = bpmnFactory;
         this.elementRegistry = elementRegistry;
 
-      //  let exampleObject = this.elementRegistry.get('Task_13vlpcn').businessObject
-
         console.log(`registering custom palette plugin!`);
-
-       // debugger;
-
-
         console.log(palette._providers);
 
         for (let entry in palette._providers) {
@@ -315,28 +337,6 @@ class CustomPalette {
             translate
         } = this;
 
-        function createServiceTask(event) {
-            const shape = elementFactory.createShape({type: 'bpmn:ServiceTask'});
-
-            create.start(event, shape);
-        }
-
-        function createJenaTask(event) {
-            const businessObject = bpmnFactory.create('bpmn:ServiceTask', {
-                implementation: "Expression",
-                expression: "${myExampleClass1.test()}",
-                name: "Apache Jena Task",
-                resultVariable: "jena1",
-            });
-
-            const shape = elementFactory.createShape({
-                type: 'bpmn:ServiceTask',
-                businessObject: businessObject
-            });
-
-            create.start(event, shape);
-        }
-
         return {
             'lasso-tool': {
                 group: 'tools',
@@ -362,45 +362,47 @@ class CustomPalette {
                 group: 'tasks',
                 separator: true
             },
-            'create.service-task': {
-                group: 'activity',
-                className: 'bpmn-icon-service-task',
-                title: translate('Create ServiceTask'),
-                action: {
-                    dragstart: createServiceTask,
-                    click: createServiceTask
-                }
-            },
-            'create.jena-task': {
+            'create.swrl-task': {
                 group: 'activity',
                 className: 'bpmn-icon-service-task fraunhofer-red',
                 title: translate('Create SWRL Task'),
                 action: {
-                    dragstart: createSwrlTask,
-                    click: createSwrlTask
+                    dragstart: this.specializedServiceTaskFactory.createSpecializedServiceTask(this.specializedServiceTaskFactory.swrlOptions),
+                    click: this.specializedServiceTaskFactory.createSpecializedServiceTask(this.specializedServiceTaskFactory.swrlOptions)
                 }
             },
-            'create.swrl-task': {
+            'create.jena-task': {
                 group: 'activity',
                 className: 'bpmn-icon-service-task fraunhofer-blue',
                 title: translate('Create Apache Jena Task'),
                 action: {
-                    dragstart: createJenaTask,
-                    click: createJenaTask
+                    dragstart: this.specializedServiceTaskFactory.createSpecializedServiceTask(this.specializedServiceTaskFactory.jenaOptions),
+                    click: this.specializedServiceTaskFactory.createSpecializedServiceTask(this.specializedServiceTaskFactory.jenaOptions)
                 }
             },
             'create.start-event': this.createAction(
                 'bpmn:StartEvent', 'event', 'bpmn-icon-start-event-none'
             ),
+            'create.end-event': this.createAction(
+                'bpmn:EndEvent', 'event', 'bpmn-icon-end-event-none',
+                translate('Create EndEvent')
+            ),
             'custom-separator': {
-                group: 'custom',
+                group: 'gateway',
                 separator: true
             },
             'create.exclusive-gateway': this.createAction(
                 'bpmn:ExclusiveGateway', 'gateway', 'bpmn-icon-gateway-xor'
             ),
-
-        }
+            'custom-separator2': {
+                group: 'artifact',
+                separator: true
+            },
+            'create.group': this.createAction(
+                'bpmn:Group', 'artifact', 'bpmn-icon-group',
+                translate('Create Group')
+            ),
+        };
     }
 }
 
@@ -412,7 +414,85 @@ CustomPalette.$inject = [
     'lassoTool',
     'spaceTool',
     'bpmnFactory',
-    'elementRegistry',
+    'elementRegistry'
+];
+
+
+/***/ }),
+
+/***/ "./client/custom/SpecializedServiceTaskFactory.js":
+/*!********************************************************!*\
+  !*** ./client/custom/SpecializedServiceTaskFactory.js ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SpecializedServiceTaskFactory; });
+class SpecializedServiceTaskFactory {
+
+    constructor(create, bpmnFactory, elementFactory) {
+        this.bpmnFactory = bpmnFactory;
+        this.create = create;
+        this.elementFactory = elementFactory;
+        this.jenaOptions = {
+            expressionName: "myExampleClass1.test()",
+            actionGuiName: "Apache Jena Task",
+            resultVariable: "jena1"
+        };
+
+        this.swrlOptions = {
+            expressionName: "myExampleClass2.test()",
+            actionGuiName: "SWRL Task",
+            resultVariable: "swrl1"
+        };
+    }
+
+    createSpecializedServiceTask(options = this.jenaOptions) {
+        let shape = this.createSpecializedShape(options);
+        let innerCreate = this.create;
+        return function () {
+            innerCreate.start(event, shape);
+        }
+    }
+
+    appendSpecializedServiceTask(options, autoPlace, outerElement) {
+        const shape = this.createSpecializedShape(options);
+        return function (event, element) {
+            if (autoPlace) {
+                autoPlace.append(element, shape);
+            } else {
+                this.appendSpecializedServiceTaskStart(event, shape, outerElement);
+            }
+        }
+    }
+
+    appendSpecializedServiceTaskStart(event, shape, outerElement) {
+        this.create.start(event, shape, outerElement);
+    }
+
+    createSpecializedShape(options) {
+        const businessObject = this.bpmnFactory.create('bpmn:ServiceTask', {
+            implementation: "Expression",
+            expression: "${" + options.expressionName + "}",
+            name: options.actionGuiName,
+            resultVariable: options.resultVariable,
+        });
+
+        const shape = this.elementFactory.createShape({
+            type: 'bpmn:ServiceTask',
+            businessObject: businessObject
+        });
+        return shape;
+    }
+
+}
+
+SpecializedServiceTaskFactory.$inject = [
+    'create',
+    'bpmnFactory',
+    'elementFactory'
 ];
 
 
