@@ -1,5 +1,4 @@
 import SpecializedServiceTaskFactory from "./SpecializedServiceTaskFactory";
-
 export default class CustomPalette {
     constructor(create, elementFactory, palette, translate, lassoTool, spaceTool, bpmnFactory, elementRegistry) {
         this.create = create;
@@ -19,6 +18,10 @@ export default class CustomPalette {
         }
         palette._providers = [];
         palette.registerProvider(this);
+    }
+
+    createParticipant(event) {
+        this.create.start(event, this.elementFactory.createParticipantShape());
     }
 
     createAction(type, group, className, title, options) {
@@ -127,6 +130,15 @@ export default class CustomPalette {
                 'bpmn:Group', 'artifact', 'bpmn-icon-group',
                 translate('Create Group')
             ),
+            'create.participant-expanded': {
+                group: 'artifact',
+                className: 'bpmn-icon-participant',
+                title: translate('Create Pool/Participant'),
+                action: {
+                    dragstart: this.createParticipant.bind(this),
+                    click: this.createParticipant.bind(this)
+                }
+            },
         };
     }
 }

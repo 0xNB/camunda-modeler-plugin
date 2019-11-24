@@ -177,10 +177,17 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomContextPad; });
-/* harmony import */ var _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SpecializedServiceTaskFactory */ "./client/custom/SpecializedServiceTaskFactory.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SpecializedServiceTaskFactory */ "./client/custom/SpecializedServiceTaskFactory.js");
+/* harmony import */ var bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/features/modeling/util/ModelingUtil */ "./node_modules/bpmn-js/lib/features/modeling/util/ModelingUtil.js");
+/* harmony import */ var bpmn_js_lib_util_DiUtil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bpmn-js/lib/util/DiUtil */ "./node_modules/bpmn-js/lib/util/DiUtil.js");
+
+
+
+
+
 var actions = {};
-
-
 
 class CustomContextPad {
     constructor(config, contextPad, create, elementFactory, injector, translate, bpmnFactory) {
@@ -188,7 +195,7 @@ class CustomContextPad {
         this.elementFactory = elementFactory;
         this.bpmnFactory = bpmnFactory;
         this.translate = translate;
-        this.serviceFactory = new _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__["default"](this.create, bpmnFactory, elementFactory);
+        this.serviceFactory = new _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_1__["default"](this.create, bpmnFactory, elementFactory);
         this.filterList = [
             "append.append-task",
             "append.text-annotation",
@@ -212,41 +219,47 @@ class CustomContextPad {
     }
 
     filterActions(actionsToFilter, filterList, eventType) {
-        for(let filter of filterList) {
+        for (let filter of filterList) {
             delete actionsToFilter[filter];
         }
         return actionsToFilter;
     }
 
+
     getContextPadEntries(element) {
         const {
             autoPlace,
-            create,
-            elementFactory,
-            translate
         } = this;
+
+        let businessObject = element.businessObject;
 
         console.log(`our actions ` + JSON.stringify(actions));
 
-        return { ...this.filterActions(actions, this.filterList),
-            'append.jena-task': {
-                group: 'model',
-                className: 'bpmn-icon-service-task fraunhofer-blue',
-                title: 'Append Apache Jena Task',
-                action: {
-                    click: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.jenaOptions, autoPlace, element),
-                    dragstart: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.jenaOptions, autoPlace, element)
+        let actionsToBeAdded = {};
+        if (!(Object(bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_2__["isAny"])(businessObject, ['bpmn:Lane', 'bpmn:Participant']) && Object(bpmn_js_lib_util_DiUtil__WEBPACK_IMPORTED_MODULE_3__["isExpanded"])(businessObject))) {
+            actionsToBeAdded = {
+                'append.jena-task': {
+                    group: 'model',
+                    className: 'bpmn-icon-service-task fraunhofer-blue',
+                    title: 'Append Apache Jena Task',
+                    action: {
+                        click: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.jenaOptions, autoPlace, element),
+                        dragstart: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.jenaOptions, autoPlace, element)
+                    }
+                },
+                'append.swrl-task': {
+                    group: 'model',
+                    className: 'bpmn-icon-service-task fraunhofer-red',
+                    title: 'Append SWRL Task',
+                    action: {
+                        click: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.swrlOptions, autoPlace, element),
+                        dragstart: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.swrlOptions, autoPlace, element)
+                    }
                 }
-            },
-            'append.swrl-task': {
-                group: 'model',
-                className: 'bpmn-icon-service-task fraunhofer-red',
-                title: 'Append SWRL Task',
-                action: {
-                    click: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.swrlOptions, autoPlace, element),
-                    dragstart: this.serviceFactory.appendSpecializedServiceTask(this.serviceFactory.swrlOptions, autoPlace, element)
-                }
-            }
+            };
+        }
+        return {
+            ...this.filterActions(actions, this.filterList), ...actionsToBeAdded
         };
     }
 }
@@ -276,7 +289,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomPalette; });
 /* harmony import */ var _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SpecializedServiceTaskFactory */ "./client/custom/SpecializedServiceTaskFactory.js");
 
-
 class CustomPalette {
     constructor(create, elementFactory, palette, translate, lassoTool, spaceTool, bpmnFactory, elementRegistry) {
         this.create = create;
@@ -296,6 +308,10 @@ class CustomPalette {
         }
         palette._providers = [];
         palette.registerProvider(this);
+    }
+
+    createParticipant(event) {
+        this.create.start(event, this.elementFactory.createParticipantShape());
     }
 
     createAction(type, group, className, title, options) {
@@ -404,6 +420,15 @@ class CustomPalette {
                 'bpmn:Group', 'artifact', 'bpmn-icon-group',
                 translate('Create Group')
             ),
+            'create.participant-expanded': {
+                group: 'artifact',
+                className: 'bpmn-icon-participant',
+                title: translate('Create Pool/Participant'),
+                action: {
+                    dragstart: this.createParticipant.bind(this),
+                    click: this.createParticipant.bind(this)
+                }
+            },
         };
     }
 }
@@ -2793,6 +2818,64 @@ function setLabel(element, text, isExternal) {
   }
 
   return element;
+}
+
+/***/ }),
+
+/***/ "./node_modules/bpmn-js/lib/features/modeling/util/ModelingUtil.js":
+/*!*************************************************************************!*\
+  !*** ./node_modules/bpmn-js/lib/features/modeling/util/ModelingUtil.js ***!
+  \*************************************************************************/
+/*! exports provided: isAny, getParent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isAny", function() { return isAny; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getParent", function() { return getParent; });
+/* harmony import */ var min_dash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! min-dash */ "./node_modules/min-dash/dist/index.esm.js");
+/* harmony import */ var _util_ModelUtil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
+
+
+
+
+
+/**
+ * Return true if element has any of the given types.
+ *
+ * @param {djs.model.Base} element
+ * @param {Array<String>} types
+ *
+ * @return {Boolean}
+ */
+function isAny(element, types) {
+  return Object(min_dash__WEBPACK_IMPORTED_MODULE_0__["some"])(types, function(t) {
+    return Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_1__["is"])(element, t);
+  });
+}
+
+
+/**
+ * Return the parent of the element with any of the given types.
+ *
+ * @param {djs.model.Base} element
+ * @param {String|Array<String>} anyType
+ *
+ * @return {djs.model.Base}
+ */
+function getParent(element, anyType) {
+
+  if (typeof anyType === 'string') {
+    anyType = [ anyType ];
+  }
+
+  while ((element = element.parent)) {
+    if (isAny(element, anyType)) {
+      return element;
+    }
+  }
+
+  return null;
 }
 
 /***/ }),
