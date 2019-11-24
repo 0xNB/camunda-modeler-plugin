@@ -26,9 +26,9 @@ export default function ExampleExtensionService(eventBus) {
     eventBus.on('element.click', log);
 
     function log(e) {
+       // debugger;
         console.log('element.hover', 'on', e.element.id);
         console.log(`${e.element.id}`);
-        //  debugger;
     }
 }
 

@@ -124,9 +124,9 @@ function ExampleExtensionService(eventBus) {
     eventBus.on('element.click', log);
 
     function log(e) {
+       // debugger;
         console.log('element.hover', 'on', e.element.id);
         console.log(`${e.element.id}`);
-        //  debugger;
     }
 }
 
@@ -439,18 +439,20 @@ class SpecializedServiceTaskFactory {
         this.jenaOptions = {
             expressionName: "myExampleClass1.test()",
             actionGuiName: "Apache Jena Task",
-            resultVariable: "jena1"
+            resultVariable: "jena1",
+            docsId: "JENA"
         };
 
         this.swrlOptions = {
             expressionName: "myExampleClass2.test()",
             actionGuiName: "SWRL Task",
-            resultVariable: "swrl1"
+            resultVariable: "swrl1",
+            docsId: "SWRL"
         };
     }
 
     createSpecializedServiceTask(options = this.jenaOptions) {
-        let shape = this.createSpecializedShape(options);
+        const shape = this.createSpecializedShape(options);
         let innerCreate = this.create;
         return function () {
             innerCreate.start(event, shape);
@@ -473,15 +475,21 @@ class SpecializedServiceTaskFactory {
     }
 
     createSpecializedShape(options) {
+        let ownDocs = this.bpmnFactory.create('bpmn:Documentation', {
+            text: options.docsId
+        });
+
         const businessObject = this.bpmnFactory.create('bpmn:ServiceTask', {
             implementation: "Expression",
             expression: "${" + options.expressionName + "}",
             name: options.actionGuiName,
+            documentation: [ownDocs],
             resultVariable: options.resultVariable,
         });
 
         const shape = this.elementFactory.createShape({
             type: 'bpmn:ServiceTask',
+            subType: 'FRAUNHOFER',
             businessObject: businessObject
         });
         return shape;
@@ -529,6 +537,92 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./client/draw/SpecialTaskRenderer.js":
+/*!********************************************!*\
+  !*** ./client/draw/SpecialTaskRenderer.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SpecialTaskRenderer; });
+/* harmony import */ var inherits__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inherits */ "./node_modules/inherits/inherits_browser.js");
+/* harmony import */ var inherits__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(inherits__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var tiny_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tiny-svg */ "./node_modules/tiny-svg/dist/index.esm.js");
+/* harmony import */ var bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/draw/BpmnRenderer */ "./node_modules/bpmn-js/lib/draw/BpmnRenderer.js");
+/* harmony import */ var bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bpmn-js/lib/util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
+
+
+
+
+
+
+
+
+
+function SpecialTaskRenderer(
+    config, eventBus, styles,
+    pathMap, canvas, textRenderer) {
+
+    bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_2__["default"].call(
+        this,
+        config, eventBus, styles,
+        pathMap, canvas, textRenderer,
+        1400
+    );
+
+    this.canRender = function(element) {
+        return Object(bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__["is"])(element, 'bpmn:BaseElement') && element.subType;
+    };
+
+    this.drawShape = function(parent, shape) {
+
+        var bpmnShape = this.drawBpmnShape(parent, shape);
+
+        Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["attr"])(bpmnShape, { fill: "#1fff12" });
+
+        return bpmnShape;
+    };
+}
+
+inherits__WEBPACK_IMPORTED_MODULE_0___default()(SpecialTaskRenderer, bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+SpecialTaskRenderer.prototype.drawBpmnShape = bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_2__["default"].prototype.drawShape;
+
+
+SpecialTaskRenderer.$inject = [
+    'config.bpmnRenderer',
+    'eventBus',
+    'styles',
+    'pathMap',
+    'canvas',
+    'textRenderer'
+];
+
+
+/***/ }),
+
+/***/ "./client/draw/index.js":
+/*!******************************!*\
+  !*** ./client/draw/index.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SpecialTaskRenderer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SpecialTaskRenderer */ "./client/draw/SpecialTaskRenderer.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    __init__: [ 'SPECIALIZED_RENDERER' ],
+    SPECIALIZED_RENDERER: [ 'type', _SpecialTaskRenderer__WEBPACK_IMPORTED_MODULE_0__["default"] ]
+});
+
+
+/***/ }),
+
 /***/ "./client/index.js":
 /*!*************************!*\
   !*** ./client/index.js ***!
@@ -541,6 +635,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers */ "./node_modules/camunda-modeler-plugin-helpers/index.js");
 /* harmony import */ var _bpmn_js_extension__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bpmn-js-extension */ "./client/bpmn-js-extension/index.js");
 /* harmony import */ var _custom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./custom */ "./client/custom/index.js");
+/* harmony import */ var _draw__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./draw */ "./client/draw/index.js");
+
 
 
 
@@ -548,7 +644,2265 @@ __webpack_require__.r(__webpack_exports__);
 
 Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerBpmnJSPlugin"])(_bpmn_js_extension__WEBPACK_IMPORTED_MODULE_1__["default"]);
 Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerBpmnJSPlugin"])(_custom__WEBPACK_IMPORTED_MODULE_2__["default"]);
+Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerBpmnJSPlugin"])(_draw__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
+
+/***/ }),
+
+/***/ "./node_modules/bpmn-js/lib/draw/BpmnRenderUtil.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/bpmn-js/lib/draw/BpmnRenderUtil.js ***!
+  \*********************************************************/
+/*! exports provided: isTypedEvent, isThrowEvent, isCollection, getDi, getSemantic, getFillColor, getStrokeColor, getCirclePath, getRoundRectPath, getDiamondPath, getRectPath */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isTypedEvent", function() { return isTypedEvent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isThrowEvent", function() { return isThrowEvent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isCollection", function() { return isCollection; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDi", function() { return getDi; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSemantic", function() { return getSemantic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getFillColor", function() { return getFillColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getStrokeColor", function() { return getStrokeColor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCirclePath", function() { return getCirclePath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRoundRectPath", function() { return getRoundRectPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDiamondPath", function() { return getDiamondPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRectPath", function() { return getRectPath; });
+/* harmony import */ var min_dash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! min-dash */ "./node_modules/min-dash/dist/index.esm.js");
+/* harmony import */ var diagram_js_lib_util_RenderUtil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! diagram-js/lib/util/RenderUtil */ "./node_modules/diagram-js/lib/util/RenderUtil.js");
+
+
+
+
+
+// element utils //////////////////////
+
+/**
+ * Checks if eventDefinition of the given element matches with semantic type.
+ *
+ * @return {boolean} true if element is of the given semantic type
+ */
+function isTypedEvent(event, eventDefinitionType, filter) {
+
+  function matches(definition, filter) {
+    return Object(min_dash__WEBPACK_IMPORTED_MODULE_0__["every"])(filter, function(val, key) {
+
+      // we want a == conversion here, to be able to catch
+      // undefined == false and friends
+      /* jshint -W116 */
+      return definition[key] == val;
+    });
+  }
+
+  return Object(min_dash__WEBPACK_IMPORTED_MODULE_0__["some"])(event.eventDefinitions, function(definition) {
+    return definition.$type === eventDefinitionType && matches(event, filter);
+  });
+}
+
+function isThrowEvent(event) {
+  return (event.$type === 'bpmn:IntermediateThrowEvent') || (event.$type === 'bpmn:EndEvent');
+}
+
+function isCollection(element) {
+  var dataObject = element.dataObjectRef;
+
+  return element.isCollection || (dataObject && dataObject.isCollection);
+}
+
+function getDi(element) {
+  return element.businessObject.di;
+}
+
+function getSemantic(element) {
+  return element.businessObject;
+}
+
+
+// color access //////////////////////
+
+function getFillColor(element, defaultColor) {
+  return getDi(element).get('bioc:fill') || defaultColor || 'white';
+}
+
+function getStrokeColor(element, defaultColor) {
+  return getDi(element).get('bioc:stroke') || defaultColor || 'black';
+}
+
+
+// cropping path customizations //////////////////////
+
+function getCirclePath(shape) {
+
+  var cx = shape.x + shape.width / 2,
+      cy = shape.y + shape.height / 2,
+      radius = shape.width / 2;
+
+  var circlePath = [
+    ['M', cx, cy],
+    ['m', 0, -radius],
+    ['a', radius, radius, 0, 1, 1, 0, 2 * radius],
+    ['a', radius, radius, 0, 1, 1, 0, -2 * radius],
+    ['z']
+  ];
+
+  return Object(diagram_js_lib_util_RenderUtil__WEBPACK_IMPORTED_MODULE_1__["componentsToPath"])(circlePath);
+}
+
+function getRoundRectPath(shape, borderRadius) {
+
+  var x = shape.x,
+      y = shape.y,
+      width = shape.width,
+      height = shape.height;
+
+  var roundRectPath = [
+    ['M', x + borderRadius, y],
+    ['l', width - borderRadius * 2, 0],
+    ['a', borderRadius, borderRadius, 0, 0, 1, borderRadius, borderRadius],
+    ['l', 0, height - borderRadius * 2],
+    ['a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, borderRadius],
+    ['l', borderRadius * 2 - width, 0],
+    ['a', borderRadius, borderRadius, 0, 0, 1, -borderRadius, -borderRadius],
+    ['l', 0, borderRadius * 2 - height],
+    ['a', borderRadius, borderRadius, 0, 0, 1, borderRadius, -borderRadius],
+    ['z']
+  ];
+
+  return Object(diagram_js_lib_util_RenderUtil__WEBPACK_IMPORTED_MODULE_1__["componentsToPath"])(roundRectPath);
+}
+
+function getDiamondPath(shape) {
+
+  var width = shape.width,
+      height = shape.height,
+      x = shape.x,
+      y = shape.y,
+      halfWidth = width / 2,
+      halfHeight = height / 2;
+
+  var diamondPath = [
+    ['M', x + halfWidth, y],
+    ['l', halfWidth, halfHeight],
+    ['l', -halfWidth, halfHeight],
+    ['l', -halfWidth, -halfHeight],
+    ['z']
+  ];
+
+  return Object(diagram_js_lib_util_RenderUtil__WEBPACK_IMPORTED_MODULE_1__["componentsToPath"])(diamondPath);
+}
+
+function getRectPath(shape) {
+  var x = shape.x,
+      y = shape.y,
+      width = shape.width,
+      height = shape.height;
+
+  var rectPath = [
+    ['M', x, y],
+    ['l', width, 0],
+    ['l', 0, height],
+    ['l', -width, 0],
+    ['z']
+  ];
+
+  return Object(diagram_js_lib_util_RenderUtil__WEBPACK_IMPORTED_MODULE_1__["componentsToPath"])(rectPath);
+}
+
+/***/ }),
+
+/***/ "./node_modules/bpmn-js/lib/draw/BpmnRenderer.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/bpmn-js/lib/draw/BpmnRenderer.js ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BpmnRenderer; });
+/* harmony import */ var inherits__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inherits */ "./node_modules/inherits/inherits_browser.js");
+/* harmony import */ var inherits__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(inherits__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var min_dash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! min-dash */ "./node_modules/min-dash/dist/index.esm.js");
+/* harmony import */ var diagram_js_lib_draw_BaseRenderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! diagram-js/lib/draw/BaseRenderer */ "./node_modules/diagram-js/lib/draw/BaseRenderer.js");
+/* harmony import */ var _util_DiUtil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../util/DiUtil */ "./node_modules/bpmn-js/lib/util/DiUtil.js");
+/* harmony import */ var _features_label_editing_LabelUtil__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../features/label-editing/LabelUtil */ "./node_modules/bpmn-js/lib/features/label-editing/LabelUtil.js");
+/* harmony import */ var _util_ModelUtil__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
+/* harmony import */ var diagram_js_lib_util_RenderUtil__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! diagram-js/lib/util/RenderUtil */ "./node_modules/diagram-js/lib/util/RenderUtil.js");
+/* harmony import */ var _BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./BpmnRenderUtil */ "./node_modules/bpmn-js/lib/draw/BpmnRenderUtil.js");
+/* harmony import */ var min_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! min-dom */ "./node_modules/min-dom/dist/index.esm.js");
+/* harmony import */ var tiny_svg__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! tiny-svg */ "./node_modules/tiny-svg/dist/index.esm.js");
+/* harmony import */ var diagram_js_lib_util_SvgTransformUtil__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! diagram-js/lib/util/SvgTransformUtil */ "./node_modules/diagram-js/lib/util/SvgTransformUtil.js");
+/* harmony import */ var ids__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ids */ "./node_modules/ids/dist/index.esm.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var RENDERER_IDS = new ids__WEBPACK_IMPORTED_MODULE_11__["default"]();
+
+var TASK_BORDER_RADIUS = 10;
+var INNER_OUTER_DIST = 3;
+
+var DEFAULT_FILL_OPACITY = .95,
+    HIGH_FILL_OPACITY = .35;
+
+
+function BpmnRenderer(
+    config, eventBus, styles, pathMap,
+    canvas, textRenderer, priority) {
+
+  diagram_js_lib_draw_BaseRenderer__WEBPACK_IMPORTED_MODULE_2__["default"].call(this, eventBus, priority);
+
+  var defaultFillColor = config && config.defaultFillColor,
+      defaultStrokeColor = config && config.defaultStrokeColor;
+
+  var rendererId = RENDERER_IDS.next();
+
+  var markers = {};
+
+  var computeStyle = styles.computeStyle;
+
+  function addMarker(id, options) {
+    var attrs = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])({
+      fill: 'black',
+      strokeWidth: 1,
+      strokeLinecap: 'round',
+      strokeDasharray: 'none'
+    }, options.attrs);
+
+    var ref = options.ref || { x: 0, y: 0 };
+
+    var scale = options.scale || 1;
+
+    // fix for safari / chrome / firefox bug not correctly
+    // resetting stroke dash array
+    if (attrs.strokeDasharray === 'none') {
+      attrs.strokeDasharray = [10000, 1];
+    }
+
+    var marker = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('marker');
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(options.element, attrs);
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(marker, options.element);
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(marker, {
+      id: id,
+      viewBox: '0 0 20 20',
+      refX: ref.x,
+      refY: ref.y,
+      markerWidth: 20 * scale,
+      markerHeight: 20 * scale,
+      orient: 'auto'
+    });
+
+    var defs = Object(min_dom__WEBPACK_IMPORTED_MODULE_8__["query"])('defs', canvas._svg);
+
+    if (!defs) {
+      defs = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('defs');
+
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(canvas._svg, defs);
+    }
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(defs, marker);
+
+    markers[id] = marker;
+  }
+
+  function colorEscape(str) {
+
+    // only allow characters and numbers
+    return str.replace(/[^0-9a-zA-z]+/g, '_');
+  }
+
+  function marker(type, fill, stroke) {
+    var id = type + '-' + colorEscape(fill) + '-' + colorEscape(stroke) + '-' + rendererId;
+
+    if (!markers[id]) {
+      createMarker(id, type, fill, stroke);
+    }
+
+    return 'url(#' + id + ')';
+  }
+
+  function createMarker(id, type, fill, stroke) {
+
+    if (type === 'sequenceflow-end') {
+      var sequenceflowEnd = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('path');
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(sequenceflowEnd, { d: 'M 1 5 L 11 10 L 1 15 Z' });
+
+      addMarker(id, {
+        element: sequenceflowEnd,
+        ref: { x: 11, y: 10 },
+        scale: 0.5,
+        attrs: {
+          fill: stroke,
+          stroke: stroke
+        }
+      });
+    }
+
+    if (type === 'messageflow-start') {
+      var messageflowStart = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('circle');
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(messageflowStart, { cx: 6, cy: 6, r: 3.5 });
+
+      addMarker(id, {
+        element: messageflowStart,
+        attrs: {
+          fill: fill,
+          stroke: stroke
+        },
+        ref: { x: 6, y: 6 }
+      });
+    }
+
+    if (type === 'messageflow-end') {
+      var messageflowEnd = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('path');
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(messageflowEnd, { d: 'm 1 5 l 0 -3 l 7 3 l -7 3 z' });
+
+      addMarker(id, {
+        element: messageflowEnd,
+        attrs: {
+          fill: fill,
+          stroke: stroke,
+          strokeLinecap: 'butt'
+        },
+        ref: { x: 8.5, y: 5 }
+      });
+    }
+
+    if (type === 'association-start') {
+      var associationStart = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('path');
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(associationStart, { d: 'M 11 5 L 1 10 L 11 15' });
+
+      addMarker(id, {
+        element: associationStart,
+        attrs: {
+          fill: 'none',
+          stroke: stroke,
+          strokeWidth: 1.5
+        },
+        ref: { x: 1, y: 10 },
+        scale: 0.5
+      });
+    }
+
+    if (type === 'association-end') {
+      var associationEnd = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('path');
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(associationEnd, { d: 'M 1 5 L 11 10 L 1 15' });
+
+      addMarker(id, {
+        element: associationEnd,
+        attrs: {
+          fill: 'none',
+          stroke: stroke,
+          strokeWidth: 1.5
+        },
+        ref: { x: 12, y: 10 },
+        scale: 0.5
+      });
+    }
+
+    if (type === 'conditional-flow-marker') {
+      var conditionalflowMarker = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('path');
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(conditionalflowMarker, { d: 'M 0 10 L 8 6 L 16 10 L 8 14 Z' });
+
+      addMarker(id, {
+        element: conditionalflowMarker,
+        attrs: {
+          fill: fill,
+          stroke: stroke
+        },
+        ref: { x: -1, y: 10 },
+        scale: 0.5
+      });
+    }
+
+    if (type === 'conditional-default-flow-marker') {
+      var conditionaldefaultflowMarker = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('path');
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(conditionaldefaultflowMarker, { d: 'M 6 4 L 10 16' });
+
+      addMarker(id, {
+        element: conditionaldefaultflowMarker,
+        attrs: {
+          stroke: stroke
+        },
+        ref: { x: 0, y: 10 },
+        scale: 0.5
+      });
+    }
+  }
+
+  function drawCircle(parentGfx, width, height, offset, attrs) {
+
+    if (Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["isObject"])(offset)) {
+      attrs = offset;
+      offset = 0;
+    }
+
+    offset = offset || 0;
+
+    attrs = computeStyle(attrs, {
+      stroke: 'black',
+      strokeWidth: 2,
+      fill: 'white'
+    });
+
+    if (attrs.fill === 'none') {
+      delete attrs.fillOpacity;
+    }
+
+    var cx = width / 2,
+        cy = height / 2;
+
+    var circle = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('circle');
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(circle, {
+      cx: cx,
+      cy: cy,
+      r: Math.round((width + height) / 4 - offset)
+    });
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(circle, attrs);
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(parentGfx, circle);
+
+    return circle;
+  }
+
+  function drawRect(parentGfx, width, height, r, offset, attrs) {
+
+    if (Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["isObject"])(offset)) {
+      attrs = offset;
+      offset = 0;
+    }
+
+    offset = offset || 0;
+
+    attrs = computeStyle(attrs, {
+      stroke: 'black',
+      strokeWidth: 2,
+      fill: 'white'
+    });
+
+    var rect = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('rect');
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(rect, {
+      x: offset,
+      y: offset,
+      width: width - offset * 2,
+      height: height - offset * 2,
+      rx: r,
+      ry: r
+    });
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(rect, attrs);
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(parentGfx, rect);
+
+    return rect;
+  }
+
+  function drawDiamond(parentGfx, width, height, attrs) {
+
+    var x_2 = width / 2;
+    var y_2 = height / 2;
+
+    var points = [{ x: x_2, y: 0 }, { x: width, y: y_2 }, { x: x_2, y: height }, { x: 0, y: y_2 }];
+
+    var pointsString = points.map(function(point) {
+      return point.x + ',' + point.y;
+    }).join(' ');
+
+    attrs = computeStyle(attrs, {
+      stroke: 'black',
+      strokeWidth: 2,
+      fill: 'white'
+    });
+
+    var polygon = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('polygon');
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(polygon, {
+      points: pointsString
+    });
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(polygon, attrs);
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(parentGfx, polygon);
+
+    return polygon;
+  }
+
+  function drawLine(parentGfx, waypoints, attrs) {
+    attrs = computeStyle(attrs, [ 'no-fill' ], {
+      stroke: 'black',
+      strokeWidth: 2,
+      fill: 'none'
+    });
+
+    var line = Object(diagram_js_lib_util_RenderUtil__WEBPACK_IMPORTED_MODULE_6__["createLine"])(waypoints, attrs);
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(parentGfx, line);
+
+    return line;
+  }
+
+  function drawPath(parentGfx, d, attrs) {
+
+    attrs = computeStyle(attrs, [ 'no-fill' ], {
+      strokeWidth: 2,
+      stroke: 'black'
+    });
+
+    var path = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["create"])('path');
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(path, { d: d });
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(path, attrs);
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(parentGfx, path);
+
+    return path;
+  }
+
+  function drawMarker(type, parentGfx, path, attrs) {
+    return drawPath(parentGfx, path, Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])({ 'data-marker': type }, attrs));
+  }
+
+  function as(type) {
+    return function(parentGfx, element) {
+      return handlers[type](parentGfx, element);
+    };
+  }
+
+  function renderer(type) {
+    return handlers[type];
+  }
+
+  function renderEventContent(element, parentGfx) {
+
+    var event = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+    var isThrowing = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isThrowEvent"])(event);
+
+    if (event.eventDefinitions && event.eventDefinitions.length>1) {
+      if (event.parallelMultiple) {
+        return renderer('bpmn:ParallelMultipleEventDefinition')(parentGfx, element, isThrowing);
+      }
+      else {
+        return renderer('bpmn:MultipleEventDefinition')(parentGfx, element, isThrowing);
+      }
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:MessageEventDefinition')) {
+      return renderer('bpmn:MessageEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:TimerEventDefinition')) {
+      return renderer('bpmn:TimerEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:ConditionalEventDefinition')) {
+      return renderer('bpmn:ConditionalEventDefinition')(parentGfx, element);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:SignalEventDefinition')) {
+      return renderer('bpmn:SignalEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:EscalationEventDefinition')) {
+      return renderer('bpmn:EscalationEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:LinkEventDefinition')) {
+      return renderer('bpmn:LinkEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:ErrorEventDefinition')) {
+      return renderer('bpmn:ErrorEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:CancelEventDefinition')) {
+      return renderer('bpmn:CancelEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:CompensateEventDefinition')) {
+      return renderer('bpmn:CompensateEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isTypedEvent"])(event, 'bpmn:TerminateEventDefinition')) {
+      return renderer('bpmn:TerminateEventDefinition')(parentGfx, element, isThrowing);
+    }
+
+    return null;
+  }
+
+  function renderLabel(parentGfx, label, options) {
+
+    options = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])({
+      size: {
+        width: 100
+      }
+    }, options);
+
+    var text = textRenderer.createText(label || '', options);
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["classes"])(text).add('djs-label');
+
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["append"])(parentGfx, text);
+
+    return text;
+  }
+
+  function renderEmbeddedLabel(parentGfx, element, align) {
+    var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+    return renderLabel(parentGfx, semantic.name, {
+      box: element,
+      align: align,
+      padding: 5,
+      style: {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      }
+    });
+  }
+
+  function renderExternalLabel(parentGfx, element) {
+
+    var box = {
+      width: 90,
+      height: 30,
+      x: element.width / 2 + element.x,
+      y: element.height / 2 + element.y
+    };
+
+    return renderLabel(parentGfx, Object(_features_label_editing_LabelUtil__WEBPACK_IMPORTED_MODULE_4__["getLabel"])(element), {
+      box: box,
+      fitBox: true,
+      style: Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])(
+        {},
+        textRenderer.getExternalStyle(),
+        {
+          fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+        }
+      )
+    });
+  }
+
+  function renderLaneLabel(parentGfx, text, element) {
+    var textBox = renderLabel(parentGfx, text, {
+      box: {
+        height: 30,
+        width: element.height
+      },
+      align: 'center-middle',
+      style: {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      }
+    });
+
+    var top = -1 * element.height;
+
+    Object(diagram_js_lib_util_SvgTransformUtil__WEBPACK_IMPORTED_MODULE_10__["transform"])(textBox, 0, -top, 270);
+  }
+
+  function createPathFromConnection(connection) {
+    var waypoints = connection.waypoints;
+
+    var pathData = 'm  ' + waypoints[0].x + ',' + waypoints[0].y;
+    for (var i = 1; i < waypoints.length; i++) {
+      pathData += 'L' + waypoints[i].x + ',' + waypoints[i].y + ' ';
+    }
+    return pathData;
+  }
+
+  var handlers = this.handlers = {
+    'bpmn:Event': function(parentGfx, element, attrs) {
+
+      if (!('fillOpacity' in attrs)) {
+        attrs.fillOpacity = DEFAULT_FILL_OPACITY;
+      }
+
+      return drawCircle(parentGfx, element.width, element.height, attrs);
+    },
+    'bpmn:StartEvent': function(parentGfx, element) {
+      var attrs = {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      };
+
+      var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+      if (!semantic.isInterrupting) {
+        attrs = {
+          strokeDasharray: '6',
+          strokeLinecap: 'round',
+          fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+          stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+        };
+      }
+
+      var circle = renderer('bpmn:Event')(parentGfx, element, attrs);
+
+      renderEventContent(element, parentGfx);
+
+      return circle;
+    },
+    'bpmn:MessageEventDefinition': function(parentGfx, element, isThrowing) {
+      var pathData = pathMap.getScaledPath('EVENT_MESSAGE', {
+        xScaleFactor: 0.9,
+        yScaleFactor: 0.9,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: 0.235,
+          my: 0.315
+        }
+      });
+
+      var fill = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor) : Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor);
+      var stroke = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor) : Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor);
+
+      var messagePath = drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: fill,
+        stroke: stroke
+      });
+
+      return messagePath;
+    },
+    'bpmn:TimerEventDefinition': function(parentGfx, element) {
+      var circle = drawCircle(parentGfx, element.width, element.height, 0.2 * element.height, {
+        strokeWidth: 2,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      var pathData = pathMap.getScaledPath('EVENT_TIMER_WH', {
+        xScaleFactor: 0.75,
+        yScaleFactor: 0.75,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: 0.5,
+          my: 0.5
+        }
+      });
+
+      drawPath(parentGfx, pathData, {
+        strokeWidth: 2,
+        strokeLinecap: 'square',
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      for (var i = 0;i < 12; i++) {
+
+        var linePathData = pathMap.getScaledPath('EVENT_TIMER_LINE', {
+          xScaleFactor: 0.75,
+          yScaleFactor: 0.75,
+          containerWidth: element.width,
+          containerHeight: element.height,
+          position: {
+            mx: 0.5,
+            my: 0.5
+          }
+        });
+
+        var width = element.width / 2;
+        var height = element.height / 2;
+
+        drawPath(parentGfx, linePathData, {
+          strokeWidth: 1,
+          strokeLinecap: 'square',
+          transform: 'rotate(' + (i * 30) + ',' + height + ',' + width + ')',
+          stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+        });
+      }
+
+      return circle;
+    },
+    'bpmn:EscalationEventDefinition': function(parentGfx, event, isThrowing) {
+      var pathData = pathMap.getScaledPath('EVENT_ESCALATION', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.5,
+          my: 0.2
+        }
+      });
+
+      var fill = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor) : 'none';
+
+      return drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: fill,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor)
+      });
+    },
+    'bpmn:ConditionalEventDefinition': function(parentGfx, event) {
+      var pathData = pathMap.getScaledPath('EVENT_CONDITIONAL', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.5,
+          my: 0.222
+        }
+      });
+
+      return drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor)
+      });
+    },
+    'bpmn:LinkEventDefinition': function(parentGfx, event, isThrowing) {
+      var pathData = pathMap.getScaledPath('EVENT_LINK', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.57,
+          my: 0.263
+        }
+      });
+
+      var fill = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor) : 'none';
+
+      return drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: fill,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor)
+      });
+    },
+    'bpmn:ErrorEventDefinition': function(parentGfx, event, isThrowing) {
+      var pathData = pathMap.getScaledPath('EVENT_ERROR', {
+        xScaleFactor: 1.1,
+        yScaleFactor: 1.1,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.2,
+          my: 0.722
+        }
+      });
+
+      var fill = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor) : 'none';
+
+      return drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: fill,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor)
+      });
+    },
+    'bpmn:CancelEventDefinition': function(parentGfx, event, isThrowing) {
+      var pathData = pathMap.getScaledPath('EVENT_CANCEL_45', {
+        xScaleFactor: 1.0,
+        yScaleFactor: 1.0,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.638,
+          my: -0.055
+        }
+      });
+
+      var fill = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor) : 'none';
+
+      var path = drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: fill,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor)
+      });
+
+      Object(diagram_js_lib_util_SvgTransformUtil__WEBPACK_IMPORTED_MODULE_10__["rotate"])(path, 45);
+
+      return path;
+    },
+    'bpmn:CompensateEventDefinition': function(parentGfx, event, isThrowing) {
+      var pathData = pathMap.getScaledPath('EVENT_COMPENSATION', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.22,
+          my: 0.5
+        }
+      });
+
+      var fill = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor) : 'none';
+
+      return drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: fill,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor)
+      });
+    },
+    'bpmn:SignalEventDefinition': function(parentGfx, event, isThrowing) {
+      var pathData = pathMap.getScaledPath('EVENT_SIGNAL', {
+        xScaleFactor: 0.9,
+        yScaleFactor: 0.9,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.5,
+          my: 0.2
+        }
+      });
+
+      var fill = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor) : 'none';
+
+      return drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: fill,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor)
+      });
+    },
+    'bpmn:MultipleEventDefinition': function(parentGfx, event, isThrowing) {
+      var pathData = pathMap.getScaledPath('EVENT_MULTIPLE', {
+        xScaleFactor: 1.1,
+        yScaleFactor: 1.1,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.222,
+          my: 0.36
+        }
+      });
+
+      var fill = isThrowing ? Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor) : 'none';
+
+      return drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: fill
+      });
+    },
+    'bpmn:ParallelMultipleEventDefinition': function(parentGfx, event) {
+      var pathData = pathMap.getScaledPath('EVENT_PARALLEL_MULTIPLE', {
+        xScaleFactor: 1.2,
+        yScaleFactor: 1.2,
+        containerWidth: event.width,
+        containerHeight: event.height,
+        position: {
+          mx: 0.458,
+          my: 0.194
+        }
+      });
+
+      return drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(event, defaultStrokeColor)
+      });
+    },
+    'bpmn:EndEvent': function(parentGfx, element) {
+      var circle = renderer('bpmn:Event')(parentGfx, element, {
+        strokeWidth: 4,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      renderEventContent(element, parentGfx, true);
+
+      return circle;
+    },
+    'bpmn:TerminateEventDefinition': function(parentGfx, element) {
+      var circle = drawCircle(parentGfx, element.width, element.height, 8, {
+        strokeWidth: 4,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return circle;
+    },
+    'bpmn:IntermediateEvent': function(parentGfx, element) {
+      var outer = renderer('bpmn:Event')(parentGfx, element, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      /* inner */
+      drawCircle(parentGfx, element.width, element.height, INNER_OUTER_DIST, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, 'none'),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      renderEventContent(element, parentGfx);
+
+      return outer;
+    },
+    'bpmn:IntermediateCatchEvent': as('bpmn:IntermediateEvent'),
+    'bpmn:IntermediateThrowEvent': as('bpmn:IntermediateEvent'),
+
+    'bpmn:Activity': function(parentGfx, element, attrs) {
+
+      attrs = attrs || {};
+
+      if (!('fillOpacity' in attrs)) {
+        attrs.fillOpacity = DEFAULT_FILL_OPACITY;
+      }
+
+      return drawRect(parentGfx, element.width, element.height, TASK_BORDER_RADIUS, attrs);
+    },
+
+    'bpmn:Task': function(parentGfx, element) {
+      var attrs = {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      };
+
+      var rect = renderer('bpmn:Activity')(parentGfx, element, attrs);
+
+      renderEmbeddedLabel(parentGfx, element, 'center-middle');
+      attachTaskMarkers(parentGfx, element);
+
+      return rect;
+    },
+    'bpmn:ServiceTask': function(parentGfx, element) {
+      var task = renderer('bpmn:Task')(parentGfx, element);
+
+      var pathDataBG = pathMap.getScaledPath('TASK_TYPE_SERVICE', {
+        abspos: {
+          x: 12,
+          y: 18
+        }
+      });
+
+      /* service bg */ drawPath(parentGfx, pathDataBG, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      var fillPathData = pathMap.getScaledPath('TASK_TYPE_SERVICE_FILL', {
+        abspos: {
+          x: 17.2,
+          y: 18
+        }
+      });
+
+      /* service fill */ drawPath(parentGfx, fillPathData, {
+        strokeWidth: 0,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor)
+      });
+
+      var pathData = pathMap.getScaledPath('TASK_TYPE_SERVICE', {
+        abspos: {
+          x: 17,
+          y: 22
+        }
+      });
+
+      /* service */ drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return task;
+    },
+    'bpmn:UserTask': function(parentGfx, element) {
+      var task = renderer('bpmn:Task')(parentGfx, element);
+
+      var x = 15;
+      var y = 12;
+
+      var pathData = pathMap.getScaledPath('TASK_TYPE_USER_1', {
+        abspos: {
+          x: x,
+          y: y
+        }
+      });
+
+      /* user path */ drawPath(parentGfx, pathData, {
+        strokeWidth: 0.5,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      var pathData2 = pathMap.getScaledPath('TASK_TYPE_USER_2', {
+        abspos: {
+          x: x,
+          y: y
+        }
+      });
+
+      /* user2 path */ drawPath(parentGfx, pathData2, {
+        strokeWidth: 0.5,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      var pathData3 = pathMap.getScaledPath('TASK_TYPE_USER_3', {
+        abspos: {
+          x: x,
+          y: y
+        }
+      });
+
+      /* user3 path */ drawPath(parentGfx, pathData3, {
+        strokeWidth: 0.5,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return task;
+    },
+    'bpmn:ManualTask': function(parentGfx, element) {
+      var task = renderer('bpmn:Task')(parentGfx, element);
+
+      var pathData = pathMap.getScaledPath('TASK_TYPE_MANUAL', {
+        abspos: {
+          x: 17,
+          y: 15
+        }
+      });
+
+      /* manual path */ drawPath(parentGfx, pathData, {
+        strokeWidth: 0.5, // 0.25,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return task;
+    },
+    'bpmn:SendTask': function(parentGfx, element) {
+      var task = renderer('bpmn:Task')(parentGfx, element);
+
+      var pathData = pathMap.getScaledPath('TASK_TYPE_SEND', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: 21,
+        containerHeight: 14,
+        position: {
+          mx: 0.285,
+          my: 0.357
+        }
+      });
+
+      /* send path */ drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor)
+      });
+
+      return task;
+    },
+    'bpmn:ReceiveTask' : function(parentGfx, element) {
+      var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+      var task = renderer('bpmn:Task')(parentGfx, element);
+      var pathData;
+
+      if (semantic.instantiate) {
+        drawCircle(parentGfx, 28, 28, 20 * 0.22, { strokeWidth: 1 });
+
+        pathData = pathMap.getScaledPath('TASK_TYPE_INSTANTIATING_SEND', {
+          abspos: {
+            x: 7.77,
+            y: 9.52
+          }
+        });
+      } else {
+
+        pathData = pathMap.getScaledPath('TASK_TYPE_SEND', {
+          xScaleFactor: 0.9,
+          yScaleFactor: 0.9,
+          containerWidth: 21,
+          containerHeight: 14,
+          position: {
+            mx: 0.3,
+            my: 0.4
+          }
+        });
+      }
+
+      /* receive path */ drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return task;
+    },
+    'bpmn:ScriptTask': function(parentGfx, element) {
+      var task = renderer('bpmn:Task')(parentGfx, element);
+
+      var pathData = pathMap.getScaledPath('TASK_TYPE_SCRIPT', {
+        abspos: {
+          x: 15,
+          y: 20
+        }
+      });
+
+      /* script path */ drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return task;
+    },
+    'bpmn:BusinessRuleTask': function(parentGfx, element) {
+      var task = renderer('bpmn:Task')(parentGfx, element);
+
+      var headerPathData = pathMap.getScaledPath('TASK_TYPE_BUSINESS_RULE_HEADER', {
+        abspos: {
+          x: 8,
+          y: 8
+        }
+      });
+
+      var businessHeaderPath = drawPath(parentGfx, headerPathData);
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(businessHeaderPath, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, '#aaaaaa'),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      var headerData = pathMap.getScaledPath('TASK_TYPE_BUSINESS_RULE_MAIN', {
+        abspos: {
+          x: 8,
+          y: 8
+        }
+      });
+
+      var businessPath = drawPath(parentGfx, headerData);
+      Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(businessPath, {
+        strokeWidth: 1,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return task;
+    },
+    'bpmn:SubProcess': function(parentGfx, element, attrs) {
+      attrs = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])({
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      }, attrs);
+
+      var rect = renderer('bpmn:Activity')(parentGfx, element, attrs);
+
+      var expanded = Object(_util_DiUtil__WEBPACK_IMPORTED_MODULE_3__["isExpanded"])(element);
+
+      if (Object(_util_DiUtil__WEBPACK_IMPORTED_MODULE_3__["isEventSubProcess"])(element)) {
+        Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(rect, {
+          strokeDasharray: '1,2'
+        });
+      }
+
+      renderEmbeddedLabel(parentGfx, element, expanded ? 'center-top' : 'center-middle');
+
+      if (expanded) {
+        attachTaskMarkers(parentGfx, element);
+      } else {
+        attachTaskMarkers(parentGfx, element, ['SubProcessMarker']);
+      }
+
+      return rect;
+    },
+    'bpmn:AdHocSubProcess': function(parentGfx, element) {
+      return renderer('bpmn:SubProcess')(parentGfx, element);
+    },
+    'bpmn:Transaction': function(parentGfx, element) {
+      var outer = renderer('bpmn:SubProcess')(parentGfx, element);
+
+      var innerAttrs = styles.style([ 'no-fill', 'no-events' ], {
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      /* inner path */ drawRect(parentGfx, element.width, element.height, TASK_BORDER_RADIUS - 2, INNER_OUTER_DIST, innerAttrs);
+
+      return outer;
+    },
+    'bpmn:CallActivity': function(parentGfx, element) {
+      return renderer('bpmn:SubProcess')(parentGfx, element, {
+        strokeWidth: 5
+      });
+    },
+    'bpmn:Participant': function(parentGfx, element) {
+
+      var attrs = {
+        fillOpacity: DEFAULT_FILL_OPACITY,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      };
+
+      var lane = renderer('bpmn:Lane')(parentGfx, element, attrs);
+
+      var expandedPool = Object(_util_DiUtil__WEBPACK_IMPORTED_MODULE_3__["isExpanded"])(element);
+
+      if (expandedPool) {
+        drawLine(parentGfx, [
+          { x: 30, y: 0 },
+          { x: 30, y: element.height }
+        ], {
+          stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+        });
+        var text = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element).name;
+        renderLaneLabel(parentGfx, text, element);
+      } else {
+
+        // Collapsed pool draw text inline
+        var text2 = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element).name;
+        renderLabel(parentGfx, text2, {
+          box: element, align: 'center-middle',
+          style: {
+            fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+          }
+        });
+      }
+
+      var participantMultiplicity = !!(Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element).participantMultiplicity);
+
+      if (participantMultiplicity) {
+        renderer('ParticipantMultiplicityMarker')(parentGfx, element);
+      }
+
+      return lane;
+    },
+    'bpmn:Lane': function(parentGfx, element, attrs) {
+      var rect = drawRect(parentGfx, element.width, element.height, 0, Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])({
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        fillOpacity: HIGH_FILL_OPACITY,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      }, attrs));
+
+      var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+      if (semantic.$type === 'bpmn:Lane') {
+        var text = semantic.name;
+        renderLaneLabel(parentGfx, text, element);
+      }
+
+      return rect;
+    },
+    'bpmn:InclusiveGateway': function(parentGfx, element) {
+      var diamond = renderer('bpmn:Gateway')(parentGfx, element);
+
+      /* circle path */
+      drawCircle(parentGfx, element.width, element.height, element.height * 0.24, {
+        strokeWidth: 2.5,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return diamond;
+    },
+    'bpmn:ExclusiveGateway': function(parentGfx, element) {
+      var diamond = renderer('bpmn:Gateway')(parentGfx, element);
+
+      var pathData = pathMap.getScaledPath('GATEWAY_EXCLUSIVE', {
+        xScaleFactor: 0.4,
+        yScaleFactor: 0.4,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: 0.32,
+          my: 0.3
+        }
+      });
+
+      if ((Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getDi"])(element).isMarkerVisible)) {
+        drawPath(parentGfx, pathData, {
+          strokeWidth: 1,
+          fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor),
+          stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+        });
+      }
+
+      return diamond;
+    },
+    'bpmn:ComplexGateway': function(parentGfx, element) {
+      var diamond = renderer('bpmn:Gateway')(parentGfx, element);
+
+      var pathData = pathMap.getScaledPath('GATEWAY_COMPLEX', {
+        xScaleFactor: 0.5,
+        yScaleFactor:0.5,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: 0.46,
+          my: 0.26
+        }
+      });
+
+      /* complex path */ drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return diamond;
+    },
+    'bpmn:ParallelGateway': function(parentGfx, element) {
+      var diamond = renderer('bpmn:Gateway')(parentGfx, element);
+
+      var pathData = pathMap.getScaledPath('GATEWAY_PARALLEL', {
+        xScaleFactor: 0.6,
+        yScaleFactor:0.6,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: 0.46,
+          my: 0.2
+        }
+      });
+
+      /* parallel path */ drawPath(parentGfx, pathData, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return diamond;
+    },
+    'bpmn:EventBasedGateway': function(parentGfx, element) {
+
+      var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+      var diamond = renderer('bpmn:Gateway')(parentGfx, element);
+
+      /* outer circle path */ drawCircle(parentGfx, element.width, element.height, element.height * 0.20, {
+        strokeWidth: 1,
+        fill: 'none',
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      var type = semantic.eventGatewayType;
+      var instantiate = !!semantic.instantiate;
+
+      function drawEvent() {
+
+        var pathData = pathMap.getScaledPath('GATEWAY_EVENT_BASED', {
+          xScaleFactor: 0.18,
+          yScaleFactor: 0.18,
+          containerWidth: element.width,
+          containerHeight: element.height,
+          position: {
+            mx: 0.36,
+            my: 0.44
+          }
+        });
+
+        var attrs = {
+          strokeWidth: 2,
+          fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, 'none'),
+          stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+        };
+
+        /* event path */ drawPath(parentGfx, pathData, attrs);
+      }
+
+      if (type === 'Parallel') {
+
+        var pathData = pathMap.getScaledPath('GATEWAY_PARALLEL', {
+          xScaleFactor: 0.4,
+          yScaleFactor:0.4,
+          containerWidth: element.width,
+          containerHeight: element.height,
+          position: {
+            mx: 0.474,
+            my: 0.296
+          }
+        });
+
+        var parallelPath = drawPath(parentGfx, pathData);
+        Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(parallelPath, {
+          strokeWidth: 1,
+          fill: 'none'
+        });
+      } else if (type === 'Exclusive') {
+
+        if (!instantiate) {
+          var innerCircle = drawCircle(parentGfx, element.width, element.height, element.height * 0.26);
+          Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(innerCircle, {
+            strokeWidth: 1,
+            fill: 'none',
+            stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+          });
+        }
+
+        drawEvent();
+      }
+
+
+      return diamond;
+    },
+    'bpmn:Gateway': function(parentGfx, element) {
+      var attrs = {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        fillOpacity: DEFAULT_FILL_OPACITY,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      };
+
+      return drawDiamond(parentGfx, element.width, element.height, attrs);
+    },
+    'bpmn:SequenceFlow': function(parentGfx, element) {
+      var pathData = createPathFromConnection(element);
+
+      var fill = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+          stroke = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor);
+
+      var attrs = {
+        strokeLinejoin: 'round',
+        markerEnd: marker('sequenceflow-end', fill, stroke),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      };
+
+      var path = drawPath(parentGfx, pathData, attrs);
+
+      var sequenceFlow = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+      var source;
+
+      if (element.source) {
+        source = element.source.businessObject;
+
+        // conditional flow marker
+        if (sequenceFlow.conditionExpression && source.$instanceOf('bpmn:Activity')) {
+          Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(path, {
+            markerStart: marker('conditional-flow-marker', fill, stroke)
+          });
+        }
+
+        // default marker
+        if (source.default && (source.$instanceOf('bpmn:Gateway') || source.$instanceOf('bpmn:Activity')) &&
+            source.default === sequenceFlow) {
+          Object(tiny_svg__WEBPACK_IMPORTED_MODULE_9__["attr"])(path, {
+            markerStart: marker('conditional-default-flow-marker', fill, stroke)
+          });
+        }
+      }
+
+      return path;
+    },
+    'bpmn:Association': function(parentGfx, element, attrs) {
+
+      var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+      var fill = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+          stroke = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor);
+
+      attrs = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])({
+        strokeDasharray: '0.5, 5',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      }, attrs || {});
+
+      if (semantic.associationDirection === 'One' ||
+          semantic.associationDirection === 'Both') {
+        attrs.markerEnd = marker('association-end', fill, stroke);
+      }
+
+      if (semantic.associationDirection === 'Both') {
+        attrs.markerStart = marker('association-start', fill, stroke);
+      }
+
+      return drawLine(parentGfx, element.waypoints, attrs);
+    },
+    'bpmn:DataInputAssociation': function(parentGfx, element) {
+      var fill = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+          stroke = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor);
+
+      return renderer('bpmn:Association')(parentGfx, element, {
+        markerEnd: marker('association-end', fill, stroke)
+      });
+    },
+    'bpmn:DataOutputAssociation': function(parentGfx, element) {
+      var fill = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+          stroke = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor);
+
+      return renderer('bpmn:Association')(parentGfx, element, {
+        markerEnd: marker('association-end', fill, stroke)
+      });
+    },
+    'bpmn:MessageFlow': function(parentGfx, element) {
+
+      var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element),
+          di = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getDi"])(element);
+
+      var fill = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+          stroke = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor);
+
+      var pathData = createPathFromConnection(element);
+
+      var attrs = {
+        markerEnd: marker('messageflow-end', fill, stroke),
+        markerStart: marker('messageflow-start', fill, stroke),
+        strokeDasharray: '10, 12',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
+        strokeWidth: '1.5px',
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      };
+
+      var path = drawPath(parentGfx, pathData, attrs);
+
+      if (semantic.messageRef) {
+        var midPoint = path.getPointAtLength(path.getTotalLength() / 2);
+
+        var markerPathData = pathMap.getScaledPath('MESSAGE_FLOW_MARKER', {
+          abspos: {
+            x: midPoint.x,
+            y: midPoint.y
+          }
+        });
+
+        var messageAttrs = { strokeWidth: 1 };
+
+        if (di.messageVisibleKind === 'initiating') {
+          messageAttrs.fill = 'white';
+          messageAttrs.stroke = 'black';
+        } else {
+          messageAttrs.fill = '#888';
+          messageAttrs.stroke = 'white';
+        }
+
+        drawPath(parentGfx, markerPathData, messageAttrs);
+      }
+
+      return path;
+    },
+    'bpmn:DataObject': function(parentGfx, element) {
+      var pathData = pathMap.getScaledPath('DATA_OBJECT_PATH', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: 0.474,
+          my: 0.296
+        }
+      });
+
+      var elementObject = drawPath(parentGfx, pathData, {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        fillOpacity: DEFAULT_FILL_OPACITY,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+      if (Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["isCollection"])(semantic)) {
+        renderDataItemCollection(parentGfx, element);
+      }
+
+      return elementObject;
+    },
+    'bpmn:DataObjectReference': as('bpmn:DataObject'),
+    'bpmn:DataInput': function(parentGfx, element) {
+
+      var arrowPathData = pathMap.getRawPath('DATA_ARROW');
+
+      // page
+      var elementObject = renderer('bpmn:DataObject')(parentGfx, element);
+
+      /* input arrow path */ drawPath(parentGfx, arrowPathData, { strokeWidth: 1 });
+
+      return elementObject;
+    },
+    'bpmn:DataOutput': function(parentGfx, element) {
+      var arrowPathData = pathMap.getRawPath('DATA_ARROW');
+
+      // page
+      var elementObject = renderer('bpmn:DataObject')(parentGfx, element);
+
+      /* output arrow path */ drawPath(parentGfx, arrowPathData, {
+        strokeWidth: 1,
+        fill: 'black'
+      });
+
+      return elementObject;
+    },
+    'bpmn:DataStoreReference': function(parentGfx, element) {
+      var DATA_STORE_PATH = pathMap.getScaledPath('DATA_STORE', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: 0,
+          my: 0.133
+        }
+      });
+
+      var elementStore = drawPath(parentGfx, DATA_STORE_PATH, {
+        strokeWidth: 2,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        fillOpacity: DEFAULT_FILL_OPACITY,
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      return elementStore;
+    },
+    'bpmn:BoundaryEvent': function(parentGfx, element) {
+
+      var semantic = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element),
+          cancel = semantic.cancelActivity;
+
+      var attrs = {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      };
+
+      if (!cancel) {
+        attrs.strokeDasharray = '6';
+        attrs.strokeLinecap = 'round';
+      }
+
+      // apply fillOpacity
+      var outerAttrs = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])({}, attrs, {
+        fillOpacity: 1
+      });
+
+      // apply no-fill
+      var innerAttrs = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])({}, attrs, {
+        fill: 'none'
+      });
+
+      var outer = renderer('bpmn:Event')(parentGfx, element, outerAttrs);
+
+      /* inner path */ drawCircle(parentGfx, element.width, element.height, INNER_OUTER_DIST, innerAttrs);
+
+      renderEventContent(element, parentGfx);
+
+      return outer;
+    },
+    'bpmn:Group': function(parentGfx, element) {
+
+      var group = drawRect(parentGfx, element.width, element.height, TASK_BORDER_RADIUS, {
+        strokeWidth: 1,
+        strokeDasharray: '8,3,1,3',
+        fill: 'none',
+        pointerEvents: 'none'
+      });
+
+      return group;
+    },
+    'label': function(parentGfx, element) {
+      return renderExternalLabel(parentGfx, element);
+    },
+    'bpmn:TextAnnotation': function(parentGfx, element) {
+      var style = {
+        'fill': 'none',
+        'stroke': 'none'
+      };
+
+      var textElement = drawRect(parentGfx, element.width, element.height, 0, 0, style);
+
+      var textPathData = pathMap.getScaledPath('TEXT_ANNOTATION', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: 0.0,
+          my: 0.0
+        }
+      });
+
+      drawPath(parentGfx, textPathData, {
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      var text = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element).text || '';
+      renderLabel(parentGfx, text, {
+        box: element,
+        align: 'left-top',
+        padding: 5,
+        style: {
+          fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+        }
+      });
+
+      return textElement;
+    },
+    'ParticipantMultiplicityMarker': function(parentGfx, element) {
+      var markerPath = pathMap.getScaledPath('MARKER_PARALLEL', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: ((element.width / 2) / element.width),
+          my: (element.height - 15) / element.height
+        }
+      });
+
+      drawMarker('participant-multiplicity', parentGfx, markerPath, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+    },
+    'SubProcessMarker': function(parentGfx, element) {
+      var markerRect = drawRect(parentGfx, 14, 14, 0, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+
+      // Process marker is placed in the middle of the box
+      // therefore fixed values can be used here
+      Object(diagram_js_lib_util_SvgTransformUtil__WEBPACK_IMPORTED_MODULE_10__["translate"])(markerRect, element.width / 2 - 7.5, element.height - 20);
+
+      var markerPath = pathMap.getScaledPath('MARKER_SUB_PROCESS', {
+        xScaleFactor: 1.5,
+        yScaleFactor: 1.5,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: (element.width / 2 - 7.5) / element.width,
+          my: (element.height - 20) / element.height
+        }
+      });
+
+      drawMarker('sub-process', parentGfx, markerPath, {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+    },
+    'ParallelMarker': function(parentGfx, element, position) {
+      var markerPath = pathMap.getScaledPath('MARKER_PARALLEL', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: ((element.width / 2 + position.parallel) / element.width),
+          my: (element.height - 20) / element.height
+        }
+      });
+
+      drawMarker('parallel', parentGfx, markerPath, {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+    },
+    'SequentialMarker': function(parentGfx, element, position) {
+      var markerPath = pathMap.getScaledPath('MARKER_SEQUENTIAL', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: ((element.width / 2 + position.seq) / element.width),
+          my: (element.height - 19) / element.height
+        }
+      });
+
+      drawMarker('sequential', parentGfx, markerPath, {
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+    },
+    'CompensationMarker': function(parentGfx, element, position) {
+      var markerMath = pathMap.getScaledPath('MARKER_COMPENSATION', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: ((element.width / 2 + position.compensation) / element.width),
+          my: (element.height - 13) / element.height
+        }
+      });
+
+      drawMarker('compensation', parentGfx, markerMath, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+    },
+    'LoopMarker': function(parentGfx, element, position) {
+      var markerPath = pathMap.getScaledPath('MARKER_LOOP', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: ((element.width / 2 + position.loop) / element.width),
+          my: (element.height - 7) / element.height
+        }
+      });
+
+      drawMarker('loop', parentGfx, markerPath, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getFillColor"])(element, defaultFillColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor),
+        strokeLinecap: 'round',
+        strokeMiterlimit: 0.5
+      });
+    },
+    'AdhocMarker': function(parentGfx, element, position) {
+      var markerPath = pathMap.getScaledPath('MARKER_ADHOC', {
+        xScaleFactor: 1,
+        yScaleFactor: 1,
+        containerWidth: element.width,
+        containerHeight: element.height,
+        position: {
+          mx: ((element.width / 2 + position.adhoc) / element.width),
+          my: (element.height - 15) / element.height
+        }
+      });
+
+      drawMarker('adhoc', parentGfx, markerPath, {
+        strokeWidth: 1,
+        fill: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor),
+        stroke: Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getStrokeColor"])(element, defaultStrokeColor)
+      });
+    }
+  };
+
+  function attachTaskMarkers(parentGfx, element, taskMarkers) {
+    var obj = Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getSemantic"])(element);
+
+    var subprocess = taskMarkers && taskMarkers.indexOf('SubProcessMarker') !== -1;
+    var position;
+
+    if (subprocess) {
+      position = {
+        seq: -21,
+        parallel: -22,
+        compensation: -42,
+        loop: -18,
+        adhoc: 10
+      };
+    } else {
+      position = {
+        seq: -3,
+        parallel: -6,
+        compensation: -27,
+        loop: 0,
+        adhoc: 10
+      };
+    }
+
+    Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["forEach"])(taskMarkers, function(marker) {
+      renderer(marker)(parentGfx, element, position);
+    });
+
+    if (obj.isForCompensation) {
+      renderer('CompensationMarker')(parentGfx, element, position);
+    }
+
+    if (obj.$type === 'bpmn:AdHocSubProcess') {
+      renderer('AdhocMarker')(parentGfx, element, position);
+    }
+
+    var loopCharacteristics = obj.loopCharacteristics,
+        isSequential = loopCharacteristics && loopCharacteristics.isSequential;
+
+    if (loopCharacteristics) {
+
+      if (isSequential === undefined) {
+        renderer('LoopMarker')(parentGfx, element, position);
+      }
+
+      if (isSequential === false) {
+        renderer('ParallelMarker')(parentGfx, element, position);
+      }
+
+      if (isSequential === true) {
+        renderer('SequentialMarker')(parentGfx, element, position);
+      }
+    }
+  }
+
+  function renderDataItemCollection(parentGfx, element) {
+
+    var yPosition = (element.height - 16) / element.height;
+
+    var pathData = pathMap.getScaledPath('DATA_OBJECT_COLLECTION_PATH', {
+      xScaleFactor: 1,
+      yScaleFactor: 1,
+      containerWidth: element.width,
+      containerHeight: element.height,
+      position: {
+        mx: 0.451,
+        my: yPosition
+      }
+    });
+
+    /* collection path */ drawPath(parentGfx, pathData, {
+      strokeWidth: 2
+    });
+  }
+
+
+  // extension API, use at your own risk
+  this._drawPath = drawPath;
+
+}
+
+
+inherits__WEBPACK_IMPORTED_MODULE_0___default()(BpmnRenderer, diagram_js_lib_draw_BaseRenderer__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+BpmnRenderer.$inject = [
+  'config.bpmnRenderer',
+  'eventBus',
+  'styles',
+  'pathMap',
+  'canvas',
+  'textRenderer'
+];
+
+
+BpmnRenderer.prototype.canRender = function(element) {
+  return Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_5__["is"])(element, 'bpmn:BaseElement');
+};
+
+BpmnRenderer.prototype.drawShape = function(parentGfx, element) {
+  var type = element.type;
+  var h = this.handlers[type];
+
+  /* jshint -W040 */
+  return h(parentGfx, element);
+};
+
+BpmnRenderer.prototype.drawConnection = function(parentGfx, element) {
+  var type = element.type;
+  var h = this.handlers[type];
+
+  /* jshint -W040 */
+  return h(parentGfx, element);
+};
+
+BpmnRenderer.prototype.getShapePath = function(element) {
+
+  if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_5__["is"])(element, 'bpmn:Event')) {
+    return Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getCirclePath"])(element);
+  }
+
+  if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_5__["is"])(element, 'bpmn:Activity')) {
+    return Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getRoundRectPath"])(element, TASK_BORDER_RADIUS);
+  }
+
+  if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_5__["is"])(element, 'bpmn:Gateway')) {
+    return Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getDiamondPath"])(element);
+  }
+
+  return Object(_BpmnRenderUtil__WEBPACK_IMPORTED_MODULE_7__["getRectPath"])(element);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmn-js/lib/features/label-editing/LabelUtil.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/bpmn-js/lib/features/label-editing/LabelUtil.js ***!
+  \**********************************************************************/
+/*! exports provided: getLabel, setLabel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLabel", function() { return getLabel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setLabel", function() { return setLabel; });
+/* harmony import */ var _util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
+
+
+function getLabelAttr(semantic) {
+  if (
+    Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:FlowElement') ||
+    Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:Participant') ||
+    Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:Lane') ||
+    Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:SequenceFlow') ||
+    Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:MessageFlow') ||
+    Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:DataInput') ||
+    Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:DataOutput')
+  ) {
+    return 'name';
+  }
+
+  if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:TextAnnotation')) {
+    return 'text';
+  }
+
+  if (Object(_util_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(semantic, 'bpmn:Group')) {
+    return 'categoryValueRef';
+  }
+}
+
+function getCategoryValue(semantic) {
+  var categoryValueRef = semantic['categoryValueRef'];
+
+  if (!categoryValueRef) {
+    return '';
+  }
+
+
+  return categoryValueRef.value || '';
+}
+
+function getLabel(element) {
+  var semantic = element.businessObject,
+      attr = getLabelAttr(semantic);
+
+  if (attr) {
+
+    if (attr === 'categoryValueRef') {
+
+      return getCategoryValue(semantic);
+    }
+
+    return semantic[attr] || '';
+  }
+}
+
+
+function setLabel(element, text, isExternal) {
+  var semantic = element.businessObject,
+      attr = getLabelAttr(semantic);
+
+  if (attr) {
+
+    if (attr === 'categoryValueRef') {
+      semantic['categoryValueRef'].value = text;
+    } else {
+      semantic[attr] = text;
+    }
+
+  }
+
+  return element;
+}
+
+/***/ }),
+
+/***/ "./node_modules/bpmn-js/lib/util/DiUtil.js":
+/*!*************************************************!*\
+  !*** ./node_modules/bpmn-js/lib/util/DiUtil.js ***!
+  \*************************************************/
+/*! exports provided: isExpanded, isInterrupting, isEventSubProcess, hasEventDefinition, hasErrorEventDefinition, hasEscalationEventDefinition, hasCompensateEventDefinition */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isExpanded", function() { return isExpanded; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isInterrupting", function() { return isInterrupting; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isEventSubProcess", function() { return isEventSubProcess; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasEventDefinition", function() { return hasEventDefinition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasErrorEventDefinition", function() { return hasErrorEventDefinition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasEscalationEventDefinition", function() { return hasEscalationEventDefinition; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hasCompensateEventDefinition", function() { return hasCompensateEventDefinition; });
+/* harmony import */ var _ModelUtil__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
+/* harmony import */ var min_dash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! min-dash */ "./node_modules/min-dash/dist/index.esm.js");
+
+
+
+
+
+function isExpanded(element) {
+
+  if (Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(element, 'bpmn:CallActivity')) {
+    return false;
+  }
+
+  if (Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(element, 'bpmn:SubProcess')) {
+    return !!Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["getBusinessObject"])(element).di.isExpanded;
+  }
+
+  if (Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(element, 'bpmn:Participant')) {
+    return !!Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["getBusinessObject"])(element).processRef;
+  }
+
+  return true;
+}
+
+function isInterrupting(element) {
+  return element && Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["getBusinessObject"])(element).isInterrupting !== false;
+}
+
+function isEventSubProcess(element) {
+  return element && !!Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["getBusinessObject"])(element).triggeredByEvent;
+}
+
+function hasEventDefinition(element, eventType) {
+  var bo = Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["getBusinessObject"])(element),
+      hasEventDefinition = false;
+
+  if (bo.eventDefinitions) {
+    Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["forEach"])(bo.eventDefinitions, function(event) {
+      if (Object(_ModelUtil__WEBPACK_IMPORTED_MODULE_0__["is"])(event, eventType)) {
+        hasEventDefinition = true;
+      }
+    });
+  }
+
+  return hasEventDefinition;
+}
+
+function hasErrorEventDefinition(element) {
+  return hasEventDefinition(element, 'bpmn:ErrorEventDefinition');
+}
+
+function hasEscalationEventDefinition(element) {
+  return hasEventDefinition(element, 'bpmn:EscalationEventDefinition');
+}
+
+function hasCompensateEventDefinition(element) {
+  return hasEventDefinition(element, 'bpmn:CompensateEventDefinition');
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmn-js/lib/util/ModelUtil.js":
+/*!****************************************************!*\
+  !*** ./node_modules/bpmn-js/lib/util/ModelUtil.js ***!
+  \****************************************************/
+/*! exports provided: is, getBusinessObject */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "is", function() { return is; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getBusinessObject", function() { return getBusinessObject; });
+/**
+ * Is an element of the given BPMN type?
+ *
+ * @param  {djs.model.Base|ModdleElement} element
+ * @param  {String} type
+ *
+ * @return {Boolean}
+ */
+function is(element, type) {
+  var bo = getBusinessObject(element);
+
+  return bo && (typeof bo.$instanceOf === 'function') && bo.$instanceOf(type);
+}
+
+
+/**
+ * Return the business object for a given element.
+ *
+ * @param  {djs.model.Base|ModdleElement} element
+ *
+ * @return {ModdleElement}
+ */
+function getBusinessObject(element) {
+  return (element && element.businessObject) || element;
+}
 
 /***/ }),
 
@@ -657,6 +3011,449 @@ function getModelerDirectory() {
 function getPluginsDirectory() {
   return window.getPluginsDirectory();
 }
+
+/***/ }),
+
+/***/ "./node_modules/diagram-js/lib/draw/BaseRenderer.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/diagram-js/lib/draw/BaseRenderer.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BaseRenderer; });
+var DEFAULT_RENDER_PRIORITY = 1000;
+
+/**
+ * The base implementation of shape and connection renderers.
+ *
+ * @param {EventBus} eventBus
+ * @param {Number} [renderPriority=1000]
+ */
+function BaseRenderer(eventBus, renderPriority) {
+  var self = this;
+
+  renderPriority = renderPriority || DEFAULT_RENDER_PRIORITY;
+
+  eventBus.on([ 'render.shape', 'render.connection' ], renderPriority, function(evt, context) {
+    var type = evt.type,
+        element = context.element,
+        visuals = context.gfx;
+
+    if (self.canRender(element)) {
+      if (type === 'render.shape') {
+        return self.drawShape(visuals, element);
+      } else {
+        return self.drawConnection(visuals, element);
+      }
+    }
+  });
+
+  eventBus.on([ 'render.getShapePath', 'render.getConnectionPath'], renderPriority, function(evt, element) {
+    if (self.canRender(element)) {
+      if (evt.type === 'render.getShapePath') {
+        return self.getShapePath(element);
+      } else {
+        return self.getConnectionPath(element);
+      }
+    }
+  });
+}
+
+/**
+ * Should check whether *this* renderer can render
+ * the element/connection.
+ *
+ * @param {element} element
+ *
+ * @returns {Boolean}
+ */
+BaseRenderer.prototype.canRender = function() {};
+
+/**
+ * Provides the shape's snap svg element to be drawn on the `canvas`.
+ *
+ * @param {djs.Graphics} visuals
+ * @param {Shape} shape
+ *
+ * @returns {Snap.svg} [returns a Snap.svg paper element ]
+ */
+BaseRenderer.prototype.drawShape = function() {};
+
+/**
+ * Provides the shape's snap svg element to be drawn on the `canvas`.
+ *
+ * @param {djs.Graphics} visuals
+ * @param {Connection} connection
+ *
+ * @returns {Snap.svg} [returns a Snap.svg paper element ]
+ */
+BaseRenderer.prototype.drawConnection = function() {};
+
+/**
+ * Gets the SVG path of a shape that represents it's visual bounds.
+ *
+ * @param {Shape} shape
+ *
+ * @return {string} svg path
+ */
+BaseRenderer.prototype.getShapePath = function() {};
+
+/**
+ * Gets the SVG path of a connection that represents it's visual bounds.
+ *
+ * @param {Connection} connection
+ *
+ * @return {string} svg path
+ */
+BaseRenderer.prototype.getConnectionPath = function() {};
+
+
+/***/ }),
+
+/***/ "./node_modules/diagram-js/lib/util/RenderUtil.js":
+/*!********************************************************!*\
+  !*** ./node_modules/diagram-js/lib/util/RenderUtil.js ***!
+  \********************************************************/
+/*! exports provided: componentsToPath, toSVGPoints, createLine, updateLine */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "componentsToPath", function() { return componentsToPath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toSVGPoints", function() { return toSVGPoints; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createLine", function() { return createLine; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateLine", function() { return updateLine; });
+/* harmony import */ var tiny_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tiny-svg */ "./node_modules/tiny-svg/dist/index.esm.js");
+
+
+
+function componentsToPath(elements) {
+  return elements.join(',').replace(/,?([A-z]),?/g, '$1');
+}
+
+function toSVGPoints(points) {
+  var result = '';
+
+  for (var i = 0, p; (p = points[i]); i++) {
+    result += p.x + ',' + p.y + ' ';
+  }
+
+  return result;
+}
+
+function createLine(points, attrs) {
+
+  var line = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["create"])('polyline');
+  Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["attr"])(line, { points: toSVGPoints(points) });
+
+  if (attrs) {
+    Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["attr"])(line, attrs);
+  }
+
+  return line;
+}
+
+function updateLine(gfx, points) {
+  Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["attr"])(gfx, { points: toSVGPoints(points) });
+
+  return gfx;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/diagram-js/lib/util/SvgTransformUtil.js":
+/*!**************************************************************!*\
+  !*** ./node_modules/diagram-js/lib/util/SvgTransformUtil.js ***!
+  \**************************************************************/
+/*! exports provided: transform, translate, rotate, scale */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transform", function() { return transform; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "translate", function() { return translate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "rotate", function() { return rotate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "scale", function() { return scale; });
+/* harmony import */ var tiny_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tiny-svg */ "./node_modules/tiny-svg/dist/index.esm.js");
+
+
+
+/**
+ * @param {<SVGElement>} element
+ * @param {Number} x
+ * @param {Number} y
+ * @param {Number} angle
+ * @param {Number} amount
+ */
+function transform(gfx, x, y, angle, amount) {
+  var translate = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["createTransform"])();
+  translate.setTranslate(x, y);
+
+  var rotate = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["createTransform"])();
+  rotate.setRotate(angle, 0, 0);
+
+  var scale = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["createTransform"])();
+  scale.setScale(amount || 1, amount || 1);
+
+  Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["transform"])(gfx, [ translate, rotate, scale ]);
+}
+
+
+/**
+ * @param {SVGElement} element
+ * @param {Number} x
+ * @param {Number} y
+ */
+function translate(gfx, x, y) {
+  var translate = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["createTransform"])();
+  translate.setTranslate(x, y);
+
+  Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["transform"])(gfx, translate);
+}
+
+
+/**
+ * @param {SVGElement} element
+ * @param {Number} angle
+ */
+function rotate(gfx, angle) {
+  var rotate = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["createTransform"])();
+  rotate.setRotate(angle, 0, 0);
+
+  Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["transform"])(gfx, rotate);
+}
+
+
+/**
+ * @param {SVGElement} element
+ * @param {Number} amount
+ */
+function scale(gfx, amount) {
+  var scale = Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["createTransform"])();
+  scale.setScale(amount, amount);
+
+  Object(tiny_svg__WEBPACK_IMPORTED_MODULE_0__["transform"])(gfx, scale);
+}
+
+/***/ }),
+
+/***/ "./node_modules/ids/dist/index.esm.js":
+/*!********************************************!*\
+  !*** ./node_modules/ids/dist/index.esm.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var hat_1 = createCommonjsModule(function (module) {
+var hat = module.exports = function (bits, base) {
+    if (!base) base = 16;
+    if (bits === undefined) bits = 128;
+    if (bits <= 0) return '0';
+    
+    var digits = Math.log(Math.pow(2, bits)) / Math.log(base);
+    for (var i = 2; digits === Infinity; i *= 2) {
+        digits = Math.log(Math.pow(2, bits / i)) / Math.log(base) * i;
+    }
+    
+    var rem = digits - Math.floor(digits);
+    
+    var res = '';
+    
+    for (var i = 0; i < Math.floor(digits); i++) {
+        var x = Math.floor(Math.random() * base).toString(base);
+        res = x + res;
+    }
+    
+    if (rem) {
+        var b = Math.pow(base, rem);
+        var x = Math.floor(Math.random() * b).toString(base);
+        res = x + res;
+    }
+    
+    var parsed = parseInt(res, base);
+    if (parsed !== Infinity && parsed >= Math.pow(2, bits)) {
+        return hat(bits, base)
+    }
+    else return res;
+};
+
+hat.rack = function (bits, base, expandBy) {
+    var fn = function (data) {
+        var iters = 0;
+        do {
+            if (iters ++ > 10) {
+                if (expandBy) bits += expandBy;
+                else throw new Error('too many ID collisions, use more bits')
+            }
+            
+            var id = hat(bits, base);
+        } while (Object.hasOwnProperty.call(hats, id));
+        
+        hats[id] = data;
+        return id;
+    };
+    var hats = fn.hats = {};
+    
+    fn.get = function (id) {
+        return fn.hats[id];
+    };
+    
+    fn.set = function (id, value) {
+        fn.hats[id] = value;
+        return fn;
+    };
+    
+    fn.bits = bits || 128;
+    fn.base = base || 16;
+    return fn;
+};
+});
+
+/**
+ * Create a new id generator / cache instance.
+ *
+ * You may optionally provide a seed that is used internally.
+ *
+ * @param {Seed} seed
+ */
+
+function Ids(seed) {
+  if (!(this instanceof Ids)) {
+    return new Ids(seed);
+  }
+
+  seed = seed || [128, 36, 1];
+  this._seed = seed.length ? hat_1.rack(seed[0], seed[1], seed[2]) : seed;
+}
+/**
+ * Generate a next id.
+ *
+ * @param {Object} [element] element to bind the id to
+ *
+ * @return {String} id
+ */
+
+Ids.prototype.next = function (element) {
+  return this._seed(element || true);
+};
+/**
+ * Generate a next id with a given prefix.
+ *
+ * @param {Object} [element] element to bind the id to
+ *
+ * @return {String} id
+ */
+
+
+Ids.prototype.nextPrefixed = function (prefix, element) {
+  var id;
+
+  do {
+    id = prefix + this.next(true);
+  } while (this.assigned(id)); // claim {prefix}{random}
+
+
+  this.claim(id, element); // return
+
+  return id;
+};
+/**
+ * Manually claim an existing id.
+ *
+ * @param {String} id
+ * @param {String} [element] element the id is claimed by
+ */
+
+
+Ids.prototype.claim = function (id, element) {
+  this._seed.set(id, element || true);
+};
+/**
+ * Returns true if the given id has already been assigned.
+ *
+ * @param  {String} id
+ * @return {Boolean}
+ */
+
+
+Ids.prototype.assigned = function (id) {
+  return this._seed.get(id) || false;
+};
+/**
+ * Unclaim an id.
+ *
+ * @param  {String} id the id to unclaim
+ */
+
+
+Ids.prototype.unclaim = function (id) {
+  delete this._seed.hats[id];
+};
+/**
+ * Clear all claimed ids.
+ */
+
+
+Ids.prototype.clear = function () {
+  var hats = this._seed.hats,
+      id;
+
+  for (id in hats) {
+    this.unclaim(id);
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Ids);
+//# sourceMappingURL=index.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/inherits/inherits_browser.js":
+/*!***************************************************!*\
+  !*** ./node_modules/inherits/inherits_browser.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    if (superCtor) {
+      ctor.super_ = superCtor
+      ctor.prototype = Object.create(superCtor.prototype, {
+        constructor: {
+          value: ctor,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      })
+    }
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    if (superCtor) {
+      ctor.super_ = superCtor
+      var TempCtor = function () {}
+      TempCtor.prototype = superCtor.prototype
+      ctor.prototype = new TempCtor()
+      ctor.prototype.constructor = ctor
+    }
+  }
+}
+
 
 /***/ }),
 
@@ -17773,6 +20570,2070 @@ function getPluginsDirectory() {
 }.call(this));
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js"), __webpack_require__(/*! ./../webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./node_modules/min-dash/dist/index.esm.js":
+/*!*************************************************!*\
+  !*** ./node_modules/min-dash/dist/index.esm.js ***!
+  \*************************************************/
+/*! exports provided: flatten, find, findIndex, filter, forEach, without, reduce, every, some, map, keys, size, values, groupBy, uniqueBy, unionBy, sortBy, matchPattern, debounce, throttle, bind, isUndefined, isDefined, isNil, isArray, isObject, isNumber, isFunction, isString, ensureArray, has, assign, pick, omit, merge */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "flatten", function() { return flatten; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "find", function() { return find; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "findIndex", function() { return findIndex; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filter", function() { return filter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "forEach", function() { return forEach; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "without", function() { return without; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reduce", function() { return reduce; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "every", function() { return every; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "some", function() { return some; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "map", function() { return map; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "keys", function() { return keys; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "size", function() { return size; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "values", function() { return values; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "groupBy", function() { return groupBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "uniqueBy", function() { return uniqueBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "unionBy", function() { return unionBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sortBy", function() { return sortBy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "matchPattern", function() { return matchPattern; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "debounce", function() { return debounce; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "throttle", function() { return throttle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "bind", function() { return bind; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isUndefined", function() { return isUndefined; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isDefined", function() { return isDefined; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isNil", function() { return isNil; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isArray", function() { return isArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isObject", function() { return isObject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isNumber", function() { return isNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isFunction", function() { return isFunction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isString", function() { return isString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ensureArray", function() { return ensureArray; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "has", function() { return has; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "assign", function() { return assign; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pick", function() { return pick; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "omit", function() { return omit; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "merge", function() { return merge; });
+/**
+ * Flatten array, one level deep.
+ *
+ * @param {Array<?>} arr
+ *
+ * @return {Array<?>}
+ */
+function flatten(arr) {
+  return Array.prototype.concat.apply([], arr);
+}
+
+var nativeToString = Object.prototype.toString;
+var nativeHasOwnProperty = Object.prototype.hasOwnProperty;
+function isUndefined(obj) {
+  return obj === undefined;
+}
+function isDefined(obj) {
+  return obj !== undefined;
+}
+function isNil(obj) {
+  return obj == null;
+}
+function isArray(obj) {
+  return nativeToString.call(obj) === '[object Array]';
+}
+function isObject(obj) {
+  return nativeToString.call(obj) === '[object Object]';
+}
+function isNumber(obj) {
+  return nativeToString.call(obj) === '[object Number]';
+}
+function isFunction(obj) {
+  var tag = nativeToString.call(obj);
+  return tag === '[object Function]' || tag === '[object AsyncFunction]' || tag === '[object GeneratorFunction]' || tag === '[object AsyncGeneratorFunction]' || tag === '[object Proxy]';
+}
+function isString(obj) {
+  return nativeToString.call(obj) === '[object String]';
+}
+/**
+ * Ensure collection is an array.
+ *
+ * @param {Object} obj
+ */
+
+function ensureArray(obj) {
+  if (isArray(obj)) {
+    return;
+  }
+
+  throw new Error('must supply array');
+}
+/**
+ * Return true, if target owns a property with the given key.
+ *
+ * @param {Object} target
+ * @param {String} key
+ *
+ * @return {Boolean}
+ */
+
+function has(target, key) {
+  return nativeHasOwnProperty.call(target, key);
+}
+
+/**
+ * Find element in collection.
+ *
+ * @param  {Array|Object} collection
+ * @param  {Function|Object} matcher
+ *
+ * @return {Object}
+ */
+
+function find(collection, matcher) {
+  matcher = toMatcher(matcher);
+  var match;
+  forEach(collection, function (val, key) {
+    if (matcher(val, key)) {
+      match = val;
+      return false;
+    }
+  });
+  return match;
+}
+/**
+ * Find element index in collection.
+ *
+ * @param  {Array|Object} collection
+ * @param  {Function} matcher
+ *
+ * @return {Object}
+ */
+
+function findIndex(collection, matcher) {
+  matcher = toMatcher(matcher);
+  var idx = isArray(collection) ? -1 : undefined;
+  forEach(collection, function (val, key) {
+    if (matcher(val, key)) {
+      idx = key;
+      return false;
+    }
+  });
+  return idx;
+}
+/**
+ * Find element in collection.
+ *
+ * @param  {Array|Object} collection
+ * @param  {Function} matcher
+ *
+ * @return {Array} result
+ */
+
+function filter(collection, matcher) {
+  var result = [];
+  forEach(collection, function (val, key) {
+    if (matcher(val, key)) {
+      result.push(val);
+    }
+  });
+  return result;
+}
+/**
+ * Iterate over collection; returning something
+ * (non-undefined) will stop iteration.
+ *
+ * @param  {Array|Object} collection
+ * @param  {Function} iterator
+ *
+ * @return {Object} return result that stopped the iteration
+ */
+
+function forEach(collection, iterator) {
+  var val, result;
+
+  if (isUndefined(collection)) {
+    return;
+  }
+
+  var convertKey = isArray(collection) ? toNum : identity;
+
+  for (var key in collection) {
+    if (has(collection, key)) {
+      val = collection[key];
+      result = iterator(val, convertKey(key));
+
+      if (result === false) {
+        return val;
+      }
+    }
+  }
+}
+/**
+ * Return collection without element.
+ *
+ * @param  {Array} arr
+ * @param  {Function} matcher
+ *
+ * @return {Array}
+ */
+
+function without(arr, matcher) {
+  if (isUndefined(arr)) {
+    return [];
+  }
+
+  ensureArray(arr);
+  matcher = toMatcher(matcher);
+  return arr.filter(function (el, idx) {
+    return !matcher(el, idx);
+  });
+}
+/**
+ * Reduce collection, returning a single result.
+ *
+ * @param  {Object|Array} collection
+ * @param  {Function} iterator
+ * @param  {Any} result
+ *
+ * @return {Any} result returned from last iterator
+ */
+
+function reduce(collection, iterator, result) {
+  forEach(collection, function (value, idx) {
+    result = iterator(result, value, idx);
+  });
+  return result;
+}
+/**
+ * Return true if every element in the collection
+ * matches the criteria.
+ *
+ * @param  {Object|Array} collection
+ * @param  {Function} matcher
+ *
+ * @return {Boolean}
+ */
+
+function every(collection, matcher) {
+  return !!reduce(collection, function (matches, val, key) {
+    return matches && matcher(val, key);
+  }, true);
+}
+/**
+ * Return true if some elements in the collection
+ * match the criteria.
+ *
+ * @param  {Object|Array} collection
+ * @param  {Function} matcher
+ *
+ * @return {Boolean}
+ */
+
+function some(collection, matcher) {
+  return !!find(collection, matcher);
+}
+/**
+ * Transform a collection into another collection
+ * by piping each member through the given fn.
+ *
+ * @param  {Object|Array}   collection
+ * @param  {Function} fn
+ *
+ * @return {Array} transformed collection
+ */
+
+function map(collection, fn) {
+  var result = [];
+  forEach(collection, function (val, key) {
+    result.push(fn(val, key));
+  });
+  return result;
+}
+/**
+ * Get the collections keys.
+ *
+ * @param  {Object|Array} collection
+ *
+ * @return {Array}
+ */
+
+function keys(collection) {
+  return collection && Object.keys(collection) || [];
+}
+/**
+ * Shorthand for `keys(o).length`.
+ *
+ * @param  {Object|Array} collection
+ *
+ * @return {Number}
+ */
+
+function size(collection) {
+  return keys(collection).length;
+}
+/**
+ * Get the values in the collection.
+ *
+ * @param  {Object|Array} collection
+ *
+ * @return {Array}
+ */
+
+function values(collection) {
+  return map(collection, function (val) {
+    return val;
+  });
+}
+/**
+ * Group collection members by attribute.
+ *
+ * @param  {Object|Array} collection
+ * @param  {Function} extractor
+ *
+ * @return {Object} map with { attrValue => [ a, b, c ] }
+ */
+
+function groupBy(collection, extractor) {
+  var grouped = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  extractor = toExtractor(extractor);
+  forEach(collection, function (val) {
+    var discriminator = extractor(val) || '_';
+    var group = grouped[discriminator];
+
+    if (!group) {
+      group = grouped[discriminator] = [];
+    }
+
+    group.push(val);
+  });
+  return grouped;
+}
+function uniqueBy(extractor) {
+  extractor = toExtractor(extractor);
+  var grouped = {};
+
+  for (var _len = arguments.length, collections = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    collections[_key - 1] = arguments[_key];
+  }
+
+  forEach(collections, function (c) {
+    return groupBy(c, extractor, grouped);
+  });
+  var result = map(grouped, function (val, key) {
+    return val[0];
+  });
+  return result;
+}
+var unionBy = uniqueBy;
+/**
+ * Sort collection by criteria.
+ *
+ * @param  {Object|Array} collection
+ * @param  {String|Function} extractor
+ *
+ * @return {Array}
+ */
+
+function sortBy(collection, extractor) {
+  extractor = toExtractor(extractor);
+  var sorted = [];
+  forEach(collection, function (value, key) {
+    var disc = extractor(value, key);
+    var entry = {
+      d: disc,
+      v: value
+    };
+
+    for (var idx = 0; idx < sorted.length; idx++) {
+      var d = sorted[idx].d;
+
+      if (disc < d) {
+        sorted.splice(idx, 0, entry);
+        return;
+      }
+    } // not inserted, append (!)
+
+
+    sorted.push(entry);
+  });
+  return map(sorted, function (e) {
+    return e.v;
+  });
+}
+/**
+ * Create an object pattern matcher.
+ *
+ * @example
+ *
+ * const matcher = matchPattern({ id: 1 });
+ *
+ * var element = find(elements, matcher);
+ *
+ * @param  {Object} pattern
+ *
+ * @return {Function} matcherFn
+ */
+
+function matchPattern(pattern) {
+  return function (el) {
+    return every(pattern, function (val, key) {
+      return el[key] === val;
+    });
+  };
+}
+
+function toExtractor(extractor) {
+  return isFunction(extractor) ? extractor : function (e) {
+    return e[extractor];
+  };
+}
+
+function toMatcher(matcher) {
+  return isFunction(matcher) ? matcher : function (e) {
+    return e === matcher;
+  };
+}
+
+function identity(arg) {
+  return arg;
+}
+
+function toNum(arg) {
+  return Number(arg);
+}
+
+/**
+ * Debounce fn, calling it only once if
+ * the given time elapsed between calls.
+ *
+ * @param  {Function} fn
+ * @param  {Number} timeout
+ *
+ * @return {Function} debounced function
+ */
+function debounce(fn, timeout) {
+  var timer;
+  var lastArgs;
+  var lastThis;
+  var lastNow;
+
+  function fire() {
+    var now = Date.now();
+    var scheduledDiff = lastNow + timeout - now;
+
+    if (scheduledDiff > 0) {
+      return schedule(scheduledDiff);
+    }
+
+    fn.apply(lastThis, lastArgs);
+    timer = lastNow = lastArgs = lastThis = undefined;
+  }
+
+  function schedule(timeout) {
+    timer = setTimeout(fire, timeout);
+  }
+
+  return function () {
+    lastNow = Date.now();
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    lastArgs = args;
+    lastThis = this; // ensure an execution is scheduled
+
+    if (!timer) {
+      schedule(timeout);
+    }
+  };
+}
+/**
+ * Throttle fn, calling at most once
+ * in the given interval.
+ *
+ * @param  {Function} fn
+ * @param  {Number} interval
+ *
+ * @return {Function} throttled function
+ */
+
+function throttle(fn, interval) {
+  var throttling = false;
+  return function () {
+    if (throttling) {
+      return;
+    }
+
+    fn.apply(void 0, arguments);
+    throttling = true;
+    setTimeout(function () {
+      throttling = false;
+    }, interval);
+  };
+}
+/**
+ * Bind function against target <this>.
+ *
+ * @param  {Function} fn
+ * @param  {Object}   target
+ *
+ * @return {Function} bound function
+ */
+
+function bind(fn, target) {
+  return fn.bind(target);
+}
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+/**
+ * Convenience wrapper for `Object.assign`.
+ *
+ * @param {Object} target
+ * @param {...Object} others
+ *
+ * @return {Object} the target
+ */
+
+function assign(target) {
+  for (var _len = arguments.length, others = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    others[_key - 1] = arguments[_key];
+  }
+
+  return _extends.apply(void 0, [target].concat(others));
+}
+/**
+ * Pick given properties from the target object.
+ *
+ * @param {Object} target
+ * @param {Array} properties
+ *
+ * @return {Object} target
+ */
+
+function pick(target, properties) {
+  var result = {};
+  var obj = Object(target);
+  forEach(properties, function (prop) {
+    if (prop in obj) {
+      result[prop] = target[prop];
+    }
+  });
+  return result;
+}
+/**
+ * Pick all target properties, excluding the given ones.
+ *
+ * @param {Object} target
+ * @param {Array} properties
+ *
+ * @return {Object} target
+ */
+
+function omit(target, properties) {
+  var result = {};
+  var obj = Object(target);
+  forEach(obj, function (prop, key) {
+    if (properties.indexOf(key) === -1) {
+      result[key] = prop;
+    }
+  });
+  return result;
+}
+/**
+ * Recursively merge `...sources` into given target.
+ *
+ * Does support merging objects; does not support merging arrays.
+ *
+ * @param {Object} target
+ * @param {...Object} sources
+ *
+ * @return {Object} the target
+ */
+
+function merge(target) {
+  for (var _len2 = arguments.length, sources = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+    sources[_key2 - 1] = arguments[_key2];
+  }
+
+  if (!sources.length) {
+    return target;
+  }
+
+  forEach(sources, function (source) {
+    // skip non-obj sources, i.e. null
+    if (!source || !isObject(source)) {
+      return;
+    }
+
+    forEach(source, function (sourceVal, key) {
+      if (key === '__proto__') {
+        return;
+      }
+
+      var targetVal = target[key];
+
+      if (isObject(sourceVal)) {
+        if (!isObject(targetVal)) {
+          // override target[key] with object
+          targetVal = {};
+        }
+
+        target[key] = merge(targetVal, sourceVal);
+      } else {
+        target[key] = sourceVal;
+      }
+    });
+  });
+  return target;
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/min-dom/dist/index.esm.js":
+/*!************************************************!*\
+  !*** ./node_modules/min-dom/dist/index.esm.js ***!
+  \************************************************/
+/*! exports provided: attr, classes, clear, closest, delegate, domify, event, matches, query, queryAll, remove */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attr", function() { return attr; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "classes", function() { return classes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clear", function() { return clear; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "closest", function() { return closest; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "delegate", function() { return delegateEvents; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "domify", function() { return domify; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "event", function() { return componentEvent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "matches", function() { return matchesSelector$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "query", function() { return query; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "queryAll", function() { return all; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remove", function() { return remove; });
+/**
+ * Set attribute `name` to `val`, or get attr `name`.
+ *
+ * @param {Element} el
+ * @param {String} name
+ * @param {String} [val]
+ * @api public
+ */
+function attr(el, name, val) {
+  // get
+  if (arguments.length == 2) {
+    return el.getAttribute(name);
+  }
+
+  // remove
+  if (val === null) {
+    return el.removeAttribute(name);
+  }
+
+  // set
+  el.setAttribute(name, val);
+
+  return el;
+}
+
+var indexOf = [].indexOf;
+
+var indexof = function(arr, obj){
+  if (indexOf) return arr.indexOf(obj);
+  for (var i = 0; i < arr.length; ++i) {
+    if (arr[i] === obj) return i;
+  }
+  return -1;
+};
+
+/**
+ * Taken from https://github.com/component/classes
+ *
+ * Without the component bits.
+ */
+
+/**
+ * Whitespace regexp.
+ */
+
+var re = /\s+/;
+
+/**
+ * toString reference.
+ */
+
+var toString = Object.prototype.toString;
+
+/**
+ * Wrap `el` in a `ClassList`.
+ *
+ * @param {Element} el
+ * @return {ClassList}
+ * @api public
+ */
+
+function classes(el) {
+  return new ClassList(el);
+}
+
+/**
+ * Initialize a new ClassList for `el`.
+ *
+ * @param {Element} el
+ * @api private
+ */
+
+function ClassList(el) {
+  if (!el || !el.nodeType) {
+    throw new Error('A DOM element reference is required');
+  }
+  this.el = el;
+  this.list = el.classList;
+}
+
+/**
+ * Add class `name` if not already present.
+ *
+ * @param {String} name
+ * @return {ClassList}
+ * @api public
+ */
+
+ClassList.prototype.add = function (name) {
+  // classList
+  if (this.list) {
+    this.list.add(name);
+    return this;
+  }
+
+  // fallback
+  var arr = this.array();
+  var i = indexof(arr, name);
+  if (!~i) arr.push(name);
+  this.el.className = arr.join(' ');
+  return this;
+};
+
+/**
+ * Remove class `name` when present, or
+ * pass a regular expression to remove
+ * any which match.
+ *
+ * @param {String|RegExp} name
+ * @return {ClassList}
+ * @api public
+ */
+
+ClassList.prototype.remove = function (name) {
+  if ('[object RegExp]' == toString.call(name)) {
+    return this.removeMatching(name);
+  }
+
+  // classList
+  if (this.list) {
+    this.list.remove(name);
+    return this;
+  }
+
+  // fallback
+  var arr = this.array();
+  var i = indexof(arr, name);
+  if (~i) arr.splice(i, 1);
+  this.el.className = arr.join(' ');
+  return this;
+};
+
+/**
+ * Remove all classes matching `re`.
+ *
+ * @param {RegExp} re
+ * @return {ClassList}
+ * @api private
+ */
+
+ClassList.prototype.removeMatching = function (re) {
+  var arr = this.array();
+  for (var i = 0; i < arr.length; i++) {
+    if (re.test(arr[i])) {
+      this.remove(arr[i]);
+    }
+  }
+  return this;
+};
+
+/**
+ * Toggle class `name`, can force state via `force`.
+ *
+ * For browsers that support classList, but do not support `force` yet,
+ * the mistake will be detected and corrected.
+ *
+ * @param {String} name
+ * @param {Boolean} force
+ * @return {ClassList}
+ * @api public
+ */
+
+ClassList.prototype.toggle = function (name, force) {
+  // classList
+  if (this.list) {
+    if ('undefined' !== typeof force) {
+      if (force !== this.list.toggle(name, force)) {
+        this.list.toggle(name); // toggle again to correct
+      }
+    } else {
+      this.list.toggle(name);
+    }
+    return this;
+  }
+
+  // fallback
+  if ('undefined' !== typeof force) {
+    if (!force) {
+      this.remove(name);
+    } else {
+      this.add(name);
+    }
+  } else {
+    if (this.has(name)) {
+      this.remove(name);
+    } else {
+      this.add(name);
+    }
+  }
+
+  return this;
+};
+
+/**
+ * Return an array of classes.
+ *
+ * @return {Array}
+ * @api public
+ */
+
+ClassList.prototype.array = function () {
+  var className = this.el.getAttribute('class') || '';
+  var str = className.replace(/^\s+|\s+$/g, '');
+  var arr = str.split(re);
+  if ('' === arr[0]) arr.shift();
+  return arr;
+};
+
+/**
+ * Check if class `name` is present.
+ *
+ * @param {String} name
+ * @return {ClassList}
+ * @api public
+ */
+
+ClassList.prototype.has = ClassList.prototype.contains = function (name) {
+  return this.list ? this.list.contains(name) : !!~indexof(this.array(), name);
+};
+
+/**
+ * Remove all children from the given element.
+ */
+function clear(el) {
+
+  var c;
+
+  while (el.childNodes.length) {
+    c = el.childNodes[0];
+    el.removeChild(c);
+  }
+
+  return el;
+}
+
+/**
+ * Element prototype.
+ */
+
+var proto = Element.prototype;
+
+/**
+ * Vendor function.
+ */
+
+var vendor = proto.matchesSelector
+  || proto.webkitMatchesSelector
+  || proto.mozMatchesSelector
+  || proto.msMatchesSelector
+  || proto.oMatchesSelector;
+
+/**
+ * Expose `match()`.
+ */
+
+var matchesSelector = match;
+
+/**
+ * Match `el` to `selector`.
+ *
+ * @param {Element} el
+ * @param {String} selector
+ * @return {Boolean}
+ * @api public
+ */
+
+function match(el, selector) {
+  if (vendor) return vendor.call(el, selector);
+  var nodes = el.parentNode.querySelectorAll(selector);
+  for (var i = 0; i < nodes.length; ++i) {
+    if (nodes[i] == el) return true;
+  }
+  return false;
+}
+
+var closest = function (element, selector, checkYoSelf) {
+  var parent = checkYoSelf ? element : element.parentNode;
+
+  while (parent && parent !== document) {
+    if (matchesSelector(parent, selector)) return parent;
+    parent = parent.parentNode;
+  }
+};
+
+var bind = window.addEventListener ? 'addEventListener' : 'attachEvent',
+    unbind = window.removeEventListener ? 'removeEventListener' : 'detachEvent',
+    prefix = bind !== 'addEventListener' ? 'on' : '';
+
+/**
+ * Bind `el` event `type` to `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+var bind_1 = function(el, type, fn, capture){
+  el[bind](prefix + type, fn, capture || false);
+  return fn;
+};
+
+/**
+ * Unbind `el` event `type`'s callback `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+var unbind_1 = function(el, type, fn, capture){
+  el[unbind](prefix + type, fn, capture || false);
+  return fn;
+};
+
+var componentEvent = {
+	bind: bind_1,
+	unbind: unbind_1
+};
+
+/**
+ * Module dependencies.
+ */
+
+
+
+/**
+ * Delegate event `type` to `selector`
+ * and invoke `fn(e)`. A callback function
+ * is returned which may be passed to `.unbind()`.
+ *
+ * @param {Element} el
+ * @param {String} selector
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @return {Function}
+ * @api public
+ */
+
+// Some events don't bubble, so we want to bind to the capture phase instead
+// when delegating.
+var forceCaptureEvents = ['focus', 'blur'];
+
+var bind$1 = function(el, selector, type, fn, capture){
+  if (forceCaptureEvents.indexOf(type) !== -1) capture = true;
+
+  return componentEvent.bind(el, type, function(e){
+    var target = e.target || e.srcElement;
+    e.delegateTarget = closest(target, selector, true, el);
+    if (e.delegateTarget) fn.call(el, e);
+  }, capture);
+};
+
+/**
+ * Unbind event `type`'s callback `fn`.
+ *
+ * @param {Element} el
+ * @param {String} type
+ * @param {Function} fn
+ * @param {Boolean} capture
+ * @api public
+ */
+
+var unbind$1 = function(el, type, fn, capture){
+  if (forceCaptureEvents.indexOf(type) !== -1) capture = true;
+
+  componentEvent.unbind(el, type, fn, capture);
+};
+
+var delegateEvents = {
+	bind: bind$1,
+	unbind: unbind$1
+};
+
+/**
+ * Expose `parse`.
+ */
+
+var domify = parse;
+
+/**
+ * Tests for browser support.
+ */
+
+var innerHTMLBug = false;
+var bugTestDiv;
+if (typeof document !== 'undefined') {
+  bugTestDiv = document.createElement('div');
+  // Setup
+  bugTestDiv.innerHTML = '  <link/><table></table><a href="/a">a</a><input type="checkbox"/>';
+  // Make sure that link elements get serialized correctly by innerHTML
+  // This requires a wrapper element in IE
+  innerHTMLBug = !bugTestDiv.getElementsByTagName('link').length;
+  bugTestDiv = undefined;
+}
+
+/**
+ * Wrap map from jquery.
+ */
+
+var map = {
+  legend: [1, '<fieldset>', '</fieldset>'],
+  tr: [2, '<table><tbody>', '</tbody></table>'],
+  col: [2, '<table><tbody></tbody><colgroup>', '</colgroup></table>'],
+  // for script/link/style tags to work in IE6-8, you have to wrap
+  // in a div with a non-whitespace character in front, ha!
+  _default: innerHTMLBug ? [1, 'X<div>', '</div>'] : [0, '', '']
+};
+
+map.td =
+map.th = [3, '<table><tbody><tr>', '</tr></tbody></table>'];
+
+map.option =
+map.optgroup = [1, '<select multiple="multiple">', '</select>'];
+
+map.thead =
+map.tbody =
+map.colgroup =
+map.caption =
+map.tfoot = [1, '<table>', '</table>'];
+
+map.polyline =
+map.ellipse =
+map.polygon =
+map.circle =
+map.text =
+map.line =
+map.path =
+map.rect =
+map.g = [1, '<svg xmlns="http://www.w3.org/2000/svg" version="1.1">','</svg>'];
+
+/**
+ * Parse `html` and return a DOM Node instance, which could be a TextNode,
+ * HTML DOM Node of some kind (<div> for example), or a DocumentFragment
+ * instance, depending on the contents of the `html` string.
+ *
+ * @param {String} html - HTML string to "domify"
+ * @param {Document} doc - The `document` instance to create the Node for
+ * @return {DOMNode} the TextNode, DOM Node, or DocumentFragment instance
+ * @api private
+ */
+
+function parse(html, doc) {
+  if ('string' != typeof html) throw new TypeError('String expected');
+
+  // default to the global `document` object
+  if (!doc) doc = document;
+
+  // tag name
+  var m = /<([\w:]+)/.exec(html);
+  if (!m) return doc.createTextNode(html);
+
+  html = html.replace(/^\s+|\s+$/g, ''); // Remove leading/trailing whitespace
+
+  var tag = m[1];
+
+  // body support
+  if (tag == 'body') {
+    var el = doc.createElement('html');
+    el.innerHTML = html;
+    return el.removeChild(el.lastChild);
+  }
+
+  // wrap map
+  var wrap = map[tag] || map._default;
+  var depth = wrap[0];
+  var prefix = wrap[1];
+  var suffix = wrap[2];
+  var el = doc.createElement('div');
+  el.innerHTML = prefix + html + suffix;
+  while (depth--) el = el.lastChild;
+
+  // one element
+  if (el.firstChild == el.lastChild) {
+    return el.removeChild(el.firstChild);
+  }
+
+  // several elements
+  var fragment = doc.createDocumentFragment();
+  while (el.firstChild) {
+    fragment.appendChild(el.removeChild(el.firstChild));
+  }
+
+  return fragment;
+}
+
+var proto$1 = typeof Element !== 'undefined' ? Element.prototype : {};
+var vendor$1 = proto$1.matches
+  || proto$1.matchesSelector
+  || proto$1.webkitMatchesSelector
+  || proto$1.mozMatchesSelector
+  || proto$1.msMatchesSelector
+  || proto$1.oMatchesSelector;
+
+var matchesSelector$1 = match$1;
+
+/**
+ * Match `el` to `selector`.
+ *
+ * @param {Element} el
+ * @param {String} selector
+ * @return {Boolean}
+ * @api public
+ */
+
+function match$1(el, selector) {
+  if (!el || el.nodeType !== 1) return false;
+  if (vendor$1) return vendor$1.call(el, selector);
+  var nodes = el.parentNode.querySelectorAll(selector);
+  for (var i = 0; i < nodes.length; i++) {
+    if (nodes[i] == el) return true;
+  }
+  return false;
+}
+
+function query(selector, el) {
+  el = el || document;
+
+  return el.querySelector(selector);
+}
+
+function all(selector, el) {
+  el = el || document;
+
+  return el.querySelectorAll(selector);
+}
+
+function remove(el) {
+  el.parentNode && el.parentNode.removeChild(el);
+}
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/tiny-svg/dist/index.esm.js":
+/*!*************************************************!*\
+  !*** ./node_modules/tiny-svg/dist/index.esm.js ***!
+  \*************************************************/
+/*! exports provided: append, appendTo, attr, classes, clear, clone, create, innerSVG, prepend, prependTo, remove, replace, transform, on, off, createPoint, createMatrix, createTransform, select, selectAll */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "append", function() { return append; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "appendTo", function() { return appendTo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attr", function() { return attr; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "classes", function() { return classes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clear", function() { return clear; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clone", function() { return clone; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "create", function() { return create; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "innerSVG", function() { return innerSVG; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "prepend", function() { return prepend; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "prependTo", function() { return prependTo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "remove", function() { return remove; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "replace", function() { return replace; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transform", function() { return transform; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "on", function() { return on; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "off", function() { return off; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPoint", function() { return createPoint; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMatrix", function() { return createMatrix; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createTransform", function() { return createTransform; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "select", function() { return select; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "selectAll", function() { return selectAll; });
+function ensureImported(element, target) {
+
+  if (element.ownerDocument !== target.ownerDocument) {
+    try {
+      // may fail on webkit
+      return target.ownerDocument.importNode(element, true);
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  return element;
+}
+
+/**
+ * appendTo utility
+ */
+
+/**
+ * Append a node to a target element and return the appended node.
+ *
+ * @param  {SVGElement} element
+ * @param  {SVGElement} target
+ *
+ * @return {SVGElement} the appended node
+ */
+function appendTo(element, target) {
+  return target.appendChild(ensureImported(element, target));
+}
+
+/**
+ * append utility
+ */
+
+/**
+ * Append a node to an element
+ *
+ * @param  {SVGElement} element
+ * @param  {SVGElement} node
+ *
+ * @return {SVGElement} the element
+ */
+function append(target, node) {
+  appendTo(node, target);
+  return target;
+}
+
+/**
+ * attribute accessor utility
+ */
+
+var LENGTH_ATTR = 2;
+
+var CSS_PROPERTIES = {
+  'alignment-baseline': 1,
+  'baseline-shift': 1,
+  'clip': 1,
+  'clip-path': 1,
+  'clip-rule': 1,
+  'color': 1,
+  'color-interpolation': 1,
+  'color-interpolation-filters': 1,
+  'color-profile': 1,
+  'color-rendering': 1,
+  'cursor': 1,
+  'direction': 1,
+  'display': 1,
+  'dominant-baseline': 1,
+  'enable-background': 1,
+  'fill': 1,
+  'fill-opacity': 1,
+  'fill-rule': 1,
+  'filter': 1,
+  'flood-color': 1,
+  'flood-opacity': 1,
+  'font': 1,
+  'font-family': 1,
+  'font-size': LENGTH_ATTR,
+  'font-size-adjust': 1,
+  'font-stretch': 1,
+  'font-style': 1,
+  'font-variant': 1,
+  'font-weight': 1,
+  'glyph-orientation-horizontal': 1,
+  'glyph-orientation-vertical': 1,
+  'image-rendering': 1,
+  'kerning': 1,
+  'letter-spacing': 1,
+  'lighting-color': 1,
+  'marker': 1,
+  'marker-end': 1,
+  'marker-mid': 1,
+  'marker-start': 1,
+  'mask': 1,
+  'opacity': 1,
+  'overflow': 1,
+  'pointer-events': 1,
+  'shape-rendering': 1,
+  'stop-color': 1,
+  'stop-opacity': 1,
+  'stroke': 1,
+  'stroke-dasharray': 1,
+  'stroke-dashoffset': 1,
+  'stroke-linecap': 1,
+  'stroke-linejoin': 1,
+  'stroke-miterlimit': 1,
+  'stroke-opacity': 1,
+  'stroke-width': LENGTH_ATTR,
+  'text-anchor': 1,
+  'text-decoration': 1,
+  'text-rendering': 1,
+  'unicode-bidi': 1,
+  'visibility': 1,
+  'word-spacing': 1,
+  'writing-mode': 1
+};
+
+
+function getAttribute(node, name) {
+  if (CSS_PROPERTIES[name]) {
+    return node.style[name];
+  } else {
+    return node.getAttributeNS(null, name);
+  }
+}
+
+function setAttribute(node, name, value) {
+  var hyphenated = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
+  var type = CSS_PROPERTIES[hyphenated];
+
+  if (type) {
+    // append pixel unit, unless present
+    if (type === LENGTH_ATTR && typeof value === 'number') {
+      value = String(value) + 'px';
+    }
+
+    node.style[hyphenated] = value;
+  } else {
+    node.setAttributeNS(null, name, value);
+  }
+}
+
+function setAttributes(node, attrs) {
+
+  var names = Object.keys(attrs), i, name;
+
+  for (i = 0, name; (name = names[i]); i++) {
+    setAttribute(node, name, attrs[name]);
+  }
+}
+
+/**
+ * Gets or sets raw attributes on a node.
+ *
+ * @param  {SVGElement} node
+ * @param  {Object} [attrs]
+ * @param  {String} [name]
+ * @param  {String} [value]
+ *
+ * @return {String}
+ */
+function attr(node, name, value) {
+  if (typeof name === 'string') {
+    if (value !== undefined) {
+      setAttribute(node, name, value);
+    } else {
+      return getAttribute(node, name);
+    }
+  } else {
+    setAttributes(node, name);
+  }
+
+  return node;
+}
+
+/**
+ * Clear utility
+ */
+function index(arr, obj) {
+  if (arr.indexOf) {
+    return arr.indexOf(obj);
+  }
+
+
+  for (var i = 0; i < arr.length; ++i) {
+    if (arr[i] === obj) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+var re = /\s+/;
+
+var toString = Object.prototype.toString;
+
+function defined(o) {
+  return typeof o !== 'undefined';
+}
+
+/**
+ * Wrap `el` in a `ClassList`.
+ *
+ * @param {Element} el
+ * @return {ClassList}
+ * @api public
+ */
+
+function classes(el) {
+  return new ClassList(el);
+}
+
+function ClassList(el) {
+  if (!el || !el.nodeType) {
+    throw new Error('A DOM element reference is required');
+  }
+  this.el = el;
+  this.list = el.classList;
+}
+
+/**
+ * Add class `name` if not already present.
+ *
+ * @param {String} name
+ * @return {ClassList}
+ * @api public
+ */
+
+ClassList.prototype.add = function(name) {
+
+  // classList
+  if (this.list) {
+    this.list.add(name);
+    return this;
+  }
+
+  // fallback
+  var arr = this.array();
+  var i = index(arr, name);
+  if (!~i) {
+    arr.push(name);
+  }
+
+  if (defined(this.el.className.baseVal)) {
+    this.el.className.baseVal = arr.join(' ');
+  } else {
+    this.el.className = arr.join(' ');
+  }
+
+  return this;
+};
+
+/**
+ * Remove class `name` when present, or
+ * pass a regular expression to remove
+ * any which match.
+ *
+ * @param {String|RegExp} name
+ * @return {ClassList}
+ * @api public
+ */
+
+ClassList.prototype.remove = function(name) {
+  if ('[object RegExp]' === toString.call(name)) {
+    return this.removeMatching(name);
+  }
+
+  // classList
+  if (this.list) {
+    this.list.remove(name);
+    return this;
+  }
+
+  // fallback
+  var arr = this.array();
+  var i = index(arr, name);
+  if (~i) {
+    arr.splice(i, 1);
+  }
+  this.el.className.baseVal = arr.join(' ');
+  return this;
+};
+
+/**
+ * Remove all classes matching `re`.
+ *
+ * @param {RegExp} re
+ * @return {ClassList}
+ * @api private
+ */
+
+ClassList.prototype.removeMatching = function(re) {
+  var arr = this.array();
+  for (var i = 0; i < arr.length; i++) {
+    if (re.test(arr[i])) {
+      this.remove(arr[i]);
+    }
+  }
+  return this;
+};
+
+/**
+ * Toggle class `name`, can force state via `force`.
+ *
+ * For browsers that support classList, but do not support `force` yet,
+ * the mistake will be detected and corrected.
+ *
+ * @param {String} name
+ * @param {Boolean} force
+ * @return {ClassList}
+ * @api public
+ */
+
+ClassList.prototype.toggle = function(name, force) {
+  // classList
+  if (this.list) {
+    if (defined(force)) {
+      if (force !== this.list.toggle(name, force)) {
+        this.list.toggle(name); // toggle again to correct
+      }
+    } else {
+      this.list.toggle(name);
+    }
+    return this;
+  }
+
+  // fallback
+  if (defined(force)) {
+    if (!force) {
+      this.remove(name);
+    } else {
+      this.add(name);
+    }
+  } else {
+    if (this.has(name)) {
+      this.remove(name);
+    } else {
+      this.add(name);
+    }
+  }
+
+  return this;
+};
+
+/**
+ * Return an array of classes.
+ *
+ * @return {Array}
+ * @api public
+ */
+
+ClassList.prototype.array = function() {
+  var className = this.el.getAttribute('class') || '';
+  var str = className.replace(/^\s+|\s+$/g, '');
+  var arr = str.split(re);
+  if ('' === arr[0]) {
+    arr.shift();
+  }
+  return arr;
+};
+
+/**
+ * Check if class `name` is present.
+ *
+ * @param {String} name
+ * @return {ClassList}
+ * @api public
+ */
+
+ClassList.prototype.has =
+ClassList.prototype.contains = function(name) {
+  return (
+    this.list ?
+      this.list.contains(name) :
+      !! ~index(this.array(), name)
+  );
+};
+
+function remove(element) {
+  var parent = element.parentNode;
+
+  if (parent) {
+    parent.removeChild(element);
+  }
+
+  return element;
+}
+
+/**
+ * Clear utility
+ */
+
+/**
+ * Removes all children from the given element
+ *
+ * @param  {DOMElement} element
+ * @return {DOMElement} the element (for chaining)
+ */
+function clear(element) {
+  var child;
+
+  while ((child = element.firstChild)) {
+    remove(child);
+  }
+
+  return element;
+}
+
+function clone(element) {
+  return element.cloneNode(true);
+}
+
+var ns = {
+  svg: 'http://www.w3.org/2000/svg'
+};
+
+/**
+ * DOM parsing utility
+ */
+
+var SVG_START = '<svg xmlns="' + ns.svg + '"';
+
+function parse(svg) {
+
+  var unwrap = false;
+
+  // ensure we import a valid svg document
+  if (svg.substring(0, 4) === '<svg') {
+    if (svg.indexOf(ns.svg) === -1) {
+      svg = SVG_START + svg.substring(4);
+    }
+  } else {
+    // namespace svg
+    svg = SVG_START + '>' + svg + '</svg>';
+    unwrap = true;
+  }
+
+  var parsed = parseDocument(svg);
+
+  if (!unwrap) {
+    return parsed;
+  }
+
+  var fragment = document.createDocumentFragment();
+
+  var parent = parsed.firstChild;
+
+  while (parent.firstChild) {
+    fragment.appendChild(parent.firstChild);
+  }
+
+  return fragment;
+}
+
+function parseDocument(svg) {
+
+  var parser;
+
+  // parse
+  parser = new DOMParser();
+  parser.async = false;
+
+  return parser.parseFromString(svg, 'text/xml');
+}
+
+/**
+ * Create utility for SVG elements
+ */
+
+
+/**
+ * Create a specific type from name or SVG markup.
+ *
+ * @param {String} name the name or markup of the element
+ * @param {Object} [attrs] attributes to set on the element
+ *
+ * @returns {SVGElement}
+ */
+function create(name, attrs) {
+  var element;
+
+  if (name.charAt(0) === '<') {
+    element = parse(name).firstChild;
+    element = document.importNode(element, true);
+  } else {
+    element = document.createElementNS(ns.svg, name);
+  }
+
+  if (attrs) {
+    attr(element, attrs);
+  }
+
+  return element;
+}
+
+/**
+ * Events handling utility
+ */
+
+function on(node, event, listener, useCapture) {
+  node.addEventListener(event, listener, useCapture);
+}
+
+function off(node, event, listener, useCapture) {
+  node.removeEventListener(event, listener, useCapture);
+}
+
+/**
+ * Geometry helpers
+ */
+
+// fake node used to instantiate svg geometry elements
+var node = create('svg');
+
+function extend(object, props) {
+  var i, k, keys = Object.keys(props);
+
+  for (i = 0; (k = keys[i]); i++) {
+    object[k] = props[k];
+  }
+
+  return object;
+}
+
+
+function createPoint(x, y) {
+  var point = node.createSVGPoint();
+
+  switch (arguments.length) {
+  case 0:
+    return point;
+  case 2:
+    x = {
+      x: x,
+      y: y
+    };
+    break;
+  }
+
+  return extend(point, x);
+}
+
+/**
+ * Create matrix via args.
+ *
+ * @example
+ *
+ * createMatrix({ a: 1, b: 1 });
+ * createMatrix();
+ * createMatrix(1, 2, 0, 0, 30, 20);
+ *
+ * @return {SVGMatrix}
+ */
+function createMatrix(a, b, c, d, e, f) {
+  var matrix = node.createSVGMatrix();
+
+  switch (arguments.length) {
+  case 0:
+    return matrix;
+  case 1:
+    return extend(matrix, a);
+  case 6:
+    return extend(matrix, {
+      a: a,
+      b: b,
+      c: c,
+      d: d,
+      e: e,
+      f: f
+    });
+  }
+}
+
+function createTransform(matrix) {
+  if (matrix) {
+    return node.createSVGTransformFromMatrix(matrix);
+  } else {
+    return node.createSVGTransform();
+  }
+}
+
+/**
+ * Serialization util
+ */
+
+var TEXT_ENTITIES = /([&<>]{1})/g;
+var ATTR_ENTITIES = /([\n\r"]{1})/g;
+
+var ENTITY_REPLACEMENT = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '\''
+};
+
+function escape(str, pattern) {
+
+  function replaceFn(match, entity) {
+    return ENTITY_REPLACEMENT[entity] || entity;
+  }
+
+  return str.replace(pattern, replaceFn);
+}
+
+function serialize(node, output) {
+
+  var i, len, attrMap, attrNode, childNodes;
+
+  switch (node.nodeType) {
+  // TEXT
+  case 3:
+    // replace special XML characters
+    output.push(escape(node.textContent, TEXT_ENTITIES));
+    break;
+
+  // ELEMENT
+  case 1:
+    output.push('<', node.tagName);
+
+    if (node.hasAttributes()) {
+      attrMap = node.attributes;
+      for (i = 0, len = attrMap.length; i < len; ++i) {
+        attrNode = attrMap.item(i);
+        output.push(' ', attrNode.name, '="', escape(attrNode.value, ATTR_ENTITIES), '"');
+      }
+    }
+
+    if (node.hasChildNodes()) {
+      output.push('>');
+      childNodes = node.childNodes;
+      for (i = 0, len = childNodes.length; i < len; ++i) {
+        serialize(childNodes.item(i), output);
+      }
+      output.push('</', node.tagName, '>');
+    } else {
+      output.push('/>');
+    }
+    break;
+
+  // COMMENT
+  case 8:
+    output.push('<!--', escape(node.nodeValue, TEXT_ENTITIES), '-->');
+    break;
+
+  // CDATA
+  case 4:
+    output.push('<![CDATA[', node.nodeValue, ']]>');
+    break;
+
+  default:
+    throw new Error('unable to handle node ' + node.nodeType);
+  }
+
+  return output;
+}
+
+/**
+ * innerHTML like functionality for SVG elements.
+ * based on innerSVG (https://code.google.com/p/innersvg)
+ */
+
+
+function set(element, svg) {
+
+  var parsed = parse(svg);
+
+  // clear element contents
+  clear(element);
+
+  if (!svg) {
+    return;
+  }
+
+  if (!isFragment(parsed)) {
+    // extract <svg> from parsed document
+    parsed = parsed.documentElement;
+  }
+
+  var nodes = slice(parsed.childNodes);
+
+  // import + append each node
+  for (var i = 0; i < nodes.length; i++) {
+    appendTo(nodes[i], element);
+  }
+
+}
+
+function get(element) {
+  var child = element.firstChild,
+      output = [];
+
+  while (child) {
+    serialize(child, output);
+    child = child.nextSibling;
+  }
+
+  return output.join('');
+}
+
+function isFragment(node) {
+  return node.nodeName === '#document-fragment';
+}
+
+function innerSVG(element, svg) {
+
+  if (svg !== undefined) {
+
+    try {
+      set(element, svg);
+    } catch (e) {
+      throw new Error('error parsing SVG: ' + e.message);
+    }
+
+    return element;
+  } else {
+    return get(element);
+  }
+}
+
+
+function slice(arr) {
+  return Array.prototype.slice.call(arr);
+}
+
+/**
+ * Selection utilities
+ */
+
+function select(node, selector) {
+  return node.querySelector(selector);
+}
+
+function selectAll(node, selector) {
+  var nodes = node.querySelectorAll(selector);
+
+  return [].map.call(nodes, function(element) {
+    return element;
+  });
+}
+
+/**
+ * prependTo utility
+ */
+
+/**
+ * Prepend a node to a target element and return the prepended node.
+ *
+ * @param  {SVGElement} node
+ * @param  {SVGElement} target
+ *
+ * @return {SVGElement} the prepended node
+ */
+function prependTo(node, target) {
+  return target.insertBefore(ensureImported(node, target), target.firstChild || null);
+}
+
+/**
+ * prepend utility
+ */
+
+/**
+ * Prepend a node to a target element
+ *
+ * @param  {SVGElement} target
+ * @param  {SVGElement} node
+ *
+ * @return {SVGElement} the target element
+ */
+function prepend(target, node) {
+  prependTo(node, target);
+  return target;
+}
+
+/**
+ * Replace utility
+ */
+
+function replace(element, replacement) {
+  element.parentNode.replaceChild(ensureImported(replacement, element), element);
+  return replacement;
+}
+
+/**
+ * transform accessor utility
+ */
+
+function wrapMatrix(transformList, transform) {
+  if (transform instanceof SVGMatrix) {
+    return transformList.createSVGTransformFromMatrix(transform);
+  }
+
+  return transform;
+}
+
+
+function setTransforms(transformList, transforms) {
+  var i, t;
+
+  transformList.clear();
+
+  for (i = 0; (t = transforms[i]); i++) {
+    transformList.appendItem(wrapMatrix(transformList, t));
+  }
+}
+
+/**
+ * Get or set the transforms on the given node.
+ *
+ * @param {SVGElement} node
+ * @param  {SVGTransform|SVGMatrix|Array<SVGTransform|SVGMatrix>} [transforms]
+ *
+ * @return {SVGTransform} the consolidated transform
+ */
+function transform(node, transforms) {
+  var transformList = node.transform.baseVal;
+
+  if (transforms) {
+
+    if (!Array.isArray(transforms)) {
+      transforms = [ transforms ];
+    }
+
+    setTransforms(transformList, transforms);
+  }
+
+  return transformList.consolidate();
+}
+
+
+
 
 /***/ }),
 

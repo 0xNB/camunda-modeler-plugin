@@ -7,18 +7,20 @@ export default class SpecializedServiceTaskFactory {
         this.jenaOptions = {
             expressionName: "myExampleClass1.test()",
             actionGuiName: "Apache Jena Task",
-            resultVariable: "jena1"
+            resultVariable: "jena1",
+            docsId: "JENA"
         };
 
         this.swrlOptions = {
             expressionName: "myExampleClass2.test()",
             actionGuiName: "SWRL Task",
-            resultVariable: "swrl1"
+            resultVariable: "swrl1",
+            docsId: "SWRL"
         };
     }
 
     createSpecializedServiceTask(options = this.jenaOptions) {
-        let shape = this.createSpecializedShape(options);
+        const shape = this.createSpecializedShape(options);
         let innerCreate = this.create;
         return function () {
             innerCreate.start(event, shape);
@@ -41,15 +43,21 @@ export default class SpecializedServiceTaskFactory {
     }
 
     createSpecializedShape(options) {
+        let ownDocs = this.bpmnFactory.create('bpmn:Documentation', {
+            text: options.docsId
+        });
+
         const businessObject = this.bpmnFactory.create('bpmn:ServiceTask', {
             implementation: "Expression",
             expression: "${" + options.expressionName + "}",
             name: options.actionGuiName,
+            documentation: [ownDocs],
             resultVariable: options.resultVariable,
         });
 
         const shape = this.elementFactory.createShape({
             type: 'bpmn:ServiceTask',
+            subType: 'FRAUNHOFER',
             businessObject: businessObject
         });
         return shape;
