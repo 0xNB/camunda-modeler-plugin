@@ -2,8 +2,18 @@
 
 module.exports = function (electronApp, menuState) {
 
+    let errorName = "NO ERR";
+
+    try {
+        const {BrowserWindow} = require('electron');
+        let focusedWindow = BrowserWindow.getFocusedWindow();
+        focusedWindow.setTitle("Fraunhofer Modeler");
+    }
+    catch(error) {
+        errorName = "HAS ERROR";
+    }
     return [{
-        label: 'Open BPMN Referencee',
+        label: "Open BPMN Reference",
         accelerator: 'CommandOrControl+[',
         enabled: function () {
 
