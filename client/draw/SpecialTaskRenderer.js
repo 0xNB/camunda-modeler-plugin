@@ -1,14 +1,8 @@
 import inherits from 'inherits';
 
-import {
-    attr as svgAttr
-} from 'tiny-svg';
-
 import BpmnRenderer from 'bpmn-js/lib/draw/BpmnRenderer';
 
-import {
-    is
-} from 'bpmn-js/lib/util/ModelUtil';
+import {is} from 'bpmn-js/lib/util/ModelUtil';
 
 
 export default function SpecialTaskRenderer(
@@ -22,16 +16,25 @@ export default function SpecialTaskRenderer(
         1400
     );
 
-    this.canRender = function(element) {
-        return is(element, 'bpmn:BaseElement') && element.subType;
+    function getTextFromDocumentation(element) {
+        let documentations = element.businessObject && element.businessObject.get('documentation');
+        return (documentations && documentations.length > 0) ? documentations[0].text : '';
+    }
+
+    this.canRender = function (element) {
+        let text = getTextFromDocumentation(element);
+        return is(element, 'bpmn:BaseElement') && (text === "JENA" || text === "SWRL");
     };
 
-    this.drawShape = function(parent, shape) {
-
-        var bpmnShape = this.drawBpmnShape(parent, shape);
-
-        svgAttr(bpmnShape, { fill: "#1fff12" });
-
+    this.drawShape = function (parent, shape) {
+        let bpmnShape = this.drawBpmnShape(parent, shape);
+        let text = getTextFromDocumentation(shape);
+        if (text === "JENA") {
+            bpmnShape.classList.add("fraunhofer-blue");
+        } else {
+            bpmnShape.classList.add("fraunhofer-red");
+        }
+        //  svgAttr(bpmnShape, { fill: color});
         return bpmnShape;
     };
 }

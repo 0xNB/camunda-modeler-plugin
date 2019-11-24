@@ -26,7 +26,9 @@ export default function ExampleExtensionService(eventBus) {
     eventBus.on('element.click', log);
 
     function log(e) {
-       // debugger;
+        let element = e.element;
+        let documentations = element.businessObject && element.businessObject.get('documentation');
+        let text = (documentations && documentations.length > 0) ? documentations[0].text : '';
         console.log('element.hover', 'on', e.element.id);
         console.log(`${e.element.id}`);
     }

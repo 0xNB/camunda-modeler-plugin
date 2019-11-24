@@ -124,7 +124,9 @@ function ExampleExtensionService(eventBus) {
     eventBus.on('element.click', log);
 
     function log(e) {
-       // debugger;
+        let element = e.element;
+        let documentations = element.businessObject && element.businessObject.get('documentation');
+        let text = (documentations && documentations.length > 0) ? documentations[0].text : '';
         console.log('element.hover', 'on', e.element.id);
         console.log(`${e.element.id}`);
     }
@@ -549,11 +551,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SpecialTaskRenderer; });
 /* harmony import */ var inherits__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! inherits */ "./node_modules/inherits/inherits_browser.js");
 /* harmony import */ var inherits__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(inherits__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var tiny_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tiny-svg */ "./node_modules/tiny-svg/dist/index.esm.js");
-/* harmony import */ var bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/draw/BpmnRenderer */ "./node_modules/bpmn-js/lib/draw/BpmnRenderer.js");
-/* harmony import */ var bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bpmn-js/lib/util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
-
-
+/* harmony import */ var bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bpmn-js/lib/draw/BpmnRenderer */ "./node_modules/bpmn-js/lib/draw/BpmnRenderer.js");
+/* harmony import */ var bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/util/ModelUtil */ "./node_modules/bpmn-js/lib/util/ModelUtil.js");
 
 
 
@@ -565,30 +564,39 @@ function SpecialTaskRenderer(
     config, eventBus, styles,
     pathMap, canvas, textRenderer) {
 
-    bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_2__["default"].call(
+    bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_1__["default"].call(
         this,
         config, eventBus, styles,
         pathMap, canvas, textRenderer,
         1400
     );
 
-    this.canRender = function(element) {
-        return Object(bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_3__["is"])(element, 'bpmn:BaseElement') && element.subType;
+    function getTextFromDocumentation(element) {
+        let documentations = element.businessObject && element.businessObject.get('documentation');
+        return (documentations && documentations.length > 0) ? documentations[0].text : '';
+    }
+
+    this.canRender = function (element) {
+        let text = getTextFromDocumentation(element);
+        return Object(bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(element, 'bpmn:BaseElement') && (text === "JENA" || text === "SWRL");
     };
 
-    this.drawShape = function(parent, shape) {
-
-        var bpmnShape = this.drawBpmnShape(parent, shape);
-
-        Object(tiny_svg__WEBPACK_IMPORTED_MODULE_1__["attr"])(bpmnShape, { fill: "#1fff12" });
-
+    this.drawShape = function (parent, shape) {
+        let bpmnShape = this.drawBpmnShape(parent, shape);
+        let text = getTextFromDocumentation(shape);
+        if (text === "JENA") {
+            bpmnShape.classList.add("fraunhofer-blue");
+        } else {
+            bpmnShape.classList.add("fraunhofer-red");
+        }
+        //  svgAttr(bpmnShape, { fill: color});
         return bpmnShape;
     };
 }
 
-inherits__WEBPACK_IMPORTED_MODULE_0___default()(SpecialTaskRenderer, bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_2__["default"]);
+inherits__WEBPACK_IMPORTED_MODULE_0___default()(SpecialTaskRenderer, bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_1__["default"]);
 
-SpecialTaskRenderer.prototype.drawBpmnShape = bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_2__["default"].prototype.drawShape;
+SpecialTaskRenderer.prototype.drawBpmnShape = bpmn_js_lib_draw_BpmnRenderer__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.drawShape;
 
 
 SpecialTaskRenderer.$inject = [

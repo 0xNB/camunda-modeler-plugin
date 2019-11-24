@@ -1,13 +1,25 @@
+:root {
+    --fraunhofer-red: lightcoral;
+    --fraunhofer-blue: lightblue;
+    --fraunhofer-bg: #fdf6e3 ;
+}
+
 body {
-    background: orchid;
+    background: var(--fraunhofer-bg);
 /*    test*/
 }
 
 .fraunhofer-red {
-    color: darkred !important;
+    color: var(--fraunhofer-red)!important;
+    fill: var(--fraunhofer-red)!important;
 }
 
 
 .fraunhofer-blue {
-    color: darkblue !important;
+    color: var(--fraunhofer-blue) !important;
+    fill: var(--fraunhofer-blue) !important;
+}
+
+.djs-visual > rect {
+    fill: var(--fraunhofer-bg);
 }
