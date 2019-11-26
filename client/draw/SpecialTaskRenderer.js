@@ -23,7 +23,7 @@ export default function SpecialTaskRenderer(
 
     this.canRender = function (element) {
         let text = getTextFromDocumentation(element);
-        return is(element, 'bpmn:BaseElement') && (text === "JENA" || text === "SWRL");
+        return (is(element, 'bpmn:BaseElement') && (text === "JENA" || text === "SWRL"));
     };
 
     this.drawShape = function (parent, shape) {

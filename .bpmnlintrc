@@ -1,6 +1,5 @@
 {
   "extends": [
-    "bpmnlint:recommended",
     "plugin:custom/recommended"
   ],
   "rules": {

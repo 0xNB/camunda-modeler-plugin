@@ -97,38 +97,8 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolver", function() { return resolver; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
-/* harmony import */ var bpmnlint_rules_conditional_flows__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bpmnlint/rules/conditional-flows */ "./node_modules/bpmnlint/rules/conditional-flows.js");
-/* harmony import */ var bpmnlint_rules_conditional_flows__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_conditional_flows__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var bpmnlint_rules_end_event_required__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bpmnlint/rules/end-event-required */ "./node_modules/bpmnlint/rules/end-event-required.js");
-/* harmony import */ var bpmnlint_rules_end_event_required__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_end_event_required__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var bpmnlint_rules_event_sub_process_typed_start_event__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmnlint/rules/event-sub-process-typed-start-event */ "./node_modules/bpmnlint/rules/event-sub-process-typed-start-event.js");
-/* harmony import */ var bpmnlint_rules_event_sub_process_typed_start_event__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_event_sub_process_typed_start_event__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var bpmnlint_rules_fake_join__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bpmnlint/rules/fake-join */ "./node_modules/bpmnlint/rules/fake-join.js");
-/* harmony import */ var bpmnlint_rules_fake_join__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_fake_join__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var bpmnlint_rules_label_required__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bpmnlint/rules/label-required */ "./node_modules/bpmnlint/rules/label-required.js");
-/* harmony import */ var bpmnlint_rules_label_required__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_label_required__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var bpmnlint_rules_no_complex_gateway__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bpmnlint/rules/no-complex-gateway */ "./node_modules/bpmnlint/rules/no-complex-gateway.js");
-/* harmony import */ var bpmnlint_rules_no_complex_gateway__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_complex_gateway__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var bpmnlint_rules_no_disconnected__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! bpmnlint/rules/no-disconnected */ "./node_modules/bpmnlint/rules/no-disconnected.js");
-/* harmony import */ var bpmnlint_rules_no_disconnected__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_disconnected__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var bpmnlint_rules_no_duplicate_sequence_flows__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! bpmnlint/rules/no-duplicate-sequence-flows */ "./node_modules/bpmnlint/rules/no-duplicate-sequence-flows.js");
-/* harmony import */ var bpmnlint_rules_no_duplicate_sequence_flows__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_duplicate_sequence_flows__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var bpmnlint_rules_no_gateway_join_fork__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! bpmnlint/rules/no-gateway-join-fork */ "./node_modules/bpmnlint/rules/no-gateway-join-fork.js");
-/* harmony import */ var bpmnlint_rules_no_gateway_join_fork__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_gateway_join_fork__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var bpmnlint_rules_no_implicit_split__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! bpmnlint/rules/no-implicit-split */ "./node_modules/bpmnlint/rules/no-implicit-split.js");
-/* harmony import */ var bpmnlint_rules_no_implicit_split__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_implicit_split__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var bpmnlint_rules_no_inclusive_gateway__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! bpmnlint/rules/no-inclusive-gateway */ "./node_modules/bpmnlint/rules/no-inclusive-gateway.js");
-/* harmony import */ var bpmnlint_rules_no_inclusive_gateway__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_inclusive_gateway__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var bpmnlint_rules_single_blank_start_event__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! bpmnlint/rules/single-blank-start-event */ "./node_modules/bpmnlint/rules/single-blank-start-event.js");
-/* harmony import */ var bpmnlint_rules_single_blank_start_event__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_single_blank_start_event__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var bpmnlint_rules_single_event_definition__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! bpmnlint/rules/single-event-definition */ "./node_modules/bpmnlint/rules/single-event-definition.js");
-/* harmony import */ var bpmnlint_rules_single_event_definition__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_single_event_definition__WEBPACK_IMPORTED_MODULE_12__);
-/* harmony import */ var bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! bpmnlint/rules/start-event-required */ "./node_modules/bpmnlint/rules/start-event-required.js");
-/* harmony import */ var bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! bpmnlint/rules/sub-process-blank-start-event */ "./node_modules/bpmnlint/rules/sub-process-blank-start-event.js");
-/* harmony import */ var bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! bpmnlint-plugin-custom/rules/no-transitive-tasks */ "./client/lint/camunda-modeler-custom-linter-rules-plugin/rules/no-transitive-tasks.js");
-/* harmony import */ var bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bpmnlint-plugin-custom/rules/no-transitive-tasks */ "./client/lint/camunda-modeler-custom-linter-rules-plugin/rules/no-transitive-tasks.js");
+/* harmony import */ var bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_0__);
 
 var cache = {};
 
@@ -160,21 +130,6 @@ Resolver.prototype.resolveConfig = function(pkg, configName) {
 var resolver = new Resolver();
 
 var rules = {
-  "conditional-flows": "error",
-  "end-event-required": "error",
-  "event-sub-process-typed-start-event": "error",
-  "fake-join": "warn",
-  "label-required": "error",
-  "no-complex-gateway": "error",
-  "no-disconnected": "error",
-  "no-duplicate-sequence-flows": "error",
-  "no-gateway-join-fork": "error",
-  "no-implicit-split": "error",
-  "no-inclusive-gateway": "error",
-  "single-blank-start-event": "error",
-  "single-event-definition": "error",
-  "start-event-required": "error",
-  "sub-process-blank-start-event": "error",
   "custom/no-transitive-tasks": "warn"
 };
 
@@ -194,52 +149,7 @@ var bundle = {
 
 
 
-cache['bpmnlint/conditional-flows'] = bpmnlint_rules_conditional_flows__WEBPACK_IMPORTED_MODULE_0___default.a;
-
-
-cache['bpmnlint/end-event-required'] = bpmnlint_rules_end_event_required__WEBPACK_IMPORTED_MODULE_1___default.a;
-
-
-cache['bpmnlint/event-sub-process-typed-start-event'] = bpmnlint_rules_event_sub_process_typed_start_event__WEBPACK_IMPORTED_MODULE_2___default.a;
-
-
-cache['bpmnlint/fake-join'] = bpmnlint_rules_fake_join__WEBPACK_IMPORTED_MODULE_3___default.a;
-
-
-cache['bpmnlint/label-required'] = bpmnlint_rules_label_required__WEBPACK_IMPORTED_MODULE_4___default.a;
-
-
-cache['bpmnlint/no-complex-gateway'] = bpmnlint_rules_no_complex_gateway__WEBPACK_IMPORTED_MODULE_5___default.a;
-
-
-cache['bpmnlint/no-disconnected'] = bpmnlint_rules_no_disconnected__WEBPACK_IMPORTED_MODULE_6___default.a;
-
-
-cache['bpmnlint/no-duplicate-sequence-flows'] = bpmnlint_rules_no_duplicate_sequence_flows__WEBPACK_IMPORTED_MODULE_7___default.a;
-
-
-cache['bpmnlint/no-gateway-join-fork'] = bpmnlint_rules_no_gateway_join_fork__WEBPACK_IMPORTED_MODULE_8___default.a;
-
-
-cache['bpmnlint/no-implicit-split'] = bpmnlint_rules_no_implicit_split__WEBPACK_IMPORTED_MODULE_9___default.a;
-
-
-cache['bpmnlint/no-inclusive-gateway'] = bpmnlint_rules_no_inclusive_gateway__WEBPACK_IMPORTED_MODULE_10___default.a;
-
-
-cache['bpmnlint/single-blank-start-event'] = bpmnlint_rules_single_blank_start_event__WEBPACK_IMPORTED_MODULE_11___default.a;
-
-
-cache['bpmnlint/single-event-definition'] = bpmnlint_rules_single_event_definition__WEBPACK_IMPORTED_MODULE_12___default.a;
-
-
-cache['bpmnlint/start-event-required'] = bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13___default.a;
-
-
-cache['bpmnlint/sub-process-blank-start-event'] = bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14___default.a;
-
-
-cache['bpmnlint-plugin-custom/no-transitive-tasks'] = bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15___default.a;
+cache['bpmnlint-plugin-custom/no-transitive-tasks'] = bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 /***/ }),
 
@@ -286,7 +196,7 @@ function ExampleExtensionService(eventBus) {
         let text = (documentations && documentations.length > 0) ? documentations[0].text : '';
         console.log('element.hover', 'on', e.element.id);
         console.log(`${e.element.id}`);
-        debugger;
+       // debugger;
     }
 }
 
@@ -335,12 +245,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomContextPad; });
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SpecializedServiceTaskFactory */ "./client/custom/SpecializedServiceTaskFactory.js");
-/* harmony import */ var bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/features/modeling/util/ModelingUtil */ "./node_modules/bpmn-js/lib/features/modeling/util/ModelingUtil.js");
-/* harmony import */ var bpmn_js_lib_util_DiUtil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bpmn-js/lib/util/DiUtil */ "./node_modules/bpmn-js/lib/util/DiUtil.js");
-
+/* harmony import */ var _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SpecializedServiceTaskFactory */ "./client/custom/SpecializedServiceTaskFactory.js");
+/* harmony import */ var bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bpmn-js/lib/features/modeling/util/ModelingUtil */ "./node_modules/bpmn-js/lib/features/modeling/util/ModelingUtil.js");
+/* harmony import */ var bpmn_js_lib_util_DiUtil__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmn-js/lib/util/DiUtil */ "./node_modules/bpmn-js/lib/util/DiUtil.js");
 
 
 
@@ -353,7 +260,7 @@ class CustomContextPad {
         this.elementFactory = elementFactory;
         this.bpmnFactory = bpmnFactory;
         this.translate = translate;
-        this.serviceFactory = new _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_1__["default"](this.create, bpmnFactory, elementFactory);
+        this.serviceFactory = new _SpecializedServiceTaskFactory__WEBPACK_IMPORTED_MODULE_0__["default"](this.create, bpmnFactory, elementFactory);
         this.filterList = [
             "append.append-task",
             "append.text-annotation",
@@ -362,8 +269,9 @@ class CustomContextPad {
         if (config.autoPlace !== false) {
             this.autoPlace = injector.get('autoPlace', false);
         }
-
-        contextPad._providers[0].__proto__.getContextPadEntries = this.wrapActionsProxy(contextPad._providers[0].__proto__.getContextPadEntries);
+        for(let provider of contextPad._providers) {
+            provider.__proto__.getContextPadEntries = this.wrapActionsProxy(provider.__proto__.getContextPadEntries);
+        }
         contextPad.registerProvider(this);
     }
 
@@ -394,7 +302,7 @@ class CustomContextPad {
         console.log(`our actions ` + JSON.stringify(actions));
 
         let actionsToBeAdded = {};
-        if (!(Object(bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_2__["isAny"])(businessObject, ['bpmn:Lane', 'bpmn:Participant']) && Object(bpmn_js_lib_util_DiUtil__WEBPACK_IMPORTED_MODULE_3__["isExpanded"])(businessObject))) {
+        if (!(Object(bpmn_js_lib_features_modeling_util_ModelingUtil__WEBPACK_IMPORTED_MODULE_1__["isAny"])(businessObject, ['bpmn:Lane', 'bpmn:Participant']) && Object(bpmn_js_lib_util_DiUtil__WEBPACK_IMPORTED_MODULE_2__["isExpanded"])(businessObject))) {
             actionsToBeAdded = {
                 'append.jena-task': {
                     group: 'model',
@@ -761,7 +669,7 @@ function SpecialTaskRenderer(
 
     this.canRender = function (element) {
         let text = getTextFromDocumentation(element);
-        return Object(bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(element, 'bpmn:BaseElement') && (text === "JENA" || text === "SWRL");
+        return (Object(bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(element, 'bpmn:BaseElement') && (text === "JENA" || text === "SWRL"));
     };
 
     this.drawShape = function (parent, shape) {
@@ -932,34 +840,44 @@ module.exports = function() {
         if(!isForking(node))
             return;
 
-        const outgoingFromBase = node.outgoing;
+        let outgoingFromBase = node.outgoing;
 
         let outgoingFromBaseReachable = new Array(outgoingFromBase.length);
         for(let i = 0; i < outgoingFromBaseReachable.length; i++) {
             outgoingFromBaseReachable[i] = [];
         }
 
-        for(let [i, node] of outgoingFromBase.entries()) {
-                let nodeOutgoing = node.outgoing || [];
-                outgoingFromBaseReachable[i].concat(nodeOutgoing);
+        for(let [i, outgoingFlowFromBase] of outgoingFromBase.entries()) {
+                let intermediateTarget = outgoingFlowFromBase.targetRef || {};
+                let intermediateTargetFlows = intermediateTarget.outgoing || [];
+                for(let endFlow of intermediateTargetFlows) {
+                    let endTarget = endFlow.targetRef;
+                    outgoingFromBaseReachable[i].push(endTarget);
+                }
         }
 
-        let hasTransitiveDependency = true;
+        let hasTransitiveDependency = false;
+        let transitiveFlows = [];
 
-      /*  for(let i = 0; i < outgoingFromBaseReachable.length; i++) {
-            for(let j = 0; j < outgoingFromBaseReachable.length; i++) {
+        for(let i = 0; (i < outgoingFromBaseReachable.length) && (i < outgoingFromBase.length); i++) {
+            for(let j = 0; j < outgoingFromBaseReachable.length; j++) {
                 if(i === j)
                     continue;
-                if(outgoingFromBaseReachable[j].includes(outgoingFromBase[i])) {
+                if(outgoingFromBaseReachable[j].includes(outgoingFromBase[i].targetRef)) {
                     hasTransitiveDependency = true;
+                    transitiveFlows.push(outgoingFromBase[i]);
                 }
             }
-        }*/
+        }
 
       console.log(outgoingFromBaseReachable);
 
         if (hasTransitiveDependency) {
             reporter.report(node.id, 'Element has transitive dependency');
+            for(let transitiveFlow of transitiveFlows) {
+                transitiveFlow.hasError = true;
+                reporter.report(transitiveFlow.id, 'Flow is transitive');
+            }
         }
     }
 
@@ -4440,762 +4358,6 @@ module.exports = function traverse(element, fn) {
   });
 };
 
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/conditional-flows.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/conditional-flows.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/**
- * A rule that checks that sequence flows outgoing from a
- * conditional forking gateway or activity are
- * either default flows _or_ have a condition attached
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!isConditionalForking(node)) {
-      return;
-    }
-
-    const outgoing = node.outgoing || [];
-
-    outgoing.forEach((flow) => {
-      const missingCondition = (
-        !hasCondition(flow) &&
-        !isDefaultFlow(node, flow)
-      );
-
-      if (missingCondition) {
-        reporter.report(flow.id, 'Sequence flow is missing condition');
-      }
-    });
-  }
-
-  return {
-    check
-  };
-
-};
-
-
-// helpers /////////////////////////////
-
-function isConditionalForking(node) {
-
-  const defaultFlow = node['default'];
-  const outgoing = node.outgoing || [];
-
-  return defaultFlow || outgoing.find(hasCondition);
-}
-
-function hasCondition(flow) {
-  return !!flow.conditionExpression;
-}
-
-function isDefaultFlow(node, flow) {
-  return node['default'] === flow;
-}
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/end-event-required.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/end-event-required.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is,
-  isAny
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-
-/**
- * A rule that checks the presence of an end event per scope.
- */
-module.exports = function() {
-
-  function hasEndEvent(node) {
-    const flowElements = node.flowElements || [];
-
-    return (
-      flowElements.some(node => is(node, 'bpmn:EndEvent'))
-    );
-  }
-
-  function check(node, reporter) {
-
-    if (!isAny(node, [
-      'bpmn:Process',
-      'bpmn:SubProcess'
-    ])) {
-      return;
-    }
-
-    if (!hasEndEvent(node)) {
-      const type = is(node, 'bpmn:SubProcess') ? 'Sub process' : 'Process';
-
-      reporter.report(node.id, type + ' is missing end event');
-    }
-  }
-
-  return { check };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/event-sub-process-typed-start-event.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/event-sub-process-typed-start-event.js ***!
-  \****************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-/**
- * A rule that checks that start events inside an event sub-process
- * are typed.
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!is(node, 'bpmn:SubProcess') || !node.triggeredByEvent) {
-      return;
-    }
-
-    const flowElements = node.flowElements || [];
-
-    flowElements.forEach(function(flowElement) {
-
-      if (!is(flowElement, 'bpmn:StartEvent')) {
-        return false;
-      }
-
-      const eventDefinitions = flowElement.eventDefinitions || [];
-
-      if (eventDefinitions.length === 0) {
-        reporter.report(flowElement.id, 'Start event is missing event definition');
-      }
-    });
-  }
-
-  return {
-    check
-  };
-
-};
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/fake-join.js":
-/*!**************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/fake-join.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  isAny
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-/**
- * A rule that checks that no fake join is modeled by attempting
- * to give a task or event join semantics.
- *
- * Users should model a parallel joining gateway
- * to achieve the desired behavior.
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!isAny(node, [
-      'bpmn:Task',
-      'bpmn:Event'
-    ])) {
-      return;
-    }
-
-    const incoming = node.incoming || [];
-
-    if (incoming.length > 1) {
-      reporter.report(node.id, 'Incoming flows do not join');
-    }
-  }
-
-  return {
-    check
-  };
-
-};
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/helper.js":
-/*!***********************************************!*\
-  !*** ./node_modules/bpmnlint/rules/helper.js ***!
-  \***********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-/**
- * Create a checker that disallows the given element type.
- *
- * @param {String} type
- *
- * @return {Function} ruleImpl
- */
-function disallowNodeType(type) {
-
-  return function() {
-
-    function check(node, reporter) {
-
-      if (is(node, type)) {
-        reporter.report(node.id, 'Element has disallowed type <' + type + '>');
-      }
-    }
-
-    return {
-      check
-    };
-
-  };
-
-}
-
-module.exports.disallowNodeType = disallowNodeType;
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/label-required.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/label-required.js ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is,
-  isAny
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-
-/**
- * A rule that checks the presence of a label.
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (isAny(node, [
-      'bpmn:ParallelGateway',
-      'bpmn:EventBasedGateway'
-    ])) {
-      return;
-    }
-
-    // ignore joining gateways
-    if (is(node, 'bpmn:Gateway') && !isForking(node)) {
-      return;
-    }
-
-    if (is(node, 'bpmn:BoundaryEvent')) {
-      return;
-    }
-
-    // ignore sub-processes
-    if (is(node, 'bpmn:SubProcess')) {
-      // TODO(nikku): better ignore expanded sub-processes only
-      return;
-    }
-
-    // ignore sequence flow without condition
-    if (is(node, 'bpmn:SequenceFlow') && !hasCondition(node)) {
-      return;
-    }
-
-    // ignore data objects and artifacts for now
-    if (isAny(node, [
-      'bpmn:FlowNode',
-      'bpmn:SequenceFlow',
-      'bpmn:Participant',
-      'bpmn:Lane'
-    ])) {
-
-      const name = (node.name || '').trim();
-
-      if (name.length === 0) {
-        reporter.report(node.id, 'Element is missing label/name');
-      }
-    }
-  }
-
-  return { check };
-};
-
-
-// helpers ////////////////////////
-
-function isForking(node) {
-  const outgoing = node.outgoing || [];
-
-  return outgoing.length > 1;
-}
-
-function hasCondition(node) {
-  return node.conditionExpression;
-}
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/no-complex-gateway.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/no-complex-gateway.js ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const disallowNodeType = __webpack_require__(/*! ./helper */ "./node_modules/bpmnlint/rules/helper.js").disallowNodeType;
-
-module.exports = disallowNodeType('bpmn:ComplexGateway');
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/no-disconnected.js":
-/*!********************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/no-disconnected.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  isAny
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-
-/**
- * A rule that verifies that there exists no disconnected
- * flow elements, i.e. elements without incoming
- * _or_ outgoing sequence flows
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!isAny(node, [
-      'bpmn:Task',
-      'bpmn:Gateway',
-      'bpmn:SubProcess',
-      'bpmn:Event'
-    ]) || node.triggeredByEvent) {
-      return;
-    }
-
-    const incoming = node.incoming || [];
-    const outgoing = node.outgoing || [];
-
-    if (!incoming.length && !outgoing.length) {
-      reporter.report(node.id, 'Element is not connected');
-    }
-  }
-
-  return {
-    check
-  };
-
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/no-duplicate-sequence-flows.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/no-duplicate-sequence-flows.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-/**
- * A rule that verifies that there are no disconnected
- * flow elements, i.e. elements without incoming
- * _or_ outgoing sequence flows
- */
-module.exports = function() {
-
-  const keyed = {};
-
-  const outgoingReported = {};
-  const incomingReported = {};
-
-  function check(node, reporter) {
-
-    if (!is(node, 'bpmn:SequenceFlow')) {
-      return;
-    }
-
-    const key = flowKey(node);
-
-    if (key in keyed) {
-      reporter.report(node.id, 'SequenceFlow is a duplicate');
-
-      const sourceId = node.sourceRef.id;
-      const targetId = node.targetRef.id;
-
-      console.log(sourceId, targetId);
-
-      if (!outgoingReported[sourceId]) {
-        reporter.report(sourceId, 'Duplicate outgoing sequence flows');
-
-        outgoingReported[sourceId] = true;
-      }
-
-      if (!incomingReported[targetId]) {
-        reporter.report(targetId, 'Duplicate incoming sequence flows');
-
-        incomingReported[targetId] = true;
-      }
-    } else {
-      keyed[key] = node;
-    }
-  }
-
-  return {
-    check
-  };
-
-};
-
-
-// helpers /////////////////
-
-function flowKey(flow) {
-  const conditionExpression = flow.conditionExpression;
-
-  const condition = conditionExpression ? conditionExpression.body : '';
-  const source = flow.sourceRef ? flow.sourceRef.id : flow.id;
-  const target = flow.targetRef ? flow.targetRef.id : flow.id;
-
-  return source + '#' + target + '#' + condition;
-}
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/no-gateway-join-fork.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/no-gateway-join-fork.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-
-/**
- * A rule that checks, whether a gateway forks and joins
- * at the same time.
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!is(node, 'bpmn:Gateway')) {
-      return;
-    }
-
-    const incoming = node.incoming || [];
-    const outgoing = node.outgoing || [];
-
-    if (incoming.length > 1 && outgoing.length > 1) {
-      reporter.report(node.id, 'Gateway forks and joins');
-    }
-  }
-
-  return {
-    check
-  };
-
-};
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/no-implicit-split.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/no-implicit-split.js ***!
-  \**********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  isAny
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-
-/**
- * A rule that checks that no implicit split is modeled
- * starting from a task.
- *
- * users should model the parallel splitting gateway
- * explicitly instead.
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!isAny(node, [
-      'bpmn:Task',
-      'bpmn:Event'
-    ])) {
-      return;
-    }
-
-    const outgoing = node.outgoing || [];
-
-    const outgoingWithoutCondition = outgoing.filter((flow) => {
-      return !hasCondition(flow) && !isDefaultFlow(node, flow);
-    });
-
-    if (outgoingWithoutCondition.length > 1) {
-      reporter.report(node.id, 'Flow splits implicitly');
-    }
-  }
-
-  return {
-    check
-  };
-
-};
-
-
-// helpers /////////////////////////////
-
-function hasCondition(flow) {
-  return !!flow.conditionExpression;
-}
-
-function isDefaultFlow(node, flow) {
-  return node['default'] === flow;
-}
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/no-inclusive-gateway.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/no-inclusive-gateway.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const disallowNodeType = __webpack_require__(/*! ./helper */ "./node_modules/bpmnlint/rules/helper.js").disallowNodeType;
-
-module.exports = disallowNodeType('bpmn:InclusiveGateway');
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/single-blank-start-event.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/single-blank-start-event.js ***!
-  \*****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-/**
- * A rule that checks whether not more than one blank start event
- * exists per scope.
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!is(node, 'bpmn:FlowElementsContainer')) {
-      return;
-    }
-
-    const flowElements = node.flowElements || [];
-
-    const blankStartEvents = flowElements.filter(function(flowElement) {
-
-      if (!is(flowElement, 'bpmn:StartEvent')) {
-        return false;
-      }
-
-      const eventDefinitions = flowElement.eventDefinitions || [];
-
-      return eventDefinitions.length === 0;
-    });
-
-    if (blankStartEvents.length > 1) {
-      const type = is(node, 'bpmn:SubProcess') ? 'Sub process' : 'Process';
-
-      reporter.report(node.id, type + ' has multiple blank start events');
-    }
-  }
-
-  return {
-    check
-  };
-
-};
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/single-event-definition.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/single-event-definition.js ***!
-  \****************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-
-/**
- * A rule that verifies that an event contains maximum one event definition.
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!is(node, 'bpmn:Event')) {
-      return;
-    }
-
-    const eventDefinitions = node.eventDefinitions || [];
-
-    if (eventDefinitions.length > 1) {
-      reporter.report(node.id, 'Event has multiple event definitions');
-    }
-  }
-
-  return {
-    check
-  };
-
-};
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/start-event-required.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/start-event-required.js ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is,
-  isAny
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-
-/**
- * A rule that checks for the presence of a start event per scope.
- */
-module.exports = function() {
-
-  function hasStartEvent(node) {
-    const flowElements = node.flowElements || [];
-
-    return (
-      flowElements.some(node => is(node, 'bpmn:StartEvent'))
-    );
-  }
-
-  function check(node, reporter) {
-
-    if (!isAny(node, [
-      'bpmn:Process',
-      'bpmn:SubProcess'
-    ])) {
-      return;
-    }
-
-    if (!hasStartEvent(node)) {
-      const type = is(node, 'bpmn:SubProcess') ? 'Sub process' : 'Process';
-
-      reporter.report(node.id, type + ' is missing start event');
-    }
-  }
-
-  return { check };
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/bpmnlint/rules/sub-process-blank-start-event.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/bpmnlint/rules/sub-process-blank-start-event.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-const {
-  is
-} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
-
-
-/**
- * A rule that checks that start events inside a normal sub-processes
- * are blank (do not have an event definition).
- */
-module.exports = function() {
-
-  function check(node, reporter) {
-
-    if (!is(node, 'bpmn:SubProcess') || node.triggeredByEvent) {
-      return;
-    }
-
-    const flowElements = node.flowElements || [];
-
-    flowElements.forEach(function(flowElement) {
-
-      if (!is(flowElement, 'bpmn:StartEvent')) {
-        return false;
-      }
-
-      const eventDefinitions = flowElement.eventDefinitions || [];
-
-      if (eventDefinitions.length > 0) {
-        reporter.report(flowElement.id, 'Start event must be blank');
-      }
-    });
-  }
-
-  return {
-    check
-  };
-
-};
 
 /***/ }),
 

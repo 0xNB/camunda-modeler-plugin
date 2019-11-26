@@ -13,34 +13,44 @@ module.exports = function() {
         if(!isForking(node))
             return;
 
-        const outgoingFromBase = node.outgoing;
+        let outgoingFromBase = node.outgoing;
 
         let outgoingFromBaseReachable = new Array(outgoingFromBase.length);
         for(let i = 0; i < outgoingFromBaseReachable.length; i++) {
             outgoingFromBaseReachable[i] = [];
         }
 
-        for(let [i, node] of outgoingFromBase.entries()) {
-                let nodeOutgoing = node.outgoing || [];
-                outgoingFromBaseReachable[i].concat(nodeOutgoing);
+        for(let [i, outgoingFlowFromBase] of outgoingFromBase.entries()) {
+                let intermediateTarget = outgoingFlowFromBase.targetRef || {};
+                let intermediateTargetFlows = intermediateTarget.outgoing || [];
+                for(let endFlow of intermediateTargetFlows) {
+                    let endTarget = endFlow.targetRef;
+                    outgoingFromBaseReachable[i].push(endTarget);
+                }
         }
 
-        let hasTransitiveDependency = true;
+        let hasTransitiveDependency = false;
+        let transitiveFlows = [];
 
-      /*  for(let i = 0; i < outgoingFromBaseReachable.length; i++) {
-            for(let j = 0; j < outgoingFromBaseReachable.length; i++) {
+        for(let i = 0; (i < outgoingFromBaseReachable.length) && (i < outgoingFromBase.length); i++) {
+            for(let j = 0; j < outgoingFromBaseReachable.length; j++) {
                 if(i === j)
                     continue;
-                if(outgoingFromBaseReachable[j].includes(outgoingFromBase[i])) {
+                if(outgoingFromBaseReachable[j].includes(outgoingFromBase[i].targetRef)) {
                     hasTransitiveDependency = true;
+                    transitiveFlows.push(outgoingFromBase[i]);
                 }
             }
-        }*/
+        }
 
       console.log(outgoingFromBaseReachable);
 
         if (hasTransitiveDependency) {
             reporter.report(node.id, 'Element has transitive dependency');
+            for(let transitiveFlow of transitiveFlows) {
+                transitiveFlow.hasError = true;
+                reporter.report(transitiveFlow.id, 'Flow is transitive');
+            }
         }
     }
 

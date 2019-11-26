@@ -63,6 +63,7 @@ body {
 
 .bjsl-icon-error {
     background-color: #cc3300;
+
     color: white;
 
     /* color: #cc3300; */
@@ -71,7 +72,6 @@ body {
 .bjsl-icon-warning {
     background-color: #f7c71a;
     color: white;
-
     /* color: #f7c71a; */
 }
 
@@ -135,6 +135,7 @@ body {
 
 .bjsl-issues .warning svg {
     color: #f7c71a;
+    left: 50%;
 }
 
 .bjsl-issues a {

@@ -1,4 +1,3 @@
-import {forEach} from "lodash";
 import SpecializedServiceTaskFactory from "./SpecializedServiceTaskFactory";
 import {isAny} from "bpmn-js/lib/features/modeling/util/ModelingUtil";
 import {isExpanded} from "bpmn-js/lib/util/DiUtil";
@@ -20,8 +19,9 @@ export default class CustomContextPad {
         if (config.autoPlace !== false) {
             this.autoPlace = injector.get('autoPlace', false);
         }
-
-        contextPad._providers[0].__proto__.getContextPadEntries = this.wrapActionsProxy(contextPad._providers[0].__proto__.getContextPadEntries);
+        for(let provider of contextPad._providers) {
+            provider.__proto__.getContextPadEntries = this.wrapActionsProxy(provider.__proto__.getContextPadEntries);
+        }
         contextPad.registerProvider(this);
     }
 

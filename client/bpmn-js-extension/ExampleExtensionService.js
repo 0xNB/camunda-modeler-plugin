@@ -31,7 +31,7 @@ export default function ExampleExtensionService(eventBus) {
         let text = (documentations && documentations.length > 0) ? documentations[0].text : '';
         console.log('element.hover', 'on', e.element.id);
         console.log(`${e.element.id}`);
-        debugger;
+       // debugger;
     }
 }
 
