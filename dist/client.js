@@ -127,6 +127,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13__);
 /* harmony import */ var bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! bpmnlint/rules/sub-process-blank-start-event */ "./node_modules/bpmnlint/rules/sub-process-blank-start-event.js");
 /* harmony import */ var bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! bpmnlint-plugin-custom/rules/no-transitive-tasks */ "./client/lint/camunda-modeler-custom-linter-rules-plugin/rules/no-transitive-tasks.js");
+/* harmony import */ var bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15__);
 
 var cache = {};
 
@@ -172,7 +174,8 @@ var rules = {
   "single-blank-start-event": "error",
   "single-event-definition": "error",
   "start-event-required": "error",
-  "sub-process-blank-start-event": "error"
+  "sub-process-blank-start-event": "error",
+  "custom/no-transitive-tasks": "warn"
 };
 
 var config = {
@@ -235,6 +238,9 @@ cache['bpmnlint/start-event-required'] = bpmnlint_rules_start_event_required__WE
 
 cache['bpmnlint/sub-process-blank-start-event'] = bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14___default.a;
 
+
+cache['bpmnlint-plugin-custom/no-transitive-tasks'] = bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15___default.a;
+
 /***/ }),
 
 /***/ "./client/bpmn-js-extension/ExampleExtensionService.js":
@@ -280,6 +286,7 @@ function ExampleExtensionService(eventBus) {
         let text = (documentations && documentations.length > 0) ? documentations[0].text : '';
         console.log('element.hover', 'on', e.element.id);
         console.log(`${e.element.id}`);
+        debugger;
     }
 }
 
@@ -877,20 +884,18 @@ class BpmnLinter {
 
     constructor(eventBus) {
         window.localStorage.setItem(LINTING_STATE_KEY, JSON.stringify(true));
-        eventBus.on('linting.toggle', this.toggleLinting.bind(this));
+        eventBus.on('linting.toggle', (event) => {
+            console.log(`Linting toggled`);
+            const {
+                active
+            } = event;
+            this.setLintingActive(active);
+        });
     }
 
     static getLintingActive(active) {
         const str = window.localStorage.getItem(LINTING_STATE_KEY);
         return str && JSON.parse(str) || false;
-    }
-
-    toggleLinting (event) {
-        console.log(`Linting toggled`);
-        const {
-            active
-        } = event;
-        this.setLintingActive(active);
     }
 
     setLintingActive(active) {
@@ -901,6 +906,72 @@ class BpmnLinter {
 BpmnLinter.$inject = [
     'eventBus'
 ];
+
+
+/***/ }),
+
+/***/ "./client/lint/camunda-modeler-custom-linter-rules-plugin/rules/no-transitive-tasks.js":
+/*!*********************************************************************************************!*\
+  !*** ./client/lint/camunda-modeler-custom-linter-rules-plugin/rules/no-transitive-tasks.js ***!
+  \*********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+    is
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+const MAX_DEPTHS = 3;
+
+/**
+ * Rule that reports manual tasks being used.
+ */
+module.exports = function() {
+
+    function check(node, reporter) {
+        if(!isForking(node))
+            return;
+
+        const outgoingFromBase = node.outgoing;
+
+        let outgoingFromBaseReachable = new Array(outgoingFromBase.length);
+        for(let i = 0; i < outgoingFromBaseReachable.length; i++) {
+            outgoingFromBaseReachable[i] = [];
+        }
+
+        for(let [i, node] of outgoingFromBase.entries()) {
+                let nodeOutgoing = node.outgoing || [];
+                outgoingFromBaseReachable[i].concat(nodeOutgoing);
+        }
+
+        let hasTransitiveDependency = true;
+
+      /*  for(let i = 0; i < outgoingFromBaseReachable.length; i++) {
+            for(let j = 0; j < outgoingFromBaseReachable.length; i++) {
+                if(i === j)
+                    continue;
+                if(outgoingFromBaseReachable[j].includes(outgoingFromBase[i])) {
+                    hasTransitiveDependency = true;
+                }
+            }
+        }*/
+
+      console.log(outgoingFromBaseReachable);
+
+        if (hasTransitiveDependency) {
+            reporter.report(node.id, 'Element has transitive dependency');
+        }
+    }
+
+    return {
+        check: check
+    };
+};
+
+function isForking(node) {
+    const outgoing = node.outgoing || [];
+    return outgoing.length > 1;
+}
 
 
 /***/ }),

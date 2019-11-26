@@ -23,6 +23,7 @@
   "devDependencies": {
     "bpmn-js-bpmnlint": "^0.13.1",
     "bpmnlint": "^6.3.0",
+    "bpmnlint-plugin-custom": "file:client/lint/camunda-modeler-custom-linter-rules-plugin",
     "bpmnlint-loader": "^0.1.4",
     "camunda-modeler-plugin-helpers": "^3.1.0",
     "electron": "^7.1.2",
@@ -32,12 +33,13 @@
   },
   "dependencies": {
     "bpmn-js": "^6.0.2",
+    "bpmnlint-utils": "^1.0.2",
+    "camunda-modeler-plugin-helpers": "latest",
     "diagram-js": "^6.0.1",
     "electron-menu": "^1.0.0",
     "inherits": "^2.0.4",
     "lodash": "^4.17.15",
     "lodash-decorators": "^6.0.1",
-    "tiny-svg": "^2.2.2",
-    "camunda-modeler-plugin-helpers": "latest"
+    "tiny-svg": "^2.2.2"
   }
 }

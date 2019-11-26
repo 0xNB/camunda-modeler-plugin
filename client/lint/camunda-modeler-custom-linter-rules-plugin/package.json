@@ -1,0 +1,15 @@
+{
+  "name": "camunda-modeler-custom-linter-rules-plugin",
+  "version": "1.0.0",
+  "description": "Plugin for bpmnlint",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bpmnlint",
+    "plug-in"
+  ],
+  "author": "Niklas Betten",
+  "license": "MIT"
+}

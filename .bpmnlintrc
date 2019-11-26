@@ -1,5 +1,9 @@
 {
   "extends": [
-    "bpmnlint:recommended"
-  ]
+    "bpmnlint:recommended",
+    "plugin:custom/recommended"
+  ],
+  "rules": {
+    "custom/no-transitive-tasks": "warn"
+  }
 }
