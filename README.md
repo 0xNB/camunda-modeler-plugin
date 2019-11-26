@@ -3,6 +3,8 @@
 [![Compatible with Camunda Modeler version 3.3](https://img.shields.io/badge/Camunda%20Modeler-3.3+-blue.svg)](https://github.com/camunda/camunda-modeler)
 [![pipeline status](https://gitlab-ext.iosb.fraunhofer.de/betnik/camunda-modeler-plugin/badges/master/pipeline.svg)](https://gitlab-ext.iosb.fraunhofer.de/betnik/camunda-modeler-plugin/commits/master)
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
+
 This research plugin for the [Camunda Modeler](https://github.com/camunda/camunda-modeler) aims to aid the development of Apache Jena and SWRL pipelines.
 
 
