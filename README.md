@@ -1,4 +1,4 @@
-# Camunda Modeler Plugin Example
+# Camunda Modeler Fraunhofer Plugin
 
 [![Compatible with Camunda Modeler version 3.3](https://img.shields.io/badge/Camunda%20Modeler-3.3+-blue.svg)](https://github.com/camunda/camunda-modeler)
 [![pipeline status](https://gitlab-ext.iosb.fraunhofer.de/betnik/camunda-modeler-plugin/badges/master/pipeline.svg)](https://gitlab-ext.iosb.fraunhofer.de/betnik/camunda-modeler-plugin/commits/master)
@@ -50,6 +50,9 @@ npm run all
 
 * [List of existing plug-ins](https://github.com/camunda/camunda-modeler-plugins)
 * [Plug-ins documentation](https://github.com/camunda/camunda-modeler/tree/master/docs/plugins)
+* [BPMN Lint](https://github.com/bpmn-io/bpmnlint)
+* [Camunda Modeler Custom Linter](https://github.com/camunda/camunda-modeler-linter-plugin)
+* [Camunda Modeler Custom Linter Plugin Rules](https://github.com/camunda/camunda-modeler-custom-linter-rules-plugin)
 
 
 ## Licence
