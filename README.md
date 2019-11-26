@@ -48,11 +48,17 @@ npm run all
 
 ## Additional Resources
 
+### General Camunda Modeler Resources 
+
 * [List of existing plug-ins](https://github.com/camunda/camunda-modeler-plugins)
 * [Plug-ins documentation](https://github.com/camunda/camunda-modeler/tree/master/docs/plugins)
+
+### BPMN Lint Resources 
+
 * [BPMN Lint](https://github.com/bpmn-io/bpmnlint)
 * [Camunda Modeler Custom Linter](https://github.com/camunda/camunda-modeler-linter-plugin)
 * [Camunda Modeler Custom Linter Plugin Rules](https://github.com/camunda/camunda-modeler-custom-linter-rules-plugin)
+* [List of available bpmn lint rules](https://github.com/bpmn-io/bpmnlint/tree/master/docs/rules)
 
 
 ## Licence
