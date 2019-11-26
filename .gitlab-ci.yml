@@ -24,7 +24,7 @@ build_main:
     - cp dist output/dist
     - cp client/styles/styles.css output/client/styles/styles.css
     - cp menu output/menu
-    artifacts:
+  artifacts:
       paths:
         - output
       expire_in: 2 mos
