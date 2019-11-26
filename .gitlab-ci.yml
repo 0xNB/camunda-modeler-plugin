@@ -1,0 +1,30 @@
+image: node:10.16.3
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - test
+  - build
+
+test_core:
+  stage: test
+  script:
+    - echo "No test implemented yet."
+
+build_main:
+  stage: build
+  script:
+    - npm install
+    - npm run all
+    - mkdir -p output/dist
+    - mkdir -p output/client/styles/
+    - mkdir -p output/menu
+    - cp dist output/dist
+    - cp client/styles/styles.css output/client/styles/styles.css
+    - cp menu output/menu
+    artifacts:
+      paths:
+        - output
+      expire_in: 2 mos

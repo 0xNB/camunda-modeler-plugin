@@ -86,6 +86,157 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./.bpmnlintrc":
+/*!*********************!*\
+  !*** ./.bpmnlintrc ***!
+  \*********************/
+/*! exports provided: resolver, config, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolver", function() { return resolver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
+/* harmony import */ var bpmnlint_rules_conditional_flows__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bpmnlint/rules/conditional-flows */ "./node_modules/bpmnlint/rules/conditional-flows.js");
+/* harmony import */ var bpmnlint_rules_conditional_flows__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_conditional_flows__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var bpmnlint_rules_end_event_required__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bpmnlint/rules/end-event-required */ "./node_modules/bpmnlint/rules/end-event-required.js");
+/* harmony import */ var bpmnlint_rules_end_event_required__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_end_event_required__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var bpmnlint_rules_event_sub_process_typed_start_event__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bpmnlint/rules/event-sub-process-typed-start-event */ "./node_modules/bpmnlint/rules/event-sub-process-typed-start-event.js");
+/* harmony import */ var bpmnlint_rules_event_sub_process_typed_start_event__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_event_sub_process_typed_start_event__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var bpmnlint_rules_fake_join__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bpmnlint/rules/fake-join */ "./node_modules/bpmnlint/rules/fake-join.js");
+/* harmony import */ var bpmnlint_rules_fake_join__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_fake_join__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var bpmnlint_rules_label_required__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bpmnlint/rules/label-required */ "./node_modules/bpmnlint/rules/label-required.js");
+/* harmony import */ var bpmnlint_rules_label_required__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_label_required__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var bpmnlint_rules_no_complex_gateway__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bpmnlint/rules/no-complex-gateway */ "./node_modules/bpmnlint/rules/no-complex-gateway.js");
+/* harmony import */ var bpmnlint_rules_no_complex_gateway__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_complex_gateway__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var bpmnlint_rules_no_disconnected__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! bpmnlint/rules/no-disconnected */ "./node_modules/bpmnlint/rules/no-disconnected.js");
+/* harmony import */ var bpmnlint_rules_no_disconnected__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_disconnected__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var bpmnlint_rules_no_duplicate_sequence_flows__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! bpmnlint/rules/no-duplicate-sequence-flows */ "./node_modules/bpmnlint/rules/no-duplicate-sequence-flows.js");
+/* harmony import */ var bpmnlint_rules_no_duplicate_sequence_flows__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_duplicate_sequence_flows__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var bpmnlint_rules_no_gateway_join_fork__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! bpmnlint/rules/no-gateway-join-fork */ "./node_modules/bpmnlint/rules/no-gateway-join-fork.js");
+/* harmony import */ var bpmnlint_rules_no_gateway_join_fork__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_gateway_join_fork__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var bpmnlint_rules_no_implicit_split__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! bpmnlint/rules/no-implicit-split */ "./node_modules/bpmnlint/rules/no-implicit-split.js");
+/* harmony import */ var bpmnlint_rules_no_implicit_split__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_implicit_split__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var bpmnlint_rules_no_inclusive_gateway__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! bpmnlint/rules/no-inclusive-gateway */ "./node_modules/bpmnlint/rules/no-inclusive-gateway.js");
+/* harmony import */ var bpmnlint_rules_no_inclusive_gateway__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_no_inclusive_gateway__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var bpmnlint_rules_single_blank_start_event__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! bpmnlint/rules/single-blank-start-event */ "./node_modules/bpmnlint/rules/single-blank-start-event.js");
+/* harmony import */ var bpmnlint_rules_single_blank_start_event__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_single_blank_start_event__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var bpmnlint_rules_single_event_definition__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! bpmnlint/rules/single-event-definition */ "./node_modules/bpmnlint/rules/single-event-definition.js");
+/* harmony import */ var bpmnlint_rules_single_event_definition__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_single_event_definition__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! bpmnlint/rules/start-event-required */ "./node_modules/bpmnlint/rules/start-event-required.js");
+/* harmony import */ var bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! bpmnlint/rules/sub-process-blank-start-event */ "./node_modules/bpmnlint/rules/sub-process-blank-start-event.js");
+/* harmony import */ var bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14__);
+
+var cache = {};
+
+/**
+ * A resolver that caches rules and configuration as part of the bundle,
+ * making them accessible in the browser.
+ *
+ * @param {Object} cache
+ */
+function Resolver() {}
+
+Resolver.prototype.resolveRule = function(pkg, ruleName) {
+
+  const rule = cache[pkg + '/' + ruleName];
+
+  if (!rule) {
+    throw new Error('cannot resolve rule <' + pkg + '/' + ruleName + '>');
+  }
+
+  return rule;
+};
+
+Resolver.prototype.resolveConfig = function(pkg, configName) {
+  throw new Error(
+    'cannot resolve config <' + configName + '> in <' + pkg +'>'
+  );
+};
+
+var resolver = new Resolver();
+
+var rules = {
+  "conditional-flows": "error",
+  "end-event-required": "error",
+  "event-sub-process-typed-start-event": "error",
+  "fake-join": "warn",
+  "label-required": "error",
+  "no-complex-gateway": "error",
+  "no-disconnected": "error",
+  "no-duplicate-sequence-flows": "error",
+  "no-gateway-join-fork": "error",
+  "no-implicit-split": "error",
+  "no-inclusive-gateway": "error",
+  "single-blank-start-event": "error",
+  "single-event-definition": "error",
+  "start-event-required": "error",
+  "sub-process-blank-start-event": "error"
+};
+
+var config = {
+  rules: rules
+};
+
+var bundle = {
+  resolver: resolver,
+  config: config
+};
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (bundle);
+
+
+
+
+cache['bpmnlint/conditional-flows'] = bpmnlint_rules_conditional_flows__WEBPACK_IMPORTED_MODULE_0___default.a;
+
+
+cache['bpmnlint/end-event-required'] = bpmnlint_rules_end_event_required__WEBPACK_IMPORTED_MODULE_1___default.a;
+
+
+cache['bpmnlint/event-sub-process-typed-start-event'] = bpmnlint_rules_event_sub_process_typed_start_event__WEBPACK_IMPORTED_MODULE_2___default.a;
+
+
+cache['bpmnlint/fake-join'] = bpmnlint_rules_fake_join__WEBPACK_IMPORTED_MODULE_3___default.a;
+
+
+cache['bpmnlint/label-required'] = bpmnlint_rules_label_required__WEBPACK_IMPORTED_MODULE_4___default.a;
+
+
+cache['bpmnlint/no-complex-gateway'] = bpmnlint_rules_no_complex_gateway__WEBPACK_IMPORTED_MODULE_5___default.a;
+
+
+cache['bpmnlint/no-disconnected'] = bpmnlint_rules_no_disconnected__WEBPACK_IMPORTED_MODULE_6___default.a;
+
+
+cache['bpmnlint/no-duplicate-sequence-flows'] = bpmnlint_rules_no_duplicate_sequence_flows__WEBPACK_IMPORTED_MODULE_7___default.a;
+
+
+cache['bpmnlint/no-gateway-join-fork'] = bpmnlint_rules_no_gateway_join_fork__WEBPACK_IMPORTED_MODULE_8___default.a;
+
+
+cache['bpmnlint/no-implicit-split'] = bpmnlint_rules_no_implicit_split__WEBPACK_IMPORTED_MODULE_9___default.a;
+
+
+cache['bpmnlint/no-inclusive-gateway'] = bpmnlint_rules_no_inclusive_gateway__WEBPACK_IMPORTED_MODULE_10___default.a;
+
+
+cache['bpmnlint/single-blank-start-event'] = bpmnlint_rules_single_blank_start_event__WEBPACK_IMPORTED_MODULE_11___default.a;
+
+
+cache['bpmnlint/single-event-definition'] = bpmnlint_rules_single_event_definition__WEBPACK_IMPORTED_MODULE_12___default.a;
+
+
+cache['bpmnlint/start-event-required'] = bpmnlint_rules_start_event_required__WEBPACK_IMPORTED_MODULE_13___default.a;
+
+
+cache['bpmnlint/sub-process-blank-start-event'] = bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14___default.a;
+
+/***/ }),
+
 /***/ "./client/bpmn-js-extension/ExampleExtensionService.js":
 /*!*************************************************************!*\
   !*** ./client/bpmn-js-extension/ExampleExtensionService.js ***!
@@ -669,6 +820,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bpmn_js_extension__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./bpmn-js-extension */ "./client/bpmn-js-extension/index.js");
 /* harmony import */ var _custom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./custom */ "./client/custom/index.js");
 /* harmony import */ var _draw__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./draw */ "./client/draw/index.js");
+/* harmony import */ var bpmn_js_bpmnlint__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bpmn-js-bpmnlint */ "./node_modules/bpmn-js-bpmnlint/dist/index.esm.js");
+/* harmony import */ var _bpmnlintrc__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../.bpmnlintrc */ "./.bpmnlintrc");
+/* harmony import */ var _lint__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lint */ "./client/lint/index.js");
+/* harmony import */ var _lint_bpmnLinter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./lint/bpmnLinter */ "./client/lint/bpmnLinter.js");
+
+
+
+
 
 
 
@@ -678,6 +837,618 @@ __webpack_require__.r(__webpack_exports__);
 Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerBpmnJSPlugin"])(_bpmn_js_extension__WEBPACK_IMPORTED_MODULE_1__["default"]);
 Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerBpmnJSPlugin"])(_custom__WEBPACK_IMPORTED_MODULE_2__["default"]);
 Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerBpmnJSPlugin"])(_draw__WEBPACK_IMPORTED_MODULE_3__["default"]);
+Object(camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__["registerClientPlugin"])(config => {
+
+    const {
+        additionalModules,
+        ...rest
+    } = config;
+
+    return {
+        ...rest,
+        additionalModules: [
+            ...(additionalModules || []),
+            bpmn_js_bpmnlint__WEBPACK_IMPORTED_MODULE_4__["default"],
+            _lint__WEBPACK_IMPORTED_MODULE_6__["default"]
+        ],
+        linting: {
+            bpmnlint: _bpmnlintrc__WEBPACK_IMPORTED_MODULE_5__["default"],
+            active: _lint_bpmnLinter__WEBPACK_IMPORTED_MODULE_7__["default"].getLintingActive()
+        }
+    }
+}, 'bpmn.modeler.configure');
+
+
+/***/ }),
+
+/***/ "./client/lint/bpmnLinter.js":
+/*!***********************************!*\
+  !*** ./client/lint/bpmnLinter.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BpmnLinter; });
+const LINTING_STATE_KEY = 'camunda-modeler.linter-lugin.active';
+
+class BpmnLinter {
+
+    constructor(eventBus) {
+        window.localStorage.setItem(LINTING_STATE_KEY, JSON.stringify(true));
+        eventBus.on('linting.toggle', this.toggleLinting.bind(this));
+    }
+
+    static getLintingActive(active) {
+        const str = window.localStorage.getItem(LINTING_STATE_KEY);
+        return str && JSON.parse(str) || false;
+    }
+
+    toggleLinting (event) {
+        console.log(`Linting toggled`);
+        const {
+            active
+        } = event;
+        this.setLintingActive(active);
+    }
+
+    setLintingActive(active) {
+        window.localStorage.setItem(LINTING_STATE_KEY, JSON.stringify(active));
+    }
+}
+
+BpmnLinter.$inject = [
+    'eventBus'
+];
+
+
+/***/ }),
+
+/***/ "./client/lint/index.js":
+/*!******************************!*\
+  !*** ./client/lint/index.js ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _bpmnLinter__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bpmnLinter */ "./client/lint/bpmnLinter.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    __init__: [ 'BPMN_LINTING' ],
+    BPMN_LINTING: [ 'type', _bpmnLinter__WEBPACK_IMPORTED_MODULE_0__["default"] ]
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmn-js-bpmnlint/dist/index.esm.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/bpmn-js-bpmnlint/dist/index.esm.js ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var bpmnlint__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bpmnlint */ "./node_modules/bpmnlint/lib/index.js");
+/* harmony import */ var bpmnlint__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bpmnlint__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var min_dash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! min-dash */ "./node_modules/min-dash/dist/index.esm.js");
+/* harmony import */ var min_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! min-dom */ "./node_modules/min-dom/dist/index.esm.js");
+/* harmony import */ var diagram_js_lib_util_EscapeUtil__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! diagram-js/lib/util/EscapeUtil */ "./node_modules/bpmn-js-bpmnlint/node_modules/diagram-js/lib/util/EscapeUtil.js");
+
+
+
+
+
+function EditorActions(injector, linting) {
+  var editorActions = injector.get('editorActions', false);
+
+  editorActions && editorActions.register({
+    toggleLinting: function() {
+      linting.toggle();
+    }
+  });
+}
+
+EditorActions.$inject = [
+  'injector',
+  'linting'
+];
+
+var ErrorSvg = "<svg width=\"12\" height=\"12\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 352 512\"><path fill=\"currentColor\" d=\"M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z\"></path></svg>";
+
+var WarningSvg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\" viewBox=\"0 0 512 512\"><path fill=\"currentColor\" d=\"M288 328.83c-45.518 0-82.419 34.576-82.419 77.229 0 42.652 36.9 77.229 82.419 77.229 45.518 0 82.419-34.577 82.419-77.23 0-42.652-36.9-77.229-82.419-77.229zM207.439 57.034l11.61 204.348c.544 9.334 8.78 16.64 18.755 16.64h100.392c9.975 0 18.211-7.306 18.754-16.64l11.611-204.348c.587-10.082-7.98-18.56-18.754-18.56H226.192c-10.775 0-19.34 8.478-18.753 18.56z\"/></svg>";
+
+var SuccessSvg = "<svg width=\"12\" height=\"12\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path fill=\"currentColor\" d=\"M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z\"></path></svg>";
+
+var OFFSET_TOP = -7,
+    OFFSET_RIGHT = -7;
+
+var LOW_PRIORITY = 500;
+
+var emptyConfig = {
+  resolver: {
+    resolveRule: function() {
+      return null;
+    }
+  },
+  config: {}
+};
+
+var stateToIcon = {
+  error: ErrorSvg,
+  warning: WarningSvg,
+  success: SuccessSvg,
+  inactive: SuccessSvg
+};
+
+function Linting(
+    bpmnjs,
+    canvas,
+    config,
+    elementRegistry,
+    eventBus,
+    overlays
+) {
+  this._bpmnjs = bpmnjs;
+  this._canvas = canvas;
+  this._elementRegistry = elementRegistry;
+  this._eventBus = eventBus;
+  this._overlays = overlays;
+
+  this._issues = {};
+
+  this._active = config && config.active || false;
+  this._linterConfig = emptyConfig;
+
+  this._overlayIds = {};
+
+  var self = this;
+
+  eventBus.on([
+    'import.done',
+    'elements.changed',
+    'linting.configChanged',
+    'linting.toggle'
+  ], LOW_PRIORITY, function(e) {
+    if (self.isActive()) {
+      self.update();
+    }
+  });
+
+  eventBus.on('linting.toggle', function(event) {
+
+    const active = event.active;
+
+    if (!active) {
+      self._clearIssues();
+      self._updateButton();
+    }
+  });
+
+  eventBus.on('diagram.clear', function() {
+    self._clearIssues();
+  });
+
+  var linterConfig = config && config.bpmnlint;
+
+  linterConfig && eventBus.once('diagram.init', function() {
+
+    // bail out if config was already provided
+    // during initialization of other modules
+    if (self.getLinterConfig() !== emptyConfig) {
+      return;
+    }
+
+    try {
+      self.setLinterConfig(linterConfig);
+    } catch (err) {
+      console.error(
+        '[bpmn-js-bpmnlint] Invalid lint rules configured. ' +
+        'Please doublecheck your linting.bpmnlint configuration, ' +
+        'cf. https://github.com/bpmn-io/bpmn-js-bpmnlint#configure-lint-rules'
+      );
+    }
+  });
+
+  this._init();
+}
+
+Linting.prototype.setLinterConfig = function(linterConfig) {
+
+  if (!linterConfig.config || !linterConfig.resolver) {
+    throw new Error('Expected linterConfig = { config, resolver }');
+  }
+
+  this._linterConfig = linterConfig;
+
+  this._eventBus.fire('linting.configChanged');
+};
+
+Linting.prototype.getLinterConfig = function() {
+  return this._linterConfig;
+};
+
+Linting.prototype._init = function() {
+  this._createButton();
+
+  this._updateButton();
+};
+
+Linting.prototype.isActive = function() {
+  return this._active;
+};
+
+Linting.prototype._formatIssues = function(issues) {
+
+  const reports = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["reduce"])(issues, function(reports, ruleReports, rule) {
+
+    return reports.concat(ruleReports.map(function(report) {
+      report.rule = rule;
+
+      return report;
+    }));
+
+  }, []);
+
+  return Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["groupBy"])(reports, function(report) {
+    return report.id;
+  });
+};
+
+/**
+ * Toggle linting on or off.
+ *
+ * @param {boolean} [newActive]
+ *
+ * @return {boolean} the new active state
+ */
+Linting.prototype.toggle = function(newActive) {
+
+  newActive = typeof newActive === 'undefined' ? !this.isActive() : newActive;
+
+  this._setActive(newActive);
+
+  return newActive;
+};
+
+Linting.prototype._setActive = function(active) {
+
+  if (this._active === active) {
+    return;
+  }
+
+  this._active = active;
+
+  this._eventBus.fire('linting.toggle', { active: active });
+};
+
+/**
+ * Update overlays. Always lint and check wether overlays need update or not.
+ */
+Linting.prototype.update = function() {
+  var self = this;
+
+  var definitions = this._bpmnjs.getDefinitions();
+
+  if (!definitions) {
+    return;
+  }
+
+  var lintStart = this._lintStart = Math.random();
+
+  this.lint().then(function(newIssues) {
+
+    if (self._lintStart !== lintStart) {
+      return;
+    }
+
+    newIssues = self._formatIssues(newIssues);
+
+    var remove = {},
+        update = {},
+        add = {};
+
+    for (var id1 in self._issues) {
+      if (!newIssues[id1]) {
+        remove[id1] = self._issues[id1];
+      }
+    }
+
+    for (var id2 in newIssues) {
+      if (!self._issues[id2]) {
+        add[id2] = newIssues[id2];
+      } else {
+        if (newIssues[id2] !== self._issues[id2]) {
+          update[id2] = newIssues[id2];
+        }
+      }
+    }
+
+    remove = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])(remove, update);
+    add = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["assign"])(add, update);
+
+    self._clearOverlays();
+    self._createIssues(add);
+
+    self._issues = newIssues;
+
+    self._updateButton();
+
+    self._fireComplete(newIssues);
+  });
+};
+
+Linting.prototype._fireComplete = function(issues) {
+  this._eventBus.fire('linting.completed', { issues: issues });
+};
+
+Linting.prototype._createIssues = function(issues) {
+  for (var id in issues) {
+    this._createElementIssues(id, issues[id]);
+  }
+};
+
+/**
+ * Create overlays for an elements issues.
+ *
+ * @param {string} elementId - Elements ID.
+ * @param {Array} elementIssues - All element issues including warnings and errors.
+ */
+Linting.prototype._createElementIssues = function(elementId, elementIssues) {
+  var element = this._elementRegistry.get(elementId);
+
+  if (!element) {
+    return;
+  }
+
+  var menuPosition;
+  var position;
+
+  if (element === this._canvas.getRootElement()) {
+    menuPosition = 'bottom-right';
+
+    position = {
+      top: 20,
+      left: 150
+    };
+  } else {
+    menuPosition = 'top-right';
+
+    position = {
+      top: OFFSET_TOP,
+      left: OFFSET_RIGHT
+    };
+  }
+
+  var issuesByType = Object(min_dash__WEBPACK_IMPORTED_MODULE_1__["groupBy"])(elementIssues, function(elementIssue) {
+    return elementIssue.category;
+  });
+
+  var errors = issuesByType.error,
+      warnings = issuesByType.warn;
+
+  if (!errors && !warnings) {
+    return;
+  }
+
+  var $html = Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])(
+    '<div class="bjsl-overlay bjsl-issues-' + menuPosition + '"></div>'
+  );
+
+  var $icon = errors
+    ? Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])('<div class="bjsl-icon bjsl-icon-error">' + ErrorSvg + '</div>')
+    : Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])('<div class="bjsl-icon bjsl-icon-warning">' + WarningSvg + '</div>');
+
+  var $dropdown = Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])('<div class="bjsl-dropdown"></div>');
+  var $dropdownContent = Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])('<div class="bjsl-dropdown-content"></div>');
+  var $issues = Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])('<div class="bjsl-issues"></div>');
+  var $issueList = Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])('<ul></ul>');
+
+  $html.appendChild($icon);
+  $html.appendChild($dropdown);
+
+  $dropdown.appendChild($dropdownContent);
+  $dropdownContent.appendChild($issues);
+
+  $issues.appendChild($issueList);
+
+  if (errors) {
+    this._addErrors($issueList, errors);
+  }
+
+  if (warnings) {
+    this._addWarnings($issueList, warnings);
+  }
+
+  this._overlayIds[elementId] = this._overlays.add(element, 'linting', {
+    position: position,
+    html: $html,
+    scale: {
+      min: .9
+    }
+  });
+};
+
+Linting.prototype._addErrors = function($ul, errors) {
+
+  var self = this;
+
+  errors.forEach(function(error) {
+    self._addEntry($ul, 'error', error);
+  });
+};
+
+Linting.prototype._addWarnings = function($ul, warnings) {
+
+  var self = this;
+
+  warnings.forEach(function(error) {
+    self._addEntry($ul, 'warning', error);
+  });
+};
+
+Linting.prototype._addEntry = function($ul, state, entry) {
+
+  var rule = entry.rule,
+      message = entry.message;
+
+  var icon = stateToIcon[state];
+
+  var $entry = Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])(
+    '<li class="' + state + '">' +
+      icon +
+      '<a title="' + Object(diagram_js_lib_util_EscapeUtil__WEBPACK_IMPORTED_MODULE_3__["escapeHTML"])(rule) + ': ' + Object(diagram_js_lib_util_EscapeUtil__WEBPACK_IMPORTED_MODULE_3__["escapeHTML"])(message) + '" ' +
+         'data-rule="' + Object(diagram_js_lib_util_EscapeUtil__WEBPACK_IMPORTED_MODULE_3__["escapeHTML"])(rule) + '" ' +
+         'data-message="' + Object(diagram_js_lib_util_EscapeUtil__WEBPACK_IMPORTED_MODULE_3__["escapeHTML"])(message) + '"' +
+      '>' +
+        Object(diagram_js_lib_util_EscapeUtil__WEBPACK_IMPORTED_MODULE_3__["escapeHTML"])(message) +
+      '</a>' +
+    '</li>'
+  );
+
+  $ul.appendChild($entry);
+};
+
+Linting.prototype._clearOverlays = function() {
+  this._overlays.remove({ type: 'linting' });
+
+  this._overlayIds = {};
+};
+
+Linting.prototype._clearIssues = function() {
+  this._issues = {};
+
+  this._clearOverlays();
+};
+
+Linting.prototype._setButtonState = function(state, errors, warnings) {
+  var button = this._button;
+
+  var icon = stateToIcon[state];
+
+  var html = icon + '<span>' + errors + ' Errors, ' + warnings + ' Warnings</span>';
+
+  [
+    'error',
+    'inactive',
+    'success',
+    'warning'
+  ].forEach(function(s) {
+    if (state === s) {
+      button.classList.add('bjsl-button-' + s);
+    } else {
+      button.classList.remove('bjsl-button-' + s);
+    }
+  });
+
+  button.innerHTML = html;
+};
+
+Linting.prototype._updateButton = function() {
+
+  if (!this.isActive()) {
+    this._setButtonState('inactive', 0, 0);
+
+    return;
+  }
+
+  var errors = 0,
+      warnings = 0;
+
+  for (var id in this._issues) {
+    this._issues[id].forEach(function(issue) {
+      if (issue.category === 'error') {
+        errors++;
+      } else if (issue.category === 'warn') {
+        warnings++;
+      }
+    });
+  }
+
+  var state = (errors && 'error') || (warnings && 'warning') || 'success';
+
+  this._setButtonState(state, errors, warnings);
+};
+
+Linting.prototype._createButton = function() {
+
+  var self = this;
+
+  this._button = Object(min_dom__WEBPACK_IMPORTED_MODULE_2__["domify"])(
+    '<button class="bjsl-button bjsl-button-inactive" title="Toggle linting"></button>'
+  );
+
+  this._button.addEventListener('click', function() {
+    self.toggle();
+  });
+
+  this._canvas.getContainer().appendChild(this._button);
+};
+
+Linting.prototype.lint = function() {
+  var definitions = this._bpmnjs.getDefinitions();
+
+  var linter = new bpmnlint__WEBPACK_IMPORTED_MODULE_0__["Linter"](this._linterConfig);
+
+  return linter.lint(definitions);
+};
+
+Linting.$inject = [
+  'bpmnjs',
+  'canvas',
+  'config.linting',
+  'elementRegistry',
+  'eventBus',
+  'overlays'
+];
+
+var index = {
+  __init__: [ 'linting', 'lintingEditorActions' ],
+  linting: [ 'type', Linting ],
+  lintingEditorActions: ['type', EditorActions ]
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index);
+//# sourceMappingURL=index.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmn-js-bpmnlint/node_modules/diagram-js/lib/util/EscapeUtil.js":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/bpmn-js-bpmnlint/node_modules/diagram-js/lib/util/EscapeUtil.js ***!
+  \**************************************************************************************/
+/*! exports provided: escapeCSS, escapeHTML */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "escapeHTML", function() { return escapeHTML; });
+/* harmony import */ var css_escape__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! css.escape */ "./node_modules/css.escape/css.escape.js");
+/* harmony import */ var css_escape__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(css_escape__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "escapeCSS", function() { return css_escape__WEBPACK_IMPORTED_MODULE_0___default.a; });
+
+
+var HTML_ESCAPE_MAP = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  '\'': '&#39;'
+};
+
+function escapeHTML(str) {
+  str = '' + str;
+
+  return str && str.replace(/[&<>"']/g, function(match) {
+    return HTML_ESCAPE_MAP[match];
+  });
+}
 
 
 /***/ }),
@@ -2997,6 +3768,1366 @@ function getBusinessObject(element) {
 
 /***/ }),
 
+/***/ "./node_modules/bpmnlint-utils/dist/index.esm.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/bpmnlint-utils/dist/index.esm.js ***!
+  \*******************************************************/
+/*! exports provided: is, isAny */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "is", function() { return is; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isAny", function() { return isAny; });
+/**
+ * Checks whether node is of specific bpmn type.
+ *
+ * @param {ModdleElement} node
+ * @param {String} type
+ *
+ * @return {Boolean}
+ */
+function is(node, type) {
+
+  if (type.indexOf(':') === -1) {
+    type = 'bpmn:' + type;
+  }
+
+  return (
+    (typeof node.$instanceOf === 'function')
+      ? node.$instanceOf(type)
+      : node.$type === type
+  );
+}
+
+/**
+ * Checks whether node has any of the specified types.
+ *
+ * @param {ModdleElement} node
+ * @param {Array<String>} types
+ *
+ * @return {Boolean}
+ */
+function isAny(node, types) {
+  return types.some(function(type) {
+    return is(node, type);
+  });
+}
+
+
+//# sourceMappingURL=index.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/lib/index.js":
+/*!********************************************!*\
+  !*** ./node_modules/bpmnlint/lib/index.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Linter = __webpack_require__(/*! ./linter */ "./node_modules/bpmnlint/lib/linter.js");
+
+module.exports = {
+  Linter
+};
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/lib/linter.js":
+/*!*********************************************!*\
+  !*** ./node_modules/bpmnlint/lib/linter.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const testRule = __webpack_require__(/*! ./test-rule */ "./node_modules/bpmnlint/lib/test-rule.js");
+
+const categoryMap = {
+  0: 'off',
+  1: 'warn',
+  2: 'error'
+};
+
+
+function Linter(options = {}) {
+
+  const {
+    config,
+    resolver
+  } = options;
+
+  if (typeof resolver === 'undefined') {
+    throw new Error('must provide <options.resolver>');
+  }
+
+  this.config = config;
+  this.resolver = resolver;
+
+  this.cachedRules = {};
+  this.cachedConfigs = {};
+}
+
+
+module.exports = Linter;
+
+/**
+ * Applies a rule on the moddleRoot and adds reports to the finalReport
+ *
+ * @param {ModdleElement} moddleRoot
+ *
+ * @param {Object} ruleDefinition.name
+ * @param {Object} ruleDefinition.config
+ * @param {Object} ruleDefinition.category
+ * @param {Rule} ruleDefinition.rule
+ *
+ * @return {Array<ValidationErrors>} rule reports
+ */
+Linter.prototype.applyRule = function applyRule(moddleRoot, ruleDefinition) {
+
+  const {
+    config,
+    rule,
+    category,
+    name
+  } = ruleDefinition;
+
+  try {
+
+    const reports = testRule({
+      moddleRoot,
+      rule,
+      config
+    });
+
+    return reports.map(function(report) {
+      return {
+        ...report,
+        category
+      };
+    });
+  } catch (e) {
+    console.error('rule <' + name + '> failed with error: ', e);
+
+    return [
+      {
+        message: 'Rule error: ' + e.message,
+        category: 'error'
+      }
+    ];
+  }
+
+};
+
+
+Linter.prototype.resolveRule = function(name) {
+
+  const {
+    pkg,
+    ruleName
+  } = this.parseRuleName(name);
+
+  const id = `${pkg}-${ruleName}`;
+
+  const rule = this.cachedRules[id];
+
+  if (rule) {
+    return Promise.resolve(rule);
+  }
+
+  return Promise.resolve(this.resolver.resolveRule(pkg, ruleName)).then((ruleFactory) => {
+
+    if (!ruleFactory) {
+      throw new Error(`unknown rule <${name}>`);
+    }
+
+    const rule = this.cachedRules[id] = ruleFactory();
+
+    return rule;
+  });
+};
+
+Linter.prototype.resolveConfig = function(name) {
+
+  const {
+    pkg,
+    configName
+  } = this.parseConfigName(name);
+
+  const id = `${pkg}-${configName}`;
+
+  const config = this.cachedConfigs[id];
+
+  if (config) {
+    return Promise.resolve(config);
+  }
+
+  return Promise.resolve(this.resolver.resolveConfig(pkg, configName)).then((config) => {
+
+    if (!config) {
+      throw new Error(`unknown config <${name}>`);
+    }
+
+    const actualConfig = this.cachedConfigs[id] = this.normalizeConfig(config, pkg);
+
+    return actualConfig;
+  });
+};
+
+/**
+ * Take a linter config and return list of resolved rules.
+ *
+ * @param {Object} config
+ *
+ * @return {Array<RuleDefinition>}
+ */
+Linter.prototype.resolveRules = function(config) {
+
+  return this.resolveConfiguredRules(config).then((rulesConfig) => {
+
+    // parse rule values
+    const parsedRules = Object.entries(rulesConfig).map(([ name, value ]) => {
+      const {
+        category,
+        config
+      } = this.parseRuleValue(value);
+
+      return {
+        name,
+        category,
+        config
+      };
+    });
+
+    // filter only for enabled rules
+    const enabledRules = parsedRules.filter(definition => definition.category !== 'off');
+
+    // load enabled rules
+    const loaders = enabledRules.map((definition) => {
+
+      const {
+        name
+      } = definition;
+
+      return this.resolveRule(name).then(function(rule) {
+        return {
+          ...definition,
+          rule
+        };
+      });
+    });
+
+    return Promise.all(loaders);
+  });
+};
+
+
+Linter.prototype.resolveConfiguredRules = function(config) {
+
+  let parents = config.extends;
+
+  if (typeof parents === 'string') {
+    parents = [ parents ];
+  }
+
+  if (typeof parents === 'undefined') {
+    parents = [];
+  }
+
+  return Promise.all(
+    parents.map((configName) => {
+      return this.resolveConfig(configName).then((config) => {
+        return this.resolveConfiguredRules(config);
+      });
+    })
+  ).then((inheritedRules) => {
+
+    const overrideRules = this.normalizeConfig(config, 'bpmnlint').rules;
+
+    const rules = [ ...inheritedRules, overrideRules ].reduce((rules, currentRules) => {
+      return {
+        ...rules,
+        ...currentRules
+      };
+    }, {});
+
+    return rules;
+  });
+};
+
+
+/**
+ * Lint the given model root, using the specified linter config.
+ *
+ * @param {ModdleElement} moddleRoot
+ * @param {Object} [config] the bpmnlint configuration to use
+ *
+ * @return {Object} lint results, keyed by category names
+ */
+Linter.prototype.lint = function(moddleRoot, config) {
+
+  config = config || this.config;
+
+  // load rules
+  return this.resolveRules(config).then((ruleDefinitions) => {
+
+    const allReports = {};
+
+    ruleDefinitions.forEach((ruleDefinition) => {
+
+      const {
+        name
+      } = ruleDefinition;
+
+      const reports = this.applyRule(moddleRoot, ruleDefinition);
+
+      if (reports.length) {
+        allReports[name] = reports;
+      }
+    });
+
+    return allReports;
+  });
+};
+
+
+Linter.prototype.parseRuleValue = function(value) {
+
+  let category;
+  let config;
+
+  if (Array.isArray(value)) {
+    category = value[0];
+    config = value[1];
+  } else {
+    category = value;
+    config = {};
+  }
+
+  // normalize rule flag to <error> and <warn> which
+  // may be upper case or a number at this point
+  if (typeof category === 'string') {
+    category = category.toLowerCase();
+  }
+
+  category = categoryMap[category] || category;
+
+  return {
+    config,
+    category
+  };
+};
+
+Linter.prototype.parseRuleName = function(name, localPackage = 'bpmnlint') {
+
+  /**
+   * We recognize the following rule name patterns:
+   *
+   * {RULE_NAME} => PKG = 'bpmnlint'
+   * bpmnlint/{RULE_NAME} => PKG = 'bpmnlint'
+   * {PACKAGE_SHORTCUT}/{RULE_NAME} => PKG = 'bpmnlint-plugin-{PACKAGE_SHORTCUT}'
+   * bpmnlint-plugin-{PACKAGE_SHORTCUT}/{RULE_NAME} => PKG = 'bpmnlint-plugin-{PACKAGE_SHORTCUT}'
+   * @scope/{PACKAGE_SHORTCUT}/{RULE_NAME} => PKG = '@scope/bpmnlint-plugin-{PACKAGE_SHORTCUT}'
+   * @scope/bpmnlint-plugin-{PACKAGE_SHORTCUT}/{RULE_NAME} => PKG = '@scope/bpmnlint-plugin-{PACKAGE_SHORTCUT}'
+   */
+
+  const match = /^(?:(?:(@[^/]+)\/)?([^@]{1}[^/]*)\/)?([^/]+)$/.exec(name);
+
+  if (!match) {
+    throw new Error(`unparseable rule name <${name}>`);
+  }
+
+  const [
+    _,
+    ns,
+    packageName,
+    ruleName
+  ] = match;
+
+  if (!packageName) {
+    return {
+      pkg: localPackage,
+      ruleName
+    };
+  }
+
+  const pkg = `${ns ? ns + '/' : '' }${prefixPackage(packageName)}`;
+
+  return {
+    pkg,
+    ruleName
+  };
+};
+
+
+Linter.prototype.parseConfigName = function(name) {
+
+  /**
+   * We recognize the following config name patterns:
+   *
+   * bpmnlint:{CONFIG_NAME} => PKG = 'bpmnlint'
+   * plugin:{PACKAGE_SHORTCUT}/{CONFIG_NAME} => PKG = 'bpmnlint-plugin-{PACKAGE_SHORTCUT}'
+   * plugin:bpmnlint-plugin-{PACKAGE_SHORTCUT}/{CONFIG_NAME} => PKG = 'bpmnlint-plugin-{PACKAGE_SHORTCUT}'
+   * plugin:@scope/{PACKAGE_SHORTCUT}/{CONFIG_NAME} => PKG = '@scope/bpmnlint-plugin-{PACKAGE_SHORTCUT}'
+   * plugin:@scope/bpmnlint-plugin-{PACKAGE_SHORTCUT}/{CONFIG_NAME} => PKG = '@scope/bpmnlint-plugin-{PACKAGE_SHORTCUT}'
+   */
+
+  const match = /^(?:(?:plugin:(?:(@[^/]+)\/)?([^@]{1}[^/]*)\/)|bpmnlint:)([^/]+)$/.exec(name);
+
+  if (!match) {
+    throw new Error(`unparseable config name <${name}>`);
+  }
+
+  const [
+    _,
+    ns,
+    packageName,
+    configName
+  ] = match;
+
+  if (!packageName) {
+    return {
+      pkg: 'bpmnlint',
+      configName
+    };
+  }
+
+  const pkg = `${ns ? ns + '/' : '' }${prefixPackage(packageName)}`;
+
+  return {
+    pkg,
+    configName
+  };
+};
+
+
+Linter.prototype.getSimplePackageName = function(name) {
+
+  /**
+   * We recognize the following package name patterns:
+   *
+   * bpmnlint => PKG = 'bpmnlint'
+   * {PACKAGE_SHORTCUT} => PKG = PACKAGE_SHORTCUT
+   * bpmnlint-plugin-{PACKAGE_SHORTCUT}' => PKG = PACKAGE_SHORTCUT
+   * @scope/{PACKAGE_SHORTCUT} => PKG = '@scope/{PACKAGE_SHORTCUT}'
+   * @scope/bpmnlint-plugin-{PACKAGE_SHORTCUT}' => PKG = '@scope/PACKAGE_SHORTCUT'
+   */
+
+  const match = /^(?:(@[^/]+)\/)?([^/]+)$/.exec(name);
+
+  if (!match) {
+    throw new Error(`unparseable package name <${name}>`);
+  }
+
+  const [
+    _,
+    ns,
+    packageName
+  ] = match;
+
+  return `${ns ? ns + '/' : '' }${unprefixPackage(packageName)}`;
+};
+
+
+/**
+ * Validate and return validated config.
+ *
+ * @param  {Object} config
+ * @param  {String} localPackage
+ *
+ * @return {Object} validated config
+ */
+Linter.prototype.normalizeConfig = function(config, localPackage) {
+
+  const rules = config.rules || {};
+
+  const validatedRules = Object.keys(rules).reduce((normalizedRules, name) => {
+
+    const value = rules[name];
+
+    const {
+      pkg,
+      ruleName
+    } = this.parseRuleName(name, localPackage);
+
+    const normalizedName = (
+      pkg === 'bpmnlint'
+        ? ruleName
+        : `${this.getSimplePackageName(pkg)}/${ruleName}`
+    );
+
+    normalizedRules[normalizedName] = value;
+
+    return normalizedRules;
+  }, {});
+
+  return {
+    ...config,
+    rules: validatedRules
+  };
+};
+
+
+// helpers ///////////////////////////
+
+function prefixPackage(pkg) {
+
+  if (pkg === 'bpmnlint') {
+    return 'bpmnlint';
+  }
+
+  if (pkg.startsWith('bpmnlint-plugin-')) {
+    return pkg;
+  }
+
+  return `bpmnlint-plugin-${pkg}`;
+}
+
+
+function unprefixPackage(pkg) {
+
+  if (pkg.startsWith('bpmnlint-plugin-')) {
+    return pkg.substring('bpmnlint-plugin-'.length);
+  }
+
+  return pkg;
+}
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/lib/test-rule.js":
+/*!************************************************!*\
+  !*** ./node_modules/bpmnlint/lib/test-rule.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const traverse = __webpack_require__(/*! ./traverse */ "./node_modules/bpmnlint/lib/traverse.js");
+
+class Reporter {
+  constructor({ moddleRoot, rule }) {
+    this.rule = rule;
+    this.moddleRoot = moddleRoot;
+    this.messages = [];
+    this.report = this.report.bind(this);
+  }
+
+  report(id, message) {
+    this.messages.push({ id, message });
+  }
+}
+
+module.exports = function testRule({ moddleRoot, rule }) {
+  const reporter = new Reporter({ rule, moddleRoot });
+  traverse(moddleRoot, node => rule.check(node, reporter));
+  return reporter.messages;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/lib/traverse.js":
+/*!***********************************************!*\
+  !*** ./node_modules/bpmnlint/lib/traverse.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Traverse a moddle tree, depth first from top to bottom
+ * and call the passed visitor fn.
+ *
+ * @param {ModdleElement} element
+ * @param {Function} fn
+ */
+module.exports = function traverse(element, fn) {
+  fn(element);
+
+  var descriptor = element.$descriptor;
+
+  if (descriptor.isGeneric) {
+    return;
+  }
+
+  var containedProperties = descriptor.properties.filter(p => {
+    return !p.isAttr && !p.isReference && p.type !== 'String';
+  });
+
+  containedProperties.forEach(p => {
+    if (p.name in element) {
+      const propertyValue = element[p.name];
+
+      if (p.isMany) {
+        propertyValue.forEach(child => {
+          traverse(child, fn);
+        });
+      } else {
+        traverse(propertyValue, fn);
+      }
+    }
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/conditional-flows.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/conditional-flows.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * A rule that checks that sequence flows outgoing from a
+ * conditional forking gateway or activity are
+ * either default flows _or_ have a condition attached
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!isConditionalForking(node)) {
+      return;
+    }
+
+    const outgoing = node.outgoing || [];
+
+    outgoing.forEach((flow) => {
+      const missingCondition = (
+        !hasCondition(flow) &&
+        !isDefaultFlow(node, flow)
+      );
+
+      if (missingCondition) {
+        reporter.report(flow.id, 'Sequence flow is missing condition');
+      }
+    });
+  }
+
+  return {
+    check
+  };
+
+};
+
+
+// helpers /////////////////////////////
+
+function isConditionalForking(node) {
+
+  const defaultFlow = node['default'];
+  const outgoing = node.outgoing || [];
+
+  return defaultFlow || outgoing.find(hasCondition);
+}
+
+function hasCondition(flow) {
+  return !!flow.conditionExpression;
+}
+
+function isDefaultFlow(node, flow) {
+  return node['default'] === flow;
+}
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/end-event-required.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/end-event-required.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is,
+  isAny
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+
+/**
+ * A rule that checks the presence of an end event per scope.
+ */
+module.exports = function() {
+
+  function hasEndEvent(node) {
+    const flowElements = node.flowElements || [];
+
+    return (
+      flowElements.some(node => is(node, 'bpmn:EndEvent'))
+    );
+  }
+
+  function check(node, reporter) {
+
+    if (!isAny(node, [
+      'bpmn:Process',
+      'bpmn:SubProcess'
+    ])) {
+      return;
+    }
+
+    if (!hasEndEvent(node)) {
+      const type = is(node, 'bpmn:SubProcess') ? 'Sub process' : 'Process';
+
+      reporter.report(node.id, type + ' is missing end event');
+    }
+  }
+
+  return { check };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/event-sub-process-typed-start-event.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/event-sub-process-typed-start-event.js ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+/**
+ * A rule that checks that start events inside an event sub-process
+ * are typed.
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!is(node, 'bpmn:SubProcess') || !node.triggeredByEvent) {
+      return;
+    }
+
+    const flowElements = node.flowElements || [];
+
+    flowElements.forEach(function(flowElement) {
+
+      if (!is(flowElement, 'bpmn:StartEvent')) {
+        return false;
+      }
+
+      const eventDefinitions = flowElement.eventDefinitions || [];
+
+      if (eventDefinitions.length === 0) {
+        reporter.report(flowElement.id, 'Start event is missing event definition');
+      }
+    });
+  }
+
+  return {
+    check
+  };
+
+};
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/fake-join.js":
+/*!**************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/fake-join.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  isAny
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+/**
+ * A rule that checks that no fake join is modeled by attempting
+ * to give a task or event join semantics.
+ *
+ * Users should model a parallel joining gateway
+ * to achieve the desired behavior.
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!isAny(node, [
+      'bpmn:Task',
+      'bpmn:Event'
+    ])) {
+      return;
+    }
+
+    const incoming = node.incoming || [];
+
+    if (incoming.length > 1) {
+      reporter.report(node.id, 'Incoming flows do not join');
+    }
+  }
+
+  return {
+    check
+  };
+
+};
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/helper.js":
+/*!***********************************************!*\
+  !*** ./node_modules/bpmnlint/rules/helper.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+/**
+ * Create a checker that disallows the given element type.
+ *
+ * @param {String} type
+ *
+ * @return {Function} ruleImpl
+ */
+function disallowNodeType(type) {
+
+  return function() {
+
+    function check(node, reporter) {
+
+      if (is(node, type)) {
+        reporter.report(node.id, 'Element has disallowed type <' + type + '>');
+      }
+    }
+
+    return {
+      check
+    };
+
+  };
+
+}
+
+module.exports.disallowNodeType = disallowNodeType;
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/label-required.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/label-required.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is,
+  isAny
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+
+/**
+ * A rule that checks the presence of a label.
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (isAny(node, [
+      'bpmn:ParallelGateway',
+      'bpmn:EventBasedGateway'
+    ])) {
+      return;
+    }
+
+    // ignore joining gateways
+    if (is(node, 'bpmn:Gateway') && !isForking(node)) {
+      return;
+    }
+
+    if (is(node, 'bpmn:BoundaryEvent')) {
+      return;
+    }
+
+    // ignore sub-processes
+    if (is(node, 'bpmn:SubProcess')) {
+      // TODO(nikku): better ignore expanded sub-processes only
+      return;
+    }
+
+    // ignore sequence flow without condition
+    if (is(node, 'bpmn:SequenceFlow') && !hasCondition(node)) {
+      return;
+    }
+
+    // ignore data objects and artifacts for now
+    if (isAny(node, [
+      'bpmn:FlowNode',
+      'bpmn:SequenceFlow',
+      'bpmn:Participant',
+      'bpmn:Lane'
+    ])) {
+
+      const name = (node.name || '').trim();
+
+      if (name.length === 0) {
+        reporter.report(node.id, 'Element is missing label/name');
+      }
+    }
+  }
+
+  return { check };
+};
+
+
+// helpers ////////////////////////
+
+function isForking(node) {
+  const outgoing = node.outgoing || [];
+
+  return outgoing.length > 1;
+}
+
+function hasCondition(node) {
+  return node.conditionExpression;
+}
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/no-complex-gateway.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/no-complex-gateway.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const disallowNodeType = __webpack_require__(/*! ./helper */ "./node_modules/bpmnlint/rules/helper.js").disallowNodeType;
+
+module.exports = disallowNodeType('bpmn:ComplexGateway');
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/no-disconnected.js":
+/*!********************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/no-disconnected.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  isAny
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+
+/**
+ * A rule that verifies that there exists no disconnected
+ * flow elements, i.e. elements without incoming
+ * _or_ outgoing sequence flows
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!isAny(node, [
+      'bpmn:Task',
+      'bpmn:Gateway',
+      'bpmn:SubProcess',
+      'bpmn:Event'
+    ]) || node.triggeredByEvent) {
+      return;
+    }
+
+    const incoming = node.incoming || [];
+    const outgoing = node.outgoing || [];
+
+    if (!incoming.length && !outgoing.length) {
+      reporter.report(node.id, 'Element is not connected');
+    }
+  }
+
+  return {
+    check
+  };
+
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/no-duplicate-sequence-flows.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/no-duplicate-sequence-flows.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+/**
+ * A rule that verifies that there are no disconnected
+ * flow elements, i.e. elements without incoming
+ * _or_ outgoing sequence flows
+ */
+module.exports = function() {
+
+  const keyed = {};
+
+  const outgoingReported = {};
+  const incomingReported = {};
+
+  function check(node, reporter) {
+
+    if (!is(node, 'bpmn:SequenceFlow')) {
+      return;
+    }
+
+    const key = flowKey(node);
+
+    if (key in keyed) {
+      reporter.report(node.id, 'SequenceFlow is a duplicate');
+
+      const sourceId = node.sourceRef.id;
+      const targetId = node.targetRef.id;
+
+      console.log(sourceId, targetId);
+
+      if (!outgoingReported[sourceId]) {
+        reporter.report(sourceId, 'Duplicate outgoing sequence flows');
+
+        outgoingReported[sourceId] = true;
+      }
+
+      if (!incomingReported[targetId]) {
+        reporter.report(targetId, 'Duplicate incoming sequence flows');
+
+        incomingReported[targetId] = true;
+      }
+    } else {
+      keyed[key] = node;
+    }
+  }
+
+  return {
+    check
+  };
+
+};
+
+
+// helpers /////////////////
+
+function flowKey(flow) {
+  const conditionExpression = flow.conditionExpression;
+
+  const condition = conditionExpression ? conditionExpression.body : '';
+  const source = flow.sourceRef ? flow.sourceRef.id : flow.id;
+  const target = flow.targetRef ? flow.targetRef.id : flow.id;
+
+  return source + '#' + target + '#' + condition;
+}
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/no-gateway-join-fork.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/no-gateway-join-fork.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+
+/**
+ * A rule that checks, whether a gateway forks and joins
+ * at the same time.
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!is(node, 'bpmn:Gateway')) {
+      return;
+    }
+
+    const incoming = node.incoming || [];
+    const outgoing = node.outgoing || [];
+
+    if (incoming.length > 1 && outgoing.length > 1) {
+      reporter.report(node.id, 'Gateway forks and joins');
+    }
+  }
+
+  return {
+    check
+  };
+
+};
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/no-implicit-split.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/no-implicit-split.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  isAny
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+
+/**
+ * A rule that checks that no implicit split is modeled
+ * starting from a task.
+ *
+ * users should model the parallel splitting gateway
+ * explicitly instead.
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!isAny(node, [
+      'bpmn:Task',
+      'bpmn:Event'
+    ])) {
+      return;
+    }
+
+    const outgoing = node.outgoing || [];
+
+    const outgoingWithoutCondition = outgoing.filter((flow) => {
+      return !hasCondition(flow) && !isDefaultFlow(node, flow);
+    });
+
+    if (outgoingWithoutCondition.length > 1) {
+      reporter.report(node.id, 'Flow splits implicitly');
+    }
+  }
+
+  return {
+    check
+  };
+
+};
+
+
+// helpers /////////////////////////////
+
+function hasCondition(flow) {
+  return !!flow.conditionExpression;
+}
+
+function isDefaultFlow(node, flow) {
+  return node['default'] === flow;
+}
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/no-inclusive-gateway.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/no-inclusive-gateway.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const disallowNodeType = __webpack_require__(/*! ./helper */ "./node_modules/bpmnlint/rules/helper.js").disallowNodeType;
+
+module.exports = disallowNodeType('bpmn:InclusiveGateway');
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/single-blank-start-event.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/single-blank-start-event.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+/**
+ * A rule that checks whether not more than one blank start event
+ * exists per scope.
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!is(node, 'bpmn:FlowElementsContainer')) {
+      return;
+    }
+
+    const flowElements = node.flowElements || [];
+
+    const blankStartEvents = flowElements.filter(function(flowElement) {
+
+      if (!is(flowElement, 'bpmn:StartEvent')) {
+        return false;
+      }
+
+      const eventDefinitions = flowElement.eventDefinitions || [];
+
+      return eventDefinitions.length === 0;
+    });
+
+    if (blankStartEvents.length > 1) {
+      const type = is(node, 'bpmn:SubProcess') ? 'Sub process' : 'Process';
+
+      reporter.report(node.id, type + ' has multiple blank start events');
+    }
+  }
+
+  return {
+    check
+  };
+
+};
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/single-event-definition.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/single-event-definition.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+
+/**
+ * A rule that verifies that an event contains maximum one event definition.
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!is(node, 'bpmn:Event')) {
+      return;
+    }
+
+    const eventDefinitions = node.eventDefinitions || [];
+
+    if (eventDefinitions.length > 1) {
+      reporter.report(node.id, 'Event has multiple event definitions');
+    }
+  }
+
+  return {
+    check
+  };
+
+};
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/start-event-required.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/start-event-required.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is,
+  isAny
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+
+/**
+ * A rule that checks for the presence of a start event per scope.
+ */
+module.exports = function() {
+
+  function hasStartEvent(node) {
+    const flowElements = node.flowElements || [];
+
+    return (
+      flowElements.some(node => is(node, 'bpmn:StartEvent'))
+    );
+  }
+
+  function check(node, reporter) {
+
+    if (!isAny(node, [
+      'bpmn:Process',
+      'bpmn:SubProcess'
+    ])) {
+      return;
+    }
+
+    if (!hasStartEvent(node)) {
+      const type = is(node, 'bpmn:SubProcess') ? 'Sub process' : 'Process';
+
+      reporter.report(node.id, type + ' is missing start event');
+    }
+  }
+
+  return { check };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/bpmnlint/rules/sub-process-blank-start-event.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/bpmnlint/rules/sub-process-blank-start-event.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const {
+  is
+} = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
+
+
+/**
+ * A rule that checks that start events inside a normal sub-processes
+ * are blank (do not have an event definition).
+ */
+module.exports = function() {
+
+  function check(node, reporter) {
+
+    if (!is(node, 'bpmn:SubProcess') || node.triggeredByEvent) {
+      return;
+    }
+
+    const flowElements = node.flowElements || [];
+
+    flowElements.forEach(function(flowElement) {
+
+      if (!is(flowElement, 'bpmn:StartEvent')) {
+        return false;
+      }
+
+      const eventDefinitions = flowElement.eventDefinitions || [];
+
+      if (eventDefinitions.length > 0) {
+        reporter.report(flowElement.id, 'Start event must be blank');
+      }
+    });
+  }
+
+  return {
+    check
+  };
+
+};
+
+/***/ }),
+
 /***/ "./node_modules/camunda-modeler-plugin-helpers/index.js":
 /*!**************************************************************!*\
   !*** ./node_modules/camunda-modeler-plugin-helpers/index.js ***!
@@ -3102,6 +5233,118 @@ function getModelerDirectory() {
 function getPluginsDirectory() {
   return window.getPluginsDirectory();
 }
+
+/***/ }),
+
+/***/ "./node_modules/css.escape/css.escape.js":
+/*!***********************************************!*\
+  !*** ./node_modules/css.escape/css.escape.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/*! https://mths.be/cssescape v1.5.1 by @mathias | MIT license */
+;(function(root, factory) {
+	// https://github.com/umdjs/umd/blob/master/returnExports.js
+	if (true) {
+		// For Node.js.
+		module.exports = factory(root);
+	} else {}
+}(typeof global != 'undefined' ? global : this, function(root) {
+
+	if (root.CSS && root.CSS.escape) {
+		return root.CSS.escape;
+	}
+
+	// https://drafts.csswg.org/cssom/#serialize-an-identifier
+	var cssEscape = function(value) {
+		if (arguments.length == 0) {
+			throw new TypeError('`CSS.escape` requires an argument.');
+		}
+		var string = String(value);
+		var length = string.length;
+		var index = -1;
+		var codeUnit;
+		var result = '';
+		var firstCodeUnit = string.charCodeAt(0);
+		while (++index < length) {
+			codeUnit = string.charCodeAt(index);
+			// Note: there’s no need to special-case astral symbols, surrogate
+			// pairs, or lone surrogates.
+
+			// If the character is NULL (U+0000), then the REPLACEMENT CHARACTER
+			// (U+FFFD).
+			if (codeUnit == 0x0000) {
+				result += '\uFFFD';
+				continue;
+			}
+
+			if (
+				// If the character is in the range [\1-\1F] (U+0001 to U+001F) or is
+				// U+007F, […]
+				(codeUnit >= 0x0001 && codeUnit <= 0x001F) || codeUnit == 0x007F ||
+				// If the character is the first character and is in the range [0-9]
+				// (U+0030 to U+0039), […]
+				(index == 0 && codeUnit >= 0x0030 && codeUnit <= 0x0039) ||
+				// If the character is the second character and is in the range [0-9]
+				// (U+0030 to U+0039) and the first character is a `-` (U+002D), […]
+				(
+					index == 1 &&
+					codeUnit >= 0x0030 && codeUnit <= 0x0039 &&
+					firstCodeUnit == 0x002D
+				)
+			) {
+				// https://drafts.csswg.org/cssom/#escape-a-character-as-code-point
+				result += '\\' + codeUnit.toString(16) + ' ';
+				continue;
+			}
+
+			if (
+				// If the character is the first character and is a `-` (U+002D), and
+				// there is no second character, […]
+				index == 0 &&
+				length == 1 &&
+				codeUnit == 0x002D
+			) {
+				result += '\\' + string.charAt(index);
+				continue;
+			}
+
+			// If the character is not handled by one of the above rules and is
+			// greater than or equal to U+0080, is `-` (U+002D) or `_` (U+005F), or
+			// is in one of the ranges [0-9] (U+0030 to U+0039), [A-Z] (U+0041 to
+			// U+005A), or [a-z] (U+0061 to U+007A), […]
+			if (
+				codeUnit >= 0x0080 ||
+				codeUnit == 0x002D ||
+				codeUnit == 0x005F ||
+				codeUnit >= 0x0030 && codeUnit <= 0x0039 ||
+				codeUnit >= 0x0041 && codeUnit <= 0x005A ||
+				codeUnit >= 0x0061 && codeUnit <= 0x007A
+			) {
+				// the character itself
+				result += string.charAt(index);
+				continue;
+			}
+
+			// Otherwise, the escaped character.
+			// https://drafts.csswg.org/cssom/#escape-a-character
+			result += '\\' + string.charAt(index);
+
+		}
+		return result;
+	};
+
+	if (!root.CSS) {
+		root.CSS = {};
+	}
+
+	root.CSS.escape = cssEscape;
+	return cssEscape;
+
+}));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 

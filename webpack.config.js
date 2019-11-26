@@ -7,5 +7,13 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'client.js'
   },
-  devtool: 'cheap-module-source-map'
+  devtool: 'cheap-module-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.bpmnlintrc$/i,
+        use: 'bpmnlint-loader',
+      }
+    ]
+  },
 };

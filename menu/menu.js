@@ -7,7 +7,7 @@ module.exports = function (electronApp, menuState) {
     try {
         const {BrowserWindow} = require('electron');
         let focusedWindow = BrowserWindow.getFocusedWindow();
-        focusedWindow.setTitle("Fraunhofer Modeler");
+        focusedWindow.setTitle("Fraunhofer Modeler MK2");
     }
     catch(error) {
         errorName = "HAS ERROR";
@@ -60,7 +60,18 @@ module.exports = function (electronApp, menuState) {
             action: function () {
                 electronApp.emit('menu:action', 'setColor', {fill: '#fff', stroke: '#52b415'});
             }
-        }, {
+        },
+        {
+            label: 'Toggle Linting',
+            accelerator: 'CommandOrControl+L',
+            enabled: function() {
+                return menuState.bpmn;
+            },
+            action: function() {
+                electronApp.emit('menu:action', 'toggleLinting');
+            }
+        },
+        {
             label: 'Close Modeler',
             accelerator: 'CommandOrControl+!',
             enabled: function () {
