@@ -10,10 +10,20 @@ const MAX_DEPTHS = 3;
 module.exports = function() {
 
     function check(node, reporter) {
+
+        let nodeMap = new Map();
+        let nodeToBeExpandedQueue = [node];
+
         if(!isForking(node))
             return;
 
-        let outgoingFromBase = node.outgoing;
+        while(nodeToBeExpandedQueue.length) {
+            let currentNode = nodeToBeExpandedQueue.pop();
+            expandNode(currentNode, nodeMap);
+            if(isChanged(currentNode, nodeMap)) {
+                nodeToBeExpandedQueue.concat(getChangedNodes(currentNode, nodeMap));
+            }
+        }
 
         let outgoingFromBaseReachable = new Array(outgoingFromBase.length);
         for(let i = 0; i < outgoingFromBaseReachable.length; i++) {
@@ -58,6 +68,33 @@ module.exports = function() {
         check: check
     };
 };
+
+function expandNode(node, nodeMap) {
+    if(nodeMap.has(node)) {
+        return;
+    }
+    let outgoing = getOutgoingNodes(node);
+    nodeMap.set(node, outgoing);
+}
+
+function isChanged(node, nodeMap) {
+    for(let newNode of nodeMap.get(node)) {
+        if(!nodeMap.has(newNode))
+            return true;
+    }
+    return false;
+}
+
+function getChangedNodes(node, nodeMap) {
+    return nodeMap.get(node).filter( newNode => !nodeMap.has(newNode));
+}
+
+function getOutgoingNodes(node) {
+    let outgoing = node.outgoing;
+    outgoing = outgoing.filter( flow => flow.targetRef !== undefined);
+    return outgoing.map(flow => flow.targetRef);
+}
+
 
 function isForking(node) {
     const outgoing = node.outgoing || [];

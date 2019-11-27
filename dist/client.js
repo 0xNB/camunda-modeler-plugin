@@ -837,10 +837,17 @@ const MAX_DEPTHS = 3;
 module.exports = function() {
 
     function check(node, reporter) {
+
+        let nodeMap = new Map();
+
         if(!isForking(node))
             return;
 
-        let outgoingFromBase = node.outgoing;
+        let outgoingFromBase = node.outgoing.slice();
+        outgoingFromBase = outgoingFromBase.map( flow => flow.targetRef);
+        outgoingFromBase.forEach( node => nodeMap.set(node.id, new Set(node.outgoing.map( flow => flow.targetRef))));
+
+        debugger;
 
         let outgoingFromBaseReachable = new Array(outgoingFromBase.length);
         for(let i = 0; i < outgoingFromBaseReachable.length; i++) {
@@ -885,6 +892,7 @@ module.exports = function() {
         check: check
     };
 };
+
 
 function isForking(node) {
     const outgoing = node.outgoing || [];
