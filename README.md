@@ -1,7 +1,9 @@
-# Camunda Modeler Plugin Example
+# Camunda Modeler Fraunhofer Plugin
 
 [![Compatible with Camunda Modeler version 3.3](https://img.shields.io/badge/Camunda%20Modeler-3.3+-blue.svg)](https://github.com/camunda/camunda-modeler)
 [![pipeline status](https://gitlab-ext.iosb.fraunhofer.de/betnik/camunda-modeler-plugin/badges/master/pipeline.svg)](https://gitlab-ext.iosb.fraunhofer.de/betnik/camunda-modeler-plugin/commits/master)
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 
 This research plugin for the [Camunda Modeler](https://github.com/camunda/camunda-modeler) aims to aid the development of Apache Jena and SWRL pipelines.
 
@@ -46,8 +48,17 @@ npm run all
 
 ## Additional Resources
 
+### General Camunda Modeler Resources 
+
 * [List of existing plug-ins](https://github.com/camunda/camunda-modeler-plugins)
 * [Plug-ins documentation](https://github.com/camunda/camunda-modeler/tree/master/docs/plugins)
+
+### BPMN Lint Resources 
+
+* [BPMN Lint](https://github.com/bpmn-io/bpmnlint)
+* [Camunda Modeler Custom Linter](https://github.com/camunda/camunda-modeler-linter-plugin)
+* [Camunda Modeler Custom Linter Plugin Rules](https://github.com/camunda/camunda-modeler-custom-linter-rules-plugin)
+* [List of available bpmn lint rules](https://github.com/bpmn-io/bpmnlint/tree/master/docs/rules)
 
 
 ## Licence
