@@ -23,10 +23,21 @@ export default function SpecialTaskRenderer(
 
     this.canRender = function (element) {
         let text = getTextFromDocumentation(element);
+        if (is(element, 'bpmn:SequenceFlow'))
+            return true;
         return (is(element, 'bpmn:BaseElement') && (text === "JENA" || text === "SWRL"));
     };
 
     this.drawShape = function (parent, shape) {
+        if (is(shape.businessObject, 'bpmn:SequenceFlow')) {
+            if (shape.businessObject.transitive) {
+                let shape = this.drawBpmnShape(parent, shape);
+                shape.classList.add("fraunhofer-red");
+                return shape;
+            }
+        }
+
+
         let bpmnShape = this.drawBpmnShape(parent, shape);
         let text = getTextFromDocumentation(shape);
         if (text === "JENA") {
