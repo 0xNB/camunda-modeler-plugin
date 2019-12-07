@@ -128,7 +128,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! bpmnlint/rules/sub-process-blank-start-event */ "./node_modules/bpmnlint/rules/sub-process-blank-start-event.js");
 /* harmony import */ var bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14__);
 /* harmony import */ var bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! bpmnlint-plugin-custom/rules/no-transitive-tasks */ "./client/lint/camunda-modeler-custom-linter-rules-plugin/rules/no-transitive-tasks.js");
-/* harmony import */ var bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15__);
 
 var cache = {};
 
@@ -239,7 +238,7 @@ cache['bpmnlint/start-event-required'] = bpmnlint_rules_start_event_required__WE
 cache['bpmnlint/sub-process-blank-start-event'] = bpmnlint_rules_sub_process_blank_start_event__WEBPACK_IMPORTED_MODULE_14___default.a;
 
 
-cache['bpmnlint-plugin-custom/no-transitive-tasks'] = bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15___default.a;
+cache['bpmnlint-plugin-custom/no-transitive-tasks'] = bpmnlint_plugin_custom_rules_no_transitive_tasks__WEBPACK_IMPORTED_MODULE_15__["default"];
 
 /***/ }),
 
@@ -663,6 +662,24 @@ class SpecializedServiceTaskFactory {
             text: options.docsId
         });
 
+        let extensionElement = this.bpmnFactory.create('bpmn:Element');
+        this.bpmnFactory.create
+        let fraunhoferExtensionDefinition = this.bpmnFactory.create('bpmn:ExtensionDefinition', {
+            name: "fraunhofer"
+        });
+        let fraunhoferExtensionAttributeDefinition = this.bpmnFactory.create('bpmn:ExtensionAttributeDefinition', {
+            name: "rule-type",
+            type: "SWRL",
+
+        });
+
+
+        let extensionElements = this.bpmnFactory.create('bpmn:ExtensionElements', {
+            valueRef: null,
+            values: null,
+            extensionAttributeDefinition: null
+        });
+
         const businessObject = this.bpmnFactory.create('bpmn:ServiceTask', {
             implementation: "Expression",
             expression: "${" + options.expressionName + "}",
@@ -767,7 +784,7 @@ function SpecialTaskRenderer(
 
     this.drawShape = function (parent, shape) {
         if (Object(bpmn_js_lib_util_ModelUtil__WEBPACK_IMPORTED_MODULE_2__["is"])(shape.businessObject, 'bpmn:SequenceFlow')) {
-            if (shape.businessObject.transitive) {
+            if (shape.businessObject.transitive !== undefined) {
                 let shape = this.drawBpmnShape(parent, shape);
                 shape.classList.add("fraunhofer-red");
                 return shape;
@@ -924,19 +941,24 @@ BpmnLinter.$inject = [
 /*!*********************************************************************************************!*\
   !*** ./client/lint/camunda-modeler-custom-linter-rules-plugin/rules/no-transitive-tasks.js ***!
   \*********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util_nodeAggregation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/nodeAggregation */ "./client/lint/camunda-modeler-custom-linter-rules-plugin/util/nodeAggregation.js");
 const {
     is
 } = __webpack_require__(/*! bpmnlint-utils */ "./node_modules/bpmnlint-utils/dist/index.esm.js");
 
+
+
 const MAX_DEPTHS = 3;
 
 /**
- * Rule that reports manual tasks being used.
+ * Rule that reports the use of transitive tasks
  */
-module.exports = function () {
+/* harmony default export */ __webpack_exports__["default"] = (function () {
 
     function check(node, reporter) {
 
@@ -955,14 +977,14 @@ module.exports = function () {
         }
 
         let hasTransitive = false;
-        let outgoing = getOutgoingNodes(node);
+        let outgoing = Object(_util_nodeAggregation__WEBPACK_IMPORTED_MODULE_0__["default"])(node);
         nodeMap.forEach((val, key, map) => {
             if (key === node) {
                 return;
             }
             if (outgoing.some(r => {
                 if (val.map( nodeTuple => nodeTuple.node || {}).includes(r.node || {})) {
-                    reporter.report(r.node.id, "Has transitive incoming dependency!");
+                    reporter.report(r.node.id, "Has transitive incoming dependency.");
                     markTransitiveFlows(reporter, r.node, node);
                     return true;
                 }
@@ -972,15 +994,16 @@ module.exports = function () {
             }
         });
         if (hasTransitive) {
-            reporter.report(node.id, "Has transitive outgoing dependency!");
+            reporter.report(node.id, "Has transitive outgoing dependency.");
         }
-
+        node.wasChecked = true;
     }
+
 
     return {
         check: check
     };
-};
+});;
 
 function markTransitiveFlows(reporter, node, nodeParent) {
     for(let flow of getIncomingFlowFromParentNode(node, nodeParent)) {
@@ -999,7 +1022,7 @@ function expandNode(node, nodeMap) {
     if (nodeMap.has(node)) {
         return;
     }
-    let outgoing = getOutgoingNodes(node);
+    let outgoing = Object(_util_nodeAggregation__WEBPACK_IMPORTED_MODULE_0__["default"])(node);
     nodeMap.set(node, outgoing);
 }
 
@@ -1015,7 +1038,25 @@ function getChangedNodes(node, nodeMap) {
     return nodeMap.get(node).map(tuple => tuple.node || {}).filter(newNode => !nodeMap.has(newNode));
 }
 
-function getOutgoingNodes(node) {
+
+function isForking(node) {
+    const outgoing = node.outgoing || [];
+    return outgoing.length > 1;
+}
+
+
+/***/ }),
+
+/***/ "./client/lint/camunda-modeler-custom-linter-rules-plugin/util/nodeAggregation.js":
+/*!****************************************************************************************!*\
+  !*** ./client/lint/camunda-modeler-custom-linter-rules-plugin/util/nodeAggregation.js ***!
+  \****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (function(node) {
     let outgoing = node.outgoing || [];
     outgoing = outgoing.filter(flow => flow.targetRef !== undefined);
     return outgoing.map(flow => {
@@ -1024,13 +1065,7 @@ function getOutgoingNodes(node) {
             flow: flow
         }
     });
-}
-
-
-function isForking(node) {
-    const outgoing = node.outgoing || [];
-    return outgoing.length > 1;
-}
+});
 
 
 /***/ }),
